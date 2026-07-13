@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { DefaultProviders } from "./components/providers/default.tsx";
 import { AdminAuthProvider } from "./hooks/use-admin-auth.tsx";
+import ScrollToTop from "./components/shared/ScrollToTop.tsx";
 
 // English Portal
 import EnglishHome from "./pages/english/Home.tsx";
@@ -54,6 +55,7 @@ export default function App() {
         <AdminAuthProvider>
           <DefaultProviders>
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 {/* Dhivehi Portal (root) */}
                 <Route path="/" element={<DhivehiHome />} />
