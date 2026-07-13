@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#103820"/>
+  <circle cx="1090" cy="90" r="210" fill="#2D6A4F" opacity=".55"/>
+  <circle cx="1060" cy="590" r="300" fill="#52B788" opacity=".18"/>
+  <path d="M120 145h160c95 0 150 46 150 125 0 61-34 101-94 119l101 111H326l-94-101v101H120V145Zm112 83v96h54c37 0 55-17 55-49 0-31-18-47-55-47h-54Z" fill="#fff"/>
+  <circle cx="427" cy="151" r="39" fill="#52B788"/>
+  <text x="485" y="315" fill="#fff" font-family="Georgia, serif" font-size="86" font-weight="700" letter-spacing="4">RAYYITHUN</text>
+  <text x="492" y="376" fill="#95D5B2" font-family="Arial, sans-serif" font-size="25" letter-spacing="8">THE VOICE OF THE MALDIVES</text>
+</svg>
