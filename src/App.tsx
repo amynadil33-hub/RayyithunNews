@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { DefaultProviders } from "./components/providers/default.tsx";
@@ -78,6 +78,7 @@ export default function App() {
                 {/* Admin */}
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="articles" element={<AdminArticles />} />
                   <Route path="articles/new" element={<AdminArticleEdit />} />
