@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { TrendingUpIcon } from "lucide-react";
-import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import DhivehiFooter from "../../components/dhivehi/DhivehiFooter.tsx";
 import DhivehiArticleCard from "../../components/dhivehi/DhivehiArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
+import FrigatebirdHero from "../../components/shared/FrigatebirdHero.tsx";
 import { useArticles } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 
@@ -32,7 +32,7 @@ export default function DhivehiHome() {
         <html lang="dv" dir="rtl" />
       </Helmet>
 
-      <DhivehiHeader />
+      <FrigatebirdHero language="dv" />
 
       {/* Top ad banner */}
       <div className="max-w-5xl mx-auto px-4 pt-4">

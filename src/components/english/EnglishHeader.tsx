@@ -33,7 +33,7 @@ export default function EnglishHeader() {
   }
 
   return (
-    <header className="bg-white border-b border-[#E5E7E2]">
+    <header className="bg-white border-b border-[#E5E7E2]" dir="ltr">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E]">
@@ -45,16 +45,13 @@ export default function EnglishHeader() {
       {/* Logo + actions */}
       <div className="px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Dhivehi logo + English wordmark */}
-          <Link to="/en" className="flex items-center gap-3">
+          {/* Logo */}
+          <Link to="/en" className="flex items-center">
             <img
-              src="/rayyithun-logo.svg"
-              alt="RAYYITHUN Dhivehi logo"
-              className="h-10 w-auto object-contain"
+              src="/rayyithun-logo.png"
+              alt="RAYYITHUN"
+              className="h-20 w-48 object-cover object-center"
             />
-            <span className="font-serif text-2xl font-bold text-[#103820] tracking-tight leading-none">
-              RAYYITHUN
-            </span>
           </Link>
 
           <div className="flex items-center gap-4">
@@ -111,7 +108,7 @@ export default function EnglishHeader() {
       {/* Desktop navigation */}
       <nav className="hidden md:block border-t border-[#E5E7E2]">
         <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex items-center gap-0">
+          <ul className="flex items-center justify-start gap-0">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link

@@ -18,7 +18,8 @@ export default function AdminArticleEdit() {
   const [portalSlug, setPortalSlug] = useState<"english" | "dhivehi">("english");
   const [form, setForm] = useState<Partial<Article>>({
     title: "", slug: "", excerpt: "", content: "",
-    featured_image_url: "", status: "draft" as ArticleStatus,
+    featured_image_url: "", additional_image_1_url: "", additional_image_2_url: "",
+    status: "draft" as ArticleStatus,
     is_breaking: false, is_featured: false, is_trending: false,
     read_time: 3, seo_title: "", seo_description: "",
   });
@@ -213,15 +214,31 @@ export default function AdminArticleEdit() {
             ))}
           </div>
 
-          {/* Featured image */}
+          {/* Article images */}
           <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-[#142820]">Featured Image</h3>
-            <input value={form.featured_image_url ?? ""} onChange={(e) => setForm({ ...form, featured_image_url: e.target.value })}
-              placeholder="https://images.unsplash.com/..."
-              className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-[#103820]" />
-            {form.featured_image_url && (
-              <img src={form.featured_image_url} alt="preview" className="w-full h-32 object-cover rounded-sm" />
-            )}
+            <h3 className="text-sm font-semibold text-[#142820]">Article Images</h3>
+            <p className="text-xs text-[#6B756E]">Add a hero image and up to two images for the article gallery.</p>
+            {([
+              { key: "featured_image_url", label: "Hero image", required: true },
+              { key: "additional_image_1_url", label: "Additional image 1", required: false },
+              { key: "additional_image_2_url", label: "Additional image 2", required: false },
+            ] as const).map(({ key, label, required }) => (
+              <div key={key} className="space-y-2 pt-1">
+                <label className="block text-xs font-medium text-[#142820]">
+                  {label}{required && <span className="text-[#6B756E]"> (featured)</span>}
+                </label>
+                <input
+                  value={form[key] ?? ""}
+                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  placeholder="https://..."
+                  inputMode="url"
+                  className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-[#103820]"
+                />
+                {form[key] && (
+                  <img src={form[key] ?? ""} alt={`${label} preview`} className="w-full h-32 object-cover rounded-sm" />
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

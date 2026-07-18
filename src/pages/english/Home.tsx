@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { TrendingUpIcon, PlayCircleIcon } from "lucide-react";
-import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
+import FrigatebirdHero from "../../components/shared/FrigatebirdHero.tsx";
 import { useArticles, usePodcasts } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
@@ -40,7 +40,7 @@ export default function EnglishHome() {
         <html lang="en" />
       </Helmet>
 
-      <EnglishHeader />
+      <FrigatebirdHero language="en" />
 
       {/* Top ad banner */}
       <div className="max-w-5xl mx-auto px-4 pt-4">

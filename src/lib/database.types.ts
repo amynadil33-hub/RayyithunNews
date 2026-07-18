@@ -64,6 +64,8 @@ export interface Article {
   excerpt: string | null;
   content: string | null;
   featured_image_url: string | null;
+  additional_image_1_url: string | null;
+  additional_image_2_url: string | null;
   status: ArticleStatus;
   is_breaking: boolean;
   is_featured: boolean;

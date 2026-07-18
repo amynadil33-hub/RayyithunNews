@@ -49,7 +49,7 @@ export default function AdminLayout() {
         {/* Logo */}
         <div className="p-5 border-b border-white/10">
           <Link to="/en" className="block">
-            <span className="font-serif text-white text-lg font-bold tracking-tight">RAYYITHUN</span>
+            <img src="/rayyithun-logo.png" alt="RAYYITHUN" className="h-16 w-full object-cover object-center rounded-sm" />
             <span className="block text-[#95D5B2] text-xs mt-0.5">Admin CMS</span>
           </Link>
         </div>

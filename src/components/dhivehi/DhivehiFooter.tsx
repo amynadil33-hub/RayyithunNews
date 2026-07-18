@@ -32,9 +32,9 @@ export default function DhivehiFooter() {
           <div className="md:col-span-1">
             <Link to="/" className="inline-flex items-center gap-2 mb-4">
               <img
-                src="/rayyithun-logo.svg"
+                src="/rayyithun-logo.png"
                 alt="ރައްޔިތުން"
-                className="h-10 w-auto object-contain brightness-0 invert"
+                className="h-20 w-48 object-cover object-center rounded-sm"
               />
             </Link>
             <p className="text-sm text-[#95D5B2] leading-relaxed mb-5 font-thaana thaana-body">

@@ -82,6 +82,8 @@ CREATE TABLE IF NOT EXISTS public.articles (
   excerpt           TEXT,
   content           TEXT,
   featured_image_url TEXT,
+  additional_image_1_url TEXT,
+  additional_image_2_url TEXT,
   status            TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published','scheduled','archived')),
   is_breaking       BOOLEAN NOT NULL DEFAULT false,
   is_featured       BOOLEAN NOT NULL DEFAULT false,

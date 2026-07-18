@@ -33,7 +33,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <span className="font-serif text-3xl font-bold text-[#103820]">RAYYITHUN</span>
+          <img src="/rayyithun-logo.png" alt="RAYYITHUN" className="h-28 w-64 object-cover object-center mx-auto" />
           <p className="text-[#6B756E] text-sm mt-1">Admin Dashboard</p>
         </div>
 

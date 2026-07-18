@@ -150,6 +150,23 @@ export default function DhivehiArticle() {
               </figure>
             )}
 
+            {(article.additional_image_1_url || article.additional_image_2_url) && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" aria-label="Additional article images">
+                {[article.additional_image_1_url, article.additional_image_2_url]
+                  .filter((imageUrl): imageUrl is string => Boolean(imageUrl))
+                  .map((imageUrl, index) => (
+                    <figure key={`${imageUrl}-${index}`} className="overflow-hidden rounded-sm bg-[#E5E7E2]">
+                      <img
+                        src={imageUrl}
+                        alt={`${article.title} — image ${index + 2}`}
+                        className="w-full h-full min-h-64 max-h-96 object-cover"
+                        loading="lazy"
+                      />
+                    </figure>
+                  ))}
+              </div>
+            )}
+
             <div
               className="article-prose-thaana prose prose-lg max-w-none
                 prose-headings:font-thaana prose-headings:text-[#142820]

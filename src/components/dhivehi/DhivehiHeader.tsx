@@ -49,9 +49,9 @@ export default function DhivehiHeader() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="/rayyithun-logo.svg"
+              src="/rayyithun-logo.png"
               alt="ރައްޔިތުން"
-              className="h-12 w-auto object-contain"
+              className="h-20 w-48 object-cover object-center"
             />
           </Link>
 
@@ -107,18 +107,8 @@ export default function DhivehiHeader() {
       {/* Desktop navigation */}
       <nav className="hidden md:block border-t border-[#E5E7E2]">
         <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex items-center gap-0 justify-end">
-            <li className="mr-auto">
-              <Link to="/contact" className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors font-thaana">
-                ގުޅުއްވުމަށް
-              </Link>
-            </li>
-            <li>
-              <Link to="/advertise" className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors font-thaana">
-                އިޢުލާން
-              </Link>
-            </li>
-            {[...NAV_LINKS].reverse().map((link) => (
+          <ul className="flex items-center justify-start gap-0" dir="rtl">
+            {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   to={link.href}
@@ -128,6 +118,16 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
+            <li className="mr-auto">
+              <Link to="/advertise" className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors font-thaana">
+                އިޢުލާން
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors font-thaana">
+                ގުޅުއްވުމަށް
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
