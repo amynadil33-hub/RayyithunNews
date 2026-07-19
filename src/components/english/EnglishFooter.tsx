@@ -31,8 +31,8 @@ export default function EnglishFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/en" className="inline-flex items-center gap-2 mb-4">
-              <img src="/rayyithun-logo.png" alt="RAYYITHUN" className="h-20 w-48 object-cover object-center rounded-sm" />
+            <Link to="/en" className="isolate mb-4 inline-flex items-center overflow-hidden rounded-sm border border-[#D8C89F]/70 bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm">
+              <img src="/rayyithun-logo.png" alt="RAYYITHUN" className="h-20 w-48 object-cover object-center mix-blend-multiply" />
             </Link>
             <p className="text-sm text-[#95D5B2] leading-relaxed mb-5">
               The digital voice of the Maldives. Independent journalism, community stories, and practical services for everyday life.

@@ -14,7 +14,7 @@ const COPY = {
       "Like the frigatebird soaring above the Maldivian seas, Rayyithun watches from above—sharp-eyed, fearless, and always searching for the truth.",
   },
   dv: {
-    heading: "ަޑުތަކުގެ މަތީގައި. ތެދާއި ކައިރީގައި.",
+    heading: "އަޑުތަކުގެ މަތީގައި. ތެދާއި ކައިރީގައި.",
     supporting:
       "ދިވެހި ކަނޑުމަތިން ދުވާ މާހޯރަ ފަދައިން، ރައްޔިތުން އަކީ ހުށިޔާރުކަމާއެކު، ބިރެއްނެތި ތެދު މައުލޫމާތާއި އިލްމް ހޯދަމުން ދާ ރައްޔިތުންގެ އަޑެކެވެ.",
   },
@@ -30,7 +30,6 @@ const ENGLISH_NAV = [
   ["Podcast", "/en/podcast"],
   ["Citizen", "/en/citizen"],
   ["Market", "/en/market"],
-  ["Contact", "/en/contact"],
   ["Advertise", "/en/advertise"],
 ] as const;
 
@@ -43,8 +42,8 @@ const DHIVEHI_NAV = [
   ["ދުނިޔެ", "/world"],
   ["ޕޮޑްކާސްޓް", "/podcast"],
   ["ރައްޔިތުން", "/citizen"],
+  ["ލިޔުން ހުށަހަޅާ", "/submit-article"],
   ["ބާޒާރު", "/market"],
-  ["ގުޅުއްވުމަށް", "/contact"],
   ["އިޢުލާން", "/advertise"],
 ] as const;
 
@@ -67,7 +66,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
 
   return (
     <section
-      className="relative isolate h-[500px] overflow-hidden bg-[#071521] text-white md:h-[420px]"
+      className="relative isolate h-[420px] overflow-hidden bg-[#103820] text-white sm:h-[360px] md:h-[300px]"
       dir={isDhivehi ? "rtl" : "ltr"}
       lang={language}
       aria-labelledby={`brand-hero-heading-${language}`}
@@ -76,15 +75,19 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
         src="/frigatebird-editorial-hero.png"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-y-0 left-0 h-full w-full object-contain object-center opacity-90 mix-blend-luminosity md:w-[68%] md:object-left"
+        style={{
+          WebkitMaskImage: "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
+          maskImage: "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
+        }}
       />
-      <div className="absolute inset-0 bg-[#071521]/45" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[#103820]/42" aria-hidden="true" />
       <div
-        className="absolute inset-0 bg-gradient-to-r from-[#071521]/25 via-[#071521]/45 to-[#071521]/95"
+        className="absolute inset-0 bg-gradient-to-r from-[#103820]/20 via-[#103820]/48 to-[#081F12]/95"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#071521]/95 to-transparent"
+        className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#081F12]/95 to-transparent"
         aria-hidden="true"
       />
 
@@ -106,7 +109,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
               </button>
               <Link
                 to={isDhivehi ? "/en" : "/"}
-                className={`border border-white/50 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white hover:text-[#071521] ${
+                className={`border border-white/50 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white hover:text-[#103820] ${
                   isDhivehi ? "" : "font-thaana"
                 }`}
               >
@@ -117,7 +120,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
             {searchOpen && (
               <form
                 onSubmit={handleSearch}
-                className="absolute left-0 top-full z-30 mt-2 flex w-[min(19rem,80vw)] border border-white/30 bg-[#071521]/95 p-2 shadow-xl backdrop-blur"
+                className="absolute left-0 top-full z-30 mt-2 flex w-[min(19rem,80vw)] border border-white/30 bg-[#103820]/95 p-2 shadow-xl backdrop-blur"
               >
                 <input
                   autoFocus
@@ -136,17 +139,21 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
             )}
           </div>
 
-          <Link to={isDhivehi ? "/" : "/en"} aria-label="Rayyithun home">
+          <Link
+            to={isDhivehi ? "/" : "/en"}
+            aria-label="Rayyithun home"
+            className="isolate overflow-hidden rounded-sm border border-[#E6D8B8]/60 bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-lg"
+          >
             <img
               src="/rayyithun-logo.png"
               alt="RAYYITHUN"
-              className="h-14 w-36 rounded-sm bg-white object-cover object-center sm:h-16 sm:w-44"
+              className="h-14 w-36 object-cover object-center mix-blend-multiply sm:h-16 sm:w-44"
             />
           </Link>
         </div>
 
         <nav
-          className="no-scrollbar overflow-x-auto border-b border-white/15"
+          className="no-scrollbar overflow-x-auto border-b border-white/25"
           aria-label={isDhivehi ? "މައި މެނޫ" : "Main navigation"}
           dir={isDhivehi ? "rtl" : "ltr"}
         >
@@ -155,7 +162,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
               <li key={href}>
                 <Link
                   to={href}
-                  className={`block px-3 py-2 text-[11px] font-semibold text-white/75 transition-colors hover:bg-white/10 hover:text-white sm:px-4 sm:text-xs ${
+                  className={`block border-x border-white/5 px-4 py-2.5 text-xs font-bold text-white/90 transition-colors hover:border-white/15 hover:bg-white/15 hover:text-white sm:px-5 sm:text-sm ${
                     isDhivehi ? "font-thaana" : "uppercase tracking-[0.08em]"
                   }`}
                 >
@@ -166,7 +173,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
           </ul>
         </nav>
 
-        <div className="flex min-h-0 flex-1 items-center py-4 sm:py-5">
+        <div className="flex min-h-0 flex-1 items-center py-3 sm:py-4">
           <div className={`ml-auto w-full max-w-[34rem] ${isDhivehi ? "text-right" : "text-left"}`}>
             <div className="mb-3 flex items-center justify-start gap-2" aria-hidden="true">
               <span className="h-px w-10 bg-[#C12835]" />
@@ -176,16 +183,16 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
               id={`brand-hero-heading-${language}`}
               className={
                 isDhivehi
-                  ? "font-thaana thaana-headline text-[1.85rem] font-bold leading-[1.45] text-balance sm:text-[2.2rem] md:text-[2.45rem]"
-                  : "font-serif text-[2.05rem] font-bold leading-[1.02] tracking-[-0.025em] text-balance sm:text-[2.5rem] md:text-[2.8rem]"
+                  ? "font-thaana thaana-headline text-[1.75rem] font-bold leading-[1.4] text-balance sm:text-[2rem] md:text-[2.15rem]"
+                  : "font-serif text-[1.95rem] font-bold leading-[1.02] tracking-[-0.025em] text-balance sm:text-[2.25rem] md:text-[2.4rem]"
               }
             >
               {copy.heading}
             </h1>
             <p
-              className={`mt-3 max-w-[31rem] text-sm text-white/80 sm:text-[0.95rem] ${
+              className={`mt-2 max-w-[31rem] text-[0.8rem] text-white/80 sm:text-sm ${
                 isDhivehi
-                  ? "mr-0 border-r border-white/35 pr-4 font-thaana leading-[1.9] thaana-body"
+                  ? "mr-0 border-r border-white/35 pr-4 font-thaana leading-[1.75] thaana-body"
                   : "ml-0 border-l border-white/35 pl-4 leading-relaxed"
               }`}
             >

@@ -70,16 +70,16 @@ export default function DhivehiArticleCard({ article, variant = "grid", index }:
 
   if (variant === "trending") {
     return (
-      <Link to={href} className="group flex flex-col gap-2 min-w-[200px] md:min-w-0 text-right" dir="rtl">
+      <Link to={href} className="group flex flex-col gap-1 min-w-[200px] md:min-w-0 text-right" dir="rtl">
         {typeof index === "number" && (
-          <span className="text-3xl font-serif font-bold text-[#D8E8D8] leading-none">
+          <span className="text-lg font-serif font-bold text-[#8DB99A] leading-none">
             {String(index + 1).padStart(2, "0")}
           </span>
         )}
         {article.category && (
           <span className="category-label font-thaana">{article.category.name}</span>
         )}
-        <h3 className="text-sm font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-3">
+        <h3 className="text-sm font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
       </Link>

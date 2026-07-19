@@ -87,9 +87,9 @@ export default function EnglishHome() {
       </section>
 
       {/* Trending strip */}
-      <section className="bg-[#D8E8D8] py-5 px-4">
+      <section className="bg-[#D8E8D8] py-2.5 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-2">
             <TrendingUpIcon size={16} className="text-[#103820]" />
             <span className="text-xs font-bold tracking-widest uppercase text-[#103820]">Trending Now</span>
           </div>

@@ -32,6 +32,42 @@ export async function updateMessageStatus(id: string, status: ContactMessage["st
   if (error) throw error;
 }
 
+export async function submitReaderArticle(data: {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  content: string;
+  photo?: File | null;
+}) {
+  let photoUrl = "";
+
+  if (data.photo) {
+    const safeName = data.photo.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
+    const filePath = `reader-submissions/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+    const { error: uploadError } = await supabase.storage
+      .from("article-images")
+      .upload(filePath, data.photo, { cacheControl: "3600", upsert: false });
+    if (uploadError) throw uploadError;
+    photoUrl = supabase.storage.from("article-images").getPublicUrl(filePath).data.publicUrl;
+  }
+
+  const message = [
+    "ކިޔުންތެރިއަކު ހުށަހެޅި އާރޓިކަލް",
+    `އެޑްރެސް: ${data.address}`,
+    `ފޮޓޯ: ${photoUrl || "ނެތް"}`,
+    "",
+    data.content,
+  ].join("\n");
+
+  await submitContactMessage({
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    message,
+  });
+}
+
 // Advertiser Inquiries
 export async function submitAdvertiserInquiry(data: {
   name: string;

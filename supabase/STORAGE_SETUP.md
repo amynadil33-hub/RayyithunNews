@@ -41,6 +41,15 @@ CREATE POLICY "Authenticated users can upload to article-images"
   TO authenticated
   WITH CHECK (bucket_id = 'article-images');
 
+-- Allow readers to upload only article-submission photos to a dedicated folder
+CREATE POLICY "Readers can upload article submission photos"
+  ON storage.objects FOR INSERT
+  TO anon
+  WITH CHECK (
+    bucket_id = 'article-images'
+    AND (storage.foldername(name))[1] = 'reader-submissions'
+  );
+
 CREATE POLICY "Authenticated users can upload to ad-banners"
   ON storage.objects FOR INSERT
   TO authenticated

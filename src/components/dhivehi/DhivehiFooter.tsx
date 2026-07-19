@@ -11,6 +11,7 @@ const SECTIONS = [
   { label: "ދުނިޔެ", href: "/world" },
   { label: "ޕޮޑްކާސްޓް", href: "/podcast" },
   { label: "ރައްޔިތުން", href: "/citizen" },
+  { label: "ލިޔުން ހުށަހަޅާ", href: "/submit-article" },
   { label: "ބާޒާރު", href: "/market" },
 ];
 
@@ -30,11 +31,11 @@ export default function DhivehiFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-2 mb-4">
+            <Link to="/" className="isolate mb-4 inline-flex items-center overflow-hidden rounded-sm border border-[#D8C89F]/70 bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm">
               <img
                 src="/rayyithun-logo.png"
                 alt="ރައްޔިތުން"
-                className="h-20 w-48 object-cover object-center rounded-sm"
+                className="h-20 w-48 object-cover object-center mix-blend-multiply"
               />
             </Link>
             <p className="text-sm text-[#95D5B2] leading-relaxed mb-5 font-thaana thaana-body">

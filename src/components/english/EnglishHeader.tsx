@@ -46,11 +46,14 @@ export default function EnglishHeader() {
       <div className="px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link to="/en" className="flex items-center">
+          <Link
+            to="/en"
+            className="isolate flex items-center overflow-hidden rounded-sm border border-[#D8C89F] bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm"
+          >
             <img
               src="/rayyithun-logo.png"
               alt="RAYYITHUN"
-              className="h-20 w-48 object-cover object-center"
+              className="h-20 w-48 object-cover object-center mix-blend-multiply"
             />
           </Link>
 
@@ -121,14 +124,6 @@ export default function EnglishHeader() {
             ))}
             <li className="ml-auto">
               <Link
-                to="/en/contact"
-                className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors"
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/en/advertise"
                 className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors"
               >
@@ -154,15 +149,6 @@ export default function EnglishHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/en/contact"
-                onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-sm text-[#6B756E]"
-              >
-                Contact
-              </Link>
-            </li>
             <li>
               <Link
                 to="/en/advertise"

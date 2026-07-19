@@ -77,9 +77,9 @@ export default function DhivehiHome() {
       </section>
 
       {/* Trending strip */}
-      <section className="bg-[#D8E8D8] py-5 px-4">
+      <section className="bg-[#D8E8D8] py-2.5 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 mb-4 justify-end">
+          <div className="flex items-center gap-2 mb-2 justify-end">
             <span className="text-xs font-bold tracking-widest uppercase text-[#103820] font-thaana">ޓްރެންޑިން ހަބަރު</span>
             <TrendingUpIcon size={16} className="text-[#103820] rtl-flip" />
           </div>

@@ -22,6 +22,7 @@ import DhivehiArticle from "./pages/dhivehi/Article.tsx";
 import DhivehiContact from "./pages/dhivehi/Contact.tsx";
 import DhivehiAdvertise from "./pages/dhivehi/Advertise.tsx";
 import DhivehiPodcast from "./pages/dhivehi/Podcast.tsx";
+import DhivehiSubmitArticle from "./pages/dhivehi/SubmitArticle.tsx";
 
 // Admin
 import AdminLogin from "./pages/admin/Login.tsx";
@@ -63,6 +64,7 @@ export default function App() {
                 <Route path="/contact" element={<DhivehiContact />} />
                 <Route path="/advertise" element={<DhivehiAdvertise />} />
                 <Route path="/podcast" element={<DhivehiPodcast />} />
+                <Route path="/submit-article" element={<DhivehiSubmitArticle />} />
                 <Route path="/:category" element={<DhivehiCategory />} />
 
                 {/* English Portal */}

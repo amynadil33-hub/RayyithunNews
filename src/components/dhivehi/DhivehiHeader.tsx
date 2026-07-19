@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: "ދުނިޔެ", href: "/world" },
   { label: "ޕޮޑްކާސްޓް", href: "/podcast" },
   { label: "ރައްޔިތުން", href: "/citizen" },
+  { label: "ލިޔުން ހުށަހަޅާ", href: "/submit-article" },
   { label: "ބާޒާރު", href: "/market" },
 ];
 
@@ -47,11 +48,14 @@ export default function DhivehiHeader() {
       <div className="px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="isolate flex items-center overflow-hidden rounded-sm border border-[#D8C89F] bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm"
+          >
             <img
               src="/rayyithun-logo.png"
               alt="ރައްޔިތުން"
-              className="h-20 w-48 object-cover object-center"
+              className="h-20 w-48 object-cover object-center mix-blend-multiply"
             />
           </Link>
 
@@ -123,11 +127,6 @@ export default function DhivehiHeader() {
                 އިޢުލާން
               </Link>
             </li>
-            <li>
-              <Link to="/contact" className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors font-thaana">
-                ގުޅުއްވުމަށް
-              </Link>
-            </li>
           </ul>
         </div>
       </nav>
@@ -147,12 +146,6 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link to="/contact" onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-sm text-[#6B756E] text-right font-thaana">
-                ގުޅުއްވުމަށް
-              </Link>
-            </li>
             <li>
               <Link to="/en" onClick={() => setMenuOpen(false)}
                 className="block px-4 py-3 text-sm text-[#103820] font-medium">
