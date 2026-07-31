@@ -142,12 +142,12 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
           <Link
             to={isDhivehi ? "/" : "/en"}
             aria-label="Rayyithun home"
-            className="isolate overflow-hidden rounded-sm border border-[#E6D8B8]/60 bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-lg"
+            className="isolate overflow-hidden"
           >
             <img
-              src="/rayyithun-logo.png"
+              src={isDhivehi ? "/rayyithun-logo-dhivehi-transparent.png" : "/rayyithun-logo-english-transparent.png"}
               alt="RAYYITHUN"
-              className="h-14 w-36 object-cover object-center mix-blend-multiply sm:h-16 sm:w-44"
+              className="h-14 w-36 object-contain object-center brightness-0 invert sm:h-16 sm:w-44"
             />
           </Link>
         </div>

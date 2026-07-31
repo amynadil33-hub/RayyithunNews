@@ -5,8 +5,9 @@ import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
-import FrigatebirdHero from "../../components/shared/FrigatebirdHero.tsx";
+import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import { useArticles, usePodcasts } from "../../hooks/use-portal-data.ts";
+import { useHomepageFeaturedHeight } from "../../hooks/use-homepage-featured-height.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 
@@ -26,6 +27,7 @@ export default function EnglishHome() {
   const { data: trending, isLoading: trendingLoading } = useArticles({ portalSlug: "english", isTrending: true, limit: 5 });
   const { data: latest, isLoading: latestLoading } = useArticles({ portalSlug: "english", limit: 9 });
   const { data: podcasts } = usePodcasts("english", 3);
+  const featuredHeight = useHomepageFeaturedHeight("english");
 
   const heroArticle = featured?.[0];
   const secondaryArticles = featured?.slice(1, 4) ?? [];
@@ -40,17 +42,12 @@ export default function EnglishHome() {
         <html lang="en" />
       </Helmet>
 
-      <FrigatebirdHero language="en" />
-
-      {/* Top ad banner */}
-      <div className="max-w-5xl mx-auto px-4 pt-4">
-        <AdBanner placement="homepage_top_banner" label="Advertisement" />
-      </div>
+      <EnglishHeader />
 
       {/* Hero section */}
       <section className="max-w-7xl mx-auto px-4 py-6">
         {featuredLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 h-80">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4" style={{ minHeight: featuredHeight }}>
             <Skeleton className="md:col-span-3 h-full" />
             <div className="md:col-span-2 space-y-4">
               <Skeleton className="h-24" />
@@ -59,7 +56,10 @@ export default function EnglishHome() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 min-h-[340px]">
+          <div
+            className="grid grid-cols-1 md:grid-cols-5 gap-4"
+            style={{ minHeight: featuredHeight }}
+          >
             <div className="md:col-span-3">
               {heroArticle ? (
                 <ArticleCard article={heroArticle} variant="hero" />
@@ -85,6 +85,11 @@ export default function EnglishHome() {
           </div>
         )}
       </section>
+
+      {/* First advertisement follows the featured story */}
+      <div className="max-w-5xl mx-auto px-4 pb-6">
+        <AdBanner placement="homepage_top_banner" label="Advertisement" />
+      </div>
 
       {/* Trending strip */}
       <section className="bg-[#D8E8D8] py-2.5 px-4">

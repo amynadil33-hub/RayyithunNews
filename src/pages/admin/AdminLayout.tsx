@@ -5,11 +5,13 @@ import {
   LayoutDashboardIcon, NewspaperIcon, TagIcon, ImageIcon,
   MonitorIcon, MicIcon, FileTextIcon, MailIcon, MegaphoneIcon,
   UsersIcon, SettingsIcon, SendIcon, LogOutIcon, ChevronRightIcon,
+  ClipboardCheckIcon,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { icon: LayoutDashboardIcon, label: "Dashboard", href: "/admin/dashboard" },
   { icon: NewspaperIcon, label: "Articles", href: "/admin/articles" },
+  { icon: ClipboardCheckIcon, label: "Review Queue", href: "/admin/review", reviewerOnly: true },
   { icon: TagIcon, label: "Categories", href: "/admin/categories" },
   { icon: ImageIcon, label: "Media", href: "/admin/media" },
   { icon: MonitorIcon, label: "Advertisements", href: "/admin/advertisements" },
@@ -23,7 +25,7 @@ const NAV_ITEMS = [
 ];
 
 export default function AdminLayout() {
-  const { user, profile, isLoading, signOut, isAdminAreaAllowed } = useAdminAuth();
+  const { user, profile, isLoading, signOut, isAdminAreaAllowed, hasRole } = useAdminAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -43,13 +45,13 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="flex h-screen bg-[#F8F8F8] overflow-hidden">
+    <div className="flex h-dvh min-h-0 bg-[#F8F8F8] overflow-hidden">
       {/* Sidebar */}
       <aside className="w-60 bg-[#103820] flex flex-col flex-shrink-0 overflow-y-auto">
         {/* Logo */}
         <div className="p-5 border-b border-white/10">
           <Link to="/en" className="block">
-            <img src="/rayyithun-logo.png" alt="RAYYITHUN" className="h-16 w-full object-cover object-center rounded-sm" />
+            <img src="/rayyithun-logo-dhivehi-transparent.png" alt="RAYYITHUN" className="h-16 w-full object-contain object-center brightness-0 invert" />
             <span className="block text-[#95D5B2] text-xs mt-0.5">Admin CMS</span>
           </Link>
         </div>
@@ -57,7 +59,7 @@ export default function AdminLayout() {
         {/* Navigation */}
         <nav className="flex-1 p-3">
           <ul className="space-y-0.5">
-            {NAV_ITEMS.map(({ icon: Icon, label, href }) => {
+            {NAV_ITEMS.filter((item) => !item.reviewerOnly || hasRole("editor", "admin", "super_admin")).map(({ icon: Icon, label, href }) => {
               const isActive = location.pathname.startsWith(href);
               return (
                 <li key={href}>
@@ -101,7 +103,7 @@ export default function AdminLayout() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="min-h-0 min-w-0 flex-1 overflow-y-scroll overscroll-contain [scrollbar-gutter:stable]">
         <Outlet />
       </main>
     </div>

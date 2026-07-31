@@ -4,7 +4,15 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type UserRole = "super_admin" | "admin" | "editor" | "author";
-export type ArticleStatus = "draft" | "published" | "scheduled" | "archived";
+export type ArticleStatus =
+  | "draft"
+  | "submitted"
+  | "in_review"
+  | "changes_requested"
+  | "approved"
+  | "published"
+  | "scheduled"
+  | "archived";
 export type AdPlacement =
   | "homepage_top_banner"
   | "category_top_banner"
@@ -76,12 +84,36 @@ export interface Article {
   og_image_url: string | null;
   published_at: string | null;
   scheduled_at: string | null;
+  submitted_at: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  approval_notes: string | null;
+  published_by: string | null;
   created_at: string;
   updated_at: string;
   // joined
   portal?: Portal;
   category?: Category;
   author?: Profile;
+}
+
+export type ArticleReviewAction =
+  | "submitted"
+  | "in_review"
+  | "changes_requested"
+  | "approved"
+  | "published"
+  | "rejected"
+  | "archived";
+
+export interface ArticleReview {
+  id: string;
+  article_id: string;
+  reviewer_id: string | null;
+  action: ArticleReviewAction;
+  notes: string | null;
+  created_at: string;
+  reviewer?: Profile;
 }
 
 export interface MediaAsset {
@@ -194,6 +226,7 @@ export interface Database {
       portals: { Row: Portal; Insert: Omit<Portal, "id" | "created_at">; Update: Partial<Portal> };
       categories: { Row: Category; Insert: Omit<Category, "id" | "created_at">; Update: Partial<Category> };
       articles: { Row: Article; Insert: Omit<Article, "id" | "created_at" | "updated_at">; Update: Partial<Article> };
+      article_reviews: { Row: ArticleReview; Insert: Omit<ArticleReview, "id" | "created_at">; Update: Partial<ArticleReview> };
       media_assets: { Row: MediaAsset; Insert: Omit<MediaAsset, "id" | "created_at">; Update: Partial<MediaAsset> };
       advertisements: { Row: Advertisement; Insert: Omit<Advertisement, "id" | "created_at" | "updated_at" | "impressions" | "clicks">; Update: Partial<Advertisement> };
       podcasts: { Row: Podcast; Insert: Omit<Podcast, "id" | "created_at" | "updated_at">; Update: Partial<Podcast> };

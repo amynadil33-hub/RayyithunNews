@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
-import { getSiteSetting, upsertSiteSetting } from "../../services/settings.ts";
+import { getPortalBySlug, getSiteSetting, upsertSiteSetting } from "../../services/settings.ts";
+import { clampHomepageFeaturedHeight } from "../../hooks/use-homepage-featured-height.ts";
 import type { PortalSlug } from "../../lib/database.types.ts";
 
 const PORTALS: { label: string; value: PortalSlug }[] = [
@@ -17,9 +18,18 @@ type SettingsForm = {
   twitter: string;
   instagram: string;
   youtube: string;
+  homepage_featured_height: number;
 };
 
-const blank: SettingsForm = { site_title: "", site_description: "", facebook: "", twitter: "", instagram: "", youtube: "" };
+const blank: SettingsForm = {
+  site_title: "",
+  site_description: "",
+  facebook: "",
+  twitter: "",
+  instagram: "",
+  youtube: "",
+  homepage_featured_height: 480,
+};
 
 const SOCIAL_KEYS = ["facebook", "twitter", "instagram", "youtube"] as const;
 type SocialKey = typeof SOCIAL_KEYS[number];
@@ -28,9 +38,32 @@ export default function Settings() {
   const [portal, setPortal] = useState<PortalSlug>("english");
   const [form, setForm] = useState<SettingsForm>(blank);
 
-  const { data: titleSetting, isLoading } = useQuery({ queryKey: ["setting", "site_title", portal], queryFn: () => getSiteSetting("site_title", portal) });
-  const { data: descSetting } = useQuery({ queryKey: ["setting", "site_description", portal], queryFn: () => getSiteSetting("site_description", portal) });
-  const { data: socialSetting } = useQuery({ queryKey: ["setting", "social_links", portal], queryFn: () => getSiteSetting("social_links", portal) });
+  const { data: portalRecord } = useQuery({
+    queryKey: ["portal", portal],
+    queryFn: () => getPortalBySlug(portal),
+  });
+  const portalId = portalRecord?.id;
+  const queryEnabled = Boolean(portalId);
+  const { data: titleSetting, isLoading } = useQuery({
+    queryKey: ["setting", "site_title", portalId],
+    queryFn: () => getSiteSetting("site_title", portalId),
+    enabled: queryEnabled,
+  });
+  const { data: descSetting } = useQuery({
+    queryKey: ["setting", "site_description", portalId],
+    queryFn: () => getSiteSetting("site_description", portalId),
+    enabled: queryEnabled,
+  });
+  const { data: socialSetting } = useQuery({
+    queryKey: ["setting", "social_links", portalId],
+    queryFn: () => getSiteSetting("social_links", portalId),
+    enabled: queryEnabled,
+  });
+  const { data: featuredHeightSetting } = useQuery({
+    queryKey: ["setting", "homepage_featured_height", portalId],
+    queryFn: () => getSiteSetting("homepage_featured_height", portalId),
+    enabled: queryEnabled,
+  });
 
   useEffect(() => {
     const social = (socialSetting?.value ?? {}) as Record<SocialKey, string>;
@@ -41,19 +74,26 @@ export default function Settings() {
       twitter: social.twitter ?? "",
       instagram: social.instagram ?? "",
       youtube: social.youtube ?? "",
+      homepage_featured_height: clampHomepageFeaturedHeight(featuredHeightSetting?.value),
     });
-  }, [titleSetting, descSetting, socialSetting, portal]);
+  }, [titleSetting, descSetting, socialSetting, featuredHeightSetting, portal]);
 
   const save = useMutation({
     mutationFn: async () => {
-      await upsertSiteSetting("site_title", form.site_title, portal);
-      await upsertSiteSetting("site_description", form.site_description, portal);
+      if (!portalId) throw new Error("Portal settings are not available yet");
+      await upsertSiteSetting("site_title", form.site_title, portalId);
+      await upsertSiteSetting("site_description", form.site_description, portalId);
       await upsertSiteSetting("social_links", {
         facebook: form.facebook,
         twitter: form.twitter,
         instagram: form.instagram,
         youtube: form.youtube,
-      }, portal);
+      }, portalId);
+      await upsertSiteSetting(
+        "homepage_featured_height",
+        clampHomepageFeaturedHeight(form.homepage_featured_height),
+        portalId,
+      );
     },
     onSuccess: () => toast.success("Settings saved"),
     onError: (e: Error) => toast.error(e.message),
@@ -84,6 +124,30 @@ export default function Settings() {
             <div>
               <label className="block text-xs font-semibold text-[#103820] mb-1.5">Site Description</label>
               <textarea rows={3} value={form.site_description} onChange={e => field("site_description", e.target.value)} placeholder="Your portal description…" className="w-full border border-[#E5E7E2] rounded px-3 py-2 text-sm" />
+            </div>
+
+            <div className="pt-2 border-t border-[#E5E7E2]">
+              <div className="flex items-center justify-between mb-2">
+                <label htmlFor="homepage-featured-height" className="text-xs font-semibold text-[#103820]">
+                  Featured story height
+                </label>
+                <output className="text-xs font-medium text-[#6B756E]">
+                  {form.homepage_featured_height}px
+                </output>
+              </div>
+              <input
+                id="homepage-featured-height"
+                type="range"
+                min={400}
+                max={600}
+                step={10}
+                value={form.homepage_featured_height}
+                onChange={e => setForm(f => ({ ...f, homepage_featured_height: Number(e.target.value) }))}
+                className="w-full accent-[#103820]"
+              />
+              <p className="mt-1.5 text-xs text-[#6B756E]">
+                450–500px gives the homepage a more editorial, magazine-like feel.
+              </p>
             </div>
 
             <div className="pt-2 border-t border-[#E5E7E2]">

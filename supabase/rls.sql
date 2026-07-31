@@ -8,6 +8,7 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.portals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.articles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.article_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.media_assets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.advertisements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.podcasts ENABLE ROW LEVEL SECURITY;
@@ -23,6 +24,36 @@ RETURNS TEXT LANGUAGE SQL SECURITY DEFINER AS $$
   SELECT role FROM public.profiles WHERE id = auth.uid();
 $$;
 
+CREATE OR REPLACE FUNCTION public.is_writer_user()
+RETURNS BOOLEAN LANGUAGE SQL STABLE SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND is_active = true
+      AND role IN ('author','editor','admin','super_admin')
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_editor_user()
+RETURNS BOOLEAN LANGUAGE SQL STABLE SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND is_active = true
+      AND role IN ('editor','admin','super_admin')
+  );
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_admin_user()
+RETURNS BOOLEAN LANGUAGE SQL STABLE SECURITY DEFINER SET search_path = public AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles
+    WHERE id = auth.uid()
+      AND is_active = true
+      AND role IN ('admin','super_admin')
+  );
+$$;
+
 -- ============================================================
 -- PROFILES
 -- ============================================================
@@ -31,7 +62,7 @@ CREATE POLICY "Users can view their own profile"
 
 CREATE POLICY "Admins can view all profiles"
   ON public.profiles FOR SELECT
-  USING (get_my_role() IN ('super_admin','admin'));
+  USING (get_my_role() IN ('super_admin','admin','editor'));
 
 CREATE POLICY "Users can update their own profile"
   ON public.profiles FOR UPDATE USING (auth.uid() = id);
@@ -63,28 +94,65 @@ CREATE POLICY "Admins/editors can manage categories"
 -- ============================================================
 -- ARTICLES — Public can read published only
 -- ============================================================
-CREATE POLICY "Anyone can read published articles"
-  ON public.articles FOR SELECT USING (status = 'published');
+CREATE POLICY "Public can read published articles"
+  ON public.articles FOR SELECT TO anon, authenticated
+  USING (status = 'published');
 
-CREATE POLICY "Authenticated users can read all articles"
-  ON public.articles FOR SELECT
-  USING (auth.role() = 'authenticated');
+CREATE POLICY "Writers can create own articles"
+  ON public.articles FOR INSERT TO authenticated
+  WITH CHECK (
+    public.is_writer_user()
+    AND author_id = auth.uid()
+    AND status IN ('draft', 'submitted')
+  );
 
-CREATE POLICY "Authors can create articles"
-  ON public.articles FOR INSERT
-  WITH CHECK (auth.uid() = author_id AND get_my_role() IN ('super_admin','admin','editor','author'));
+CREATE POLICY "Writers can read own articles"
+  ON public.articles FOR SELECT TO authenticated
+  USING (author_id = auth.uid() AND public.is_writer_user());
 
-CREATE POLICY "Authors can update their own drafts"
-  ON public.articles FOR UPDATE
-  USING (auth.uid() = author_id AND status = 'draft');
+CREATE POLICY "Writers can update own unpublished articles"
+  ON public.articles FOR UPDATE TO authenticated
+  USING (
+    author_id = auth.uid()
+    AND public.is_writer_user()
+    AND status IN ('draft', 'changes_requested')
+  )
+  WITH CHECK (
+    author_id = auth.uid()
+    AND public.is_writer_user()
+    AND status IN ('draft', 'submitted', 'changes_requested')
+  );
 
-CREATE POLICY "Editors and above can update any article"
-  ON public.articles FOR UPDATE
-  USING (get_my_role() IN ('super_admin','admin','editor'));
+CREATE POLICY "Editors can read all articles"
+  ON public.articles FOR SELECT TO authenticated
+  USING (public.is_editor_user());
+
+CREATE POLICY "Editors can update all articles"
+  ON public.articles FOR UPDATE TO authenticated
+  USING (public.is_editor_user())
+  WITH CHECK (public.is_editor_user());
 
 CREATE POLICY "Admins can delete articles"
-  ON public.articles FOR DELETE
-  USING (get_my_role() IN ('super_admin','admin'));
+  ON public.articles FOR DELETE TO authenticated
+  USING (public.is_admin_user());
+
+-- ============================================================
+-- ARTICLE REVIEWS
+-- ============================================================
+CREATE POLICY "Writers can read reviews for own articles"
+  ON public.article_reviews FOR SELECT TO authenticated
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.articles
+      WHERE articles.id = article_reviews.article_id
+        AND articles.author_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "Editors can manage article reviews"
+  ON public.article_reviews FOR ALL TO authenticated
+  USING (public.is_editor_user())
+  WITH CHECK (public.is_editor_user());
 
 -- ============================================================
 -- MEDIA ASSETS

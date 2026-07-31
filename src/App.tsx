@@ -29,6 +29,7 @@ import AdminLogin from "./pages/admin/Login.tsx";
 import AdminDashboard from "./pages/admin/Dashboard.tsx";
 import AdminArticles from "./pages/admin/Articles.tsx";
 import AdminArticleEdit from "./pages/admin/ArticleEdit.tsx";
+import AdminReviewQueue from "./pages/admin/ReviewQueue.tsx";
 import AdminCategories from "./pages/admin/Categories.tsx";
 import AdminMedia from "./pages/admin/Media.tsx";
 import AdminAds from "./pages/admin/Advertisements.tsx";
@@ -85,6 +86,8 @@ export default function App() {
                   <Route path="articles" element={<AdminArticles />} />
                   <Route path="articles/new" element={<AdminArticleEdit />} />
                   <Route path="articles/edit/:id" element={<AdminArticleEdit />} />
+                  <Route path="review" element={<AdminReviewQueue />} />
+                  <Route path="review-queue" element={<Navigate to="/admin/review" replace />} />
                   <Route path="categories" element={<AdminCategories />} />
                   <Route path="media" element={<AdminMedia />} />
                   <Route path="advertisements" element={<AdminAds />} />

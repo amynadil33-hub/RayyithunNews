@@ -10,6 +10,7 @@ import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import { ClockIcon, UserIcon, CalendarIcon } from "lucide-react";
+import { getArticleImageHeight, getArticleImageUrl } from "../../lib/article-images.ts";
 
 export default function DhivehiArticle() {
   const { slug } = useParams<{ slug: string }>();
@@ -145,8 +146,9 @@ export default function DhivehiArticle() {
 
             {article.featured_image_url && (
               <figure className="mb-8">
-                <img src={article.featured_image_url} alt={article.title}
-                  className="w-full rounded-sm object-cover max-h-[480px]" />
+                <img src={getArticleImageUrl(article.featured_image_url)} alt={article.title}
+                  className="w-full rounded-sm object-cover"
+                  style={{ height: getArticleImageHeight(article.featured_image_url), maxHeight: "70vh" }} />
               </figure>
             )}
 
@@ -157,9 +159,10 @@ export default function DhivehiArticle() {
                   .map((imageUrl, index) => (
                     <figure key={`${imageUrl}-${index}`} className="overflow-hidden rounded-sm bg-[#E5E7E2]">
                       <img
-                        src={imageUrl}
+                        src={getArticleImageUrl(imageUrl)}
                         alt={`${article.title} — image ${index + 2}`}
-                        className="w-full h-full min-h-64 max-h-96 object-cover"
+                        className="w-full object-cover"
+                        style={{ height: getArticleImageHeight(imageUrl), maxHeight: "70vh" }}
                         loading="lazy"
                       />
                     </figure>

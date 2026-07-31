@@ -31,11 +31,11 @@ export default function DhivehiFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/" className="isolate mb-4 inline-flex items-center overflow-hidden rounded-sm border border-[#D8C89F]/70 bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm">
+            <Link to="/" className="isolate mb-4 inline-flex items-center overflow-hidden">
               <img
-                src="/rayyithun-logo.png"
+                src="/rayyithun-logo-dhivehi-transparent.png"
                 alt="ރައްޔިތުން"
-                className="h-20 w-48 object-cover object-center mix-blend-multiply"
+                className="h-20 w-48 object-contain object-center brightness-0 invert"
               />
             </Link>
             <p className="text-sm text-[#95D5B2] leading-relaxed mb-5 font-thaana thaana-body">

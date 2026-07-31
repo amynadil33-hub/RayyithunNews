@@ -27,6 +27,13 @@ export default function AdBanner({ placement, portalSlug, label = "Advertisement
   const activePortal = portalSlug ?? (location.pathname.startsWith("/en") ? "english" : "dhivehi");
   const { data: ads } = useActiveAds(placement, activePortal);
   const ad = ads?.[0];
+  const fallbackAd = !ad && placement === "homepage_top_banner"
+    ? {
+        imageUrl: "/ads/musalhu-leaderboard.png",
+        targetUrl: "https://musalhu-advertising.com",
+        altText: "Musalhu Advertising — Web, Apps, Film, Advertising and Consultancy",
+      }
+    : null;
   const sizeInfo = PLACEMENT_SIZES[placement];
 
   useEffect(() => {
@@ -41,28 +48,35 @@ export default function AdBanner({ placement, portalSlug, label = "Advertisement
     }
   };
 
-  const isTopBanner = placement === "homepage_top_banner" || placement === "homepage_mid_banner";
+  const isTopBanner = placement === "homepage_top_banner";
+  const isBillboard = placement === "homepage_mid_banner";
   const isSidebar = placement === "article_sidebar";
 
-  const containerHeight = isSidebar ? "h-64" : isTopBanner ? "h-20 md:h-24" : "h-16 md:h-20";
+  const containerHeight = isSidebar
+    ? "h-64"
+    : isTopBanner
+      ? "h-28 sm:h-40 md:h-64"
+      : isBillboard
+        ? "h-20 md:h-24"
+        : "h-16 md:h-20";
 
   return (
     <div className={`w-full ${className}`}>
       <p className="text-[10px] text-[#6B756E] text-center mb-1 uppercase tracking-wider font-medium">
         {label}
       </p>
-      {ad?.image_url ? (
+      {ad?.image_url || fallbackAd ? (
         <a
-          href={ad.target_url ?? "#"}
+          href={ad?.target_url ?? fallbackAd?.targetUrl ?? "#"}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
           className={`block w-full ${containerHeight} overflow-hidden rounded-sm`}
         >
           <img
-            src={ad.image_url}
-            alt={ad.alt_text ?? ad.title}
-            className="w-full h-full object-cover"
+            src={ad?.image_url ?? fallbackAd!.imageUrl}
+            alt={ad?.alt_text ?? ad?.title ?? fallbackAd!.altText}
+            className={`w-full h-full object-cover ${fallbackAd ? "object-[center_58%]" : "object-center"}`}
             loading="lazy"
           />
         </a>

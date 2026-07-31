@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS public.articles (
   id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   portal_id         UUID NOT NULL REFERENCES public.portals(id) ON DELETE CASCADE,
   category_id       UUID REFERENCES public.categories(id) ON DELETE SET NULL,
-  author_id         UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  author_id         UUID REFERENCES public.profiles(id) ON DELETE SET NULL DEFAULT auth.uid(),
   title             TEXT NOT NULL,
   slug              TEXT NOT NULL,
   excerpt           TEXT,
@@ -84,7 +84,10 @@ CREATE TABLE IF NOT EXISTS public.articles (
   featured_image_url TEXT,
   additional_image_1_url TEXT,
   additional_image_2_url TEXT,
-  status            TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published','scheduled','archived')),
+  status            TEXT NOT NULL DEFAULT 'draft' CHECK (status IN (
+    'draft','submitted','in_review','changes_requested',
+    'approved','published','scheduled','archived'
+  )),
   is_breaking       BOOLEAN NOT NULL DEFAULT false,
   is_featured       BOOLEAN NOT NULL DEFAULT false,
   is_trending       BOOLEAN NOT NULL DEFAULT false,
@@ -94,6 +97,11 @@ CREATE TABLE IF NOT EXISTS public.articles (
   og_image_url      TEXT,
   published_at      TIMESTAMPTZ,
   scheduled_at      TIMESTAMPTZ,
+  submitted_at      TIMESTAMPTZ,
+  reviewed_by       UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  reviewed_at       TIMESTAMPTZ,
+  approval_notes    TEXT,
+  published_by      UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE(portal_id, slug)
@@ -104,6 +112,27 @@ CREATE INDEX IF NOT EXISTS idx_articles_category ON public.articles(category_id)
 CREATE INDEX IF NOT EXISTS idx_articles_trending ON public.articles(is_trending) WHERE is_trending = true;
 CREATE INDEX IF NOT EXISTS idx_articles_featured ON public.articles(is_featured) WHERE is_featured = true;
 CREATE INDEX IF NOT EXISTS idx_articles_published_at ON public.articles(published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_articles_status ON public.articles(status);
+CREATE INDEX IF NOT EXISTS idx_articles_author_status ON public.articles(author_id, status);
+CREATE INDEX IF NOT EXISTS idx_articles_review_queue
+  ON public.articles(status, created_at DESC)
+  WHERE status IN ('submitted', 'in_review', 'changes_requested', 'approved');
+
+-- Editorial review notes and workflow history
+CREATE TABLE IF NOT EXISTS public.article_reviews (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  article_id  UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  reviewer_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  action      TEXT NOT NULL CHECK (action IN (
+    'submitted','in_review','changes_requested','approved',
+    'published','rejected','archived'
+  )),
+  notes       TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_article_reviews_article_created
+  ON public.article_reviews(article_id, created_at DESC);
 
 -- ============================================================
 -- 5. MEDIA ASSETS

@@ -1,34 +1,31 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getArticles, deleteArticle } from "../../services/articles.ts";
+import { deleteArticle, getAllAdminArticles, getMyArticles } from "../../services/articles.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
-import { PlusIcon, EditIcon, TrashIcon, SearchIcon, EyeIcon } from "lucide-react";
+import { PlusIcon, EditIcon, TrashIcon, SearchIcon, EyeIcon, ClipboardCheckIcon } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import type { ArticleStatus } from "../../lib/database.types.ts";
+import { useAdminAuth } from "../../hooks/use-admin-auth.tsx";
+import ArticleStatusBadge, { ARTICLE_STATUS_LABELS } from "../../components/admin/ArticleStatusBadge.tsx";
 
-const STATUS_COLORS: Record<ArticleStatus, string> = {
-  published: "bg-green-100 text-green-800",
-  draft: "bg-yellow-100 text-yellow-800",
-  scheduled: "bg-blue-100 text-blue-800",
-  archived: "bg-gray-100 text-gray-600",
-};
+const ARTICLE_STATUSES = Object.keys(ARTICLE_STATUS_LABELS) as ArticleStatus[];
 
 export default function AdminArticles() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<ArticleStatus | "all">("all");
   const [portalFilter, setPortalFilter] = useState<"all" | "english" | "dhivehi">("all");
   const qc = useQueryClient();
+  const { profile, hasRole } = useAdminAuth();
+  const isAuthor = profile?.role === "author";
+  const isReviewer = hasRole("editor", "admin", "super_admin");
+  const canDelete = hasRole("admin", "super_admin");
 
-  const { data: articles, isLoading } = useQuery({
-    queryKey: ["admin-articles", statusFilter, portalFilter],
-    queryFn: () => getArticles({
-      status: statusFilter === "all" ? undefined : statusFilter,
-      includeAllStatuses: statusFilter === "all",
-      portalSlug: portalFilter === "all" ? undefined : portalFilter,
-      limit: 50,
-    }),
+  const { data: articles, isLoading, error } = useQuery({
+    queryKey: ["admin-articles", profile?.id, profile?.role],
+    queryFn: () => isAuthor ? getMyArticles(profile!.id) : getAllAdminArticles(),
+    enabled: Boolean(profile),
   });
 
   const deleteMutation = useMutation({
@@ -40,9 +37,11 @@ export default function AdminArticles() {
     onError: () => toast.error("Failed to delete article"),
   });
 
-  const filtered = (articles ?? []).filter((a) =>
-    !search || a.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = (articles ?? []).filter((article) => {
+    if (statusFilter !== "all" && article.status !== statusFilter) return false;
+    if (portalFilter !== "all" && article.portal?.slug !== portalFilter) return false;
+    return !search || article.title.toLowerCase().includes(search.toLowerCase());
+  });
 
   function handleDelete(id: string, title: string) {
     if (window.confirm(`Delete "${title}"? This cannot be undone.`)) {
@@ -52,15 +51,57 @@ export default function AdminArticles() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#142820] font-serif">Articles</h1>
-        <Link to="/admin/articles/new"
-          className="flex items-center gap-2 bg-[#103820] text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-[#183028] transition-colors">
-          <PlusIcon size={14} /> New Article
-        </Link>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-[#142820] font-serif">
+            {isAuthor ? "My Articles" : "Articles"}
+          </h1>
+          {isAuthor && <p className="text-sm text-[#6B756E] mt-1">Draft, submit, and track your editorial review status.</p>}
+        </div>
+        <div className="flex items-center gap-2">
+          {isReviewer && (
+            <Link to="/admin/review"
+              className="flex items-center gap-2 border border-[#103820] text-[#103820] px-4 py-2 rounded-sm text-sm font-medium hover:bg-[#F0F4F0] transition-colors">
+              <ClipboardCheckIcon size={14} /> Review Queue
+            </Link>
+          )}
+          <Link to="/admin/articles/new"
+            className="flex items-center gap-2 bg-[#103820] text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-[#183028] transition-colors">
+            <PlusIcon size={14} /> New Article
+          </Link>
+        </div>
       </div>
 
-      {/* Filters */}
+      {/* Workflow status filters */}
+      <div className="flex flex-wrap gap-1.5 mb-4" aria-label="Filter articles by workflow status">
+        <button
+          type="button"
+          onClick={() => setStatusFilter("all")}
+          className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${
+            statusFilter === "all"
+              ? "bg-[#103820] text-white"
+              : "border border-[#E5E7E2] bg-white text-[#6B756E] hover:border-[#103820] hover:text-[#103820]"
+          }`}
+        >
+          All
+        </button>
+        {ARTICLE_STATUSES.map((status) => (
+          <button
+            key={status}
+            type="button"
+            onClick={() => setStatusFilter(status)}
+            className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${
+              statusFilter === status
+                ? "bg-[#103820] text-white"
+                : "border border-[#E5E7E2] bg-white text-[#6B756E] hover:border-[#103820] hover:text-[#103820]"
+            }`}
+          >
+            {ARTICLE_STATUS_LABELS[status]}
+          </button>
+        ))}
+      </div>
+
+      {/* Search and portal filters */}
       <div className="flex flex-wrap gap-3 mb-5">
         <div className="flex items-center gap-2 border border-[#E5E7E2] rounded-sm bg-white px-3">
           <SearchIcon size={14} className="text-[#6B756E]" />
@@ -68,14 +109,6 @@ export default function AdminArticles() {
             placeholder="Search articles..."
             className="py-2 text-sm bg-transparent focus:outline-none text-[#142820] w-48" />
         </div>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as ArticleStatus | "all")}
-          className="border border-[#E5E7E2] rounded-sm px-3 py-2 text-sm bg-white focus:outline-none">
-          <option value="all">All Statuses</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
-          <option value="scheduled">Scheduled</option>
-          <option value="archived">Archived</option>
-        </select>
         <select value={portalFilter} onChange={(e) => setPortalFilter(e.target.value as "all" | "english" | "dhivehi")}
           className="border border-[#E5E7E2] rounded-sm px-3 py-2 text-sm bg-white focus:outline-none">
           <option value="all">All Portals</option>
@@ -90,6 +123,11 @@ export default function AdminArticles() {
           <div className="p-4 space-y-3">
             {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-12 w-full" />)}
           </div>
+        ) : error ? (
+          <div className="px-5 py-12 text-center">
+            <p className="text-sm font-medium text-red-700">Articles could not be loaded.</p>
+            <p className="mt-1 text-xs text-[#6B756E]">{(error as Error).message}</p>
+          </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-[#6B756E]">
             <p className="text-sm">No articles found.</p>
@@ -101,6 +139,7 @@ export default function AdminArticles() {
                 <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide">Title</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide hidden md:table-cell">Category</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide hidden md:table-cell">Portal</th>
+                {!isAuthor && <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide hidden lg:table-cell">Author</th>}
                 <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide">Status</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B756E] uppercase tracking-wide hidden lg:table-cell">Date</th>
                 <th className="px-4 py-3"></th>
@@ -120,10 +159,13 @@ export default function AdminArticles() {
                       {article.portal?.slug === "english" ? "English" : "Dhivehi"}
                     </span>
                   </td>
+                  {!isAuthor && (
+                    <td className="px-4 py-3 hidden lg:table-cell">
+                      <span className="text-xs text-[#6B756E]">{article.author?.full_name ?? "—"}</span>
+                    </td>
+                  )}
                   <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-sm font-medium capitalize ${STATUS_COLORS[article.status]}`}>
-                      {article.status}
-                    </span>
+                    <ArticleStatusBadge status={article.status} />
                   </td>
                   <td className="px-4 py-3 hidden lg:table-cell">
                     <span className="text-xs text-[#6B756E]">
@@ -132,19 +174,27 @@ export default function AdminArticles() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
-                      <a href={article.portal?.slug === "english" ? `/en/article/${article.slug}` : `/article/${article.slug}`}
-                        target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 text-[#6B756E] hover:text-[#103820] rounded-sm hover:bg-[#F8F8F8]">
-                        <EyeIcon size={14} />
-                      </a>
+                      {article.status === "published" && (
+                        <a href={article.portal?.slug === "english" ? `/en/article/${article.slug}` : `/article/${article.slug}`}
+                          target="_blank" rel="noopener noreferrer"
+                          title="View published article"
+                          className="p-1.5 text-[#6B756E] hover:text-[#103820] rounded-sm hover:bg-[#F8F8F8]">
+                          <EyeIcon size={14} />
+                        </a>
+                      )}
                       <Link to={`/admin/articles/edit/${article.id}`}
+                        title={isAuthor && !["draft", "changes_requested"].includes(article.status) ? "View article" : "Edit article"}
                         className="p-1.5 text-[#6B756E] hover:text-[#103820] rounded-sm hover:bg-[#F8F8F8]">
-                        <EditIcon size={14} />
+                        {isAuthor && !["draft", "changes_requested"].includes(article.status)
+                          ? <EyeIcon size={14} />
+                          : <EditIcon size={14} />}
                       </Link>
-                      <button onClick={() => handleDelete(article.id, article.title)}
-                        className="p-1.5 text-[#6B756E] hover:text-red-600 rounded-sm hover:bg-red-50">
-                        <TrashIcon size={14} />
-                      </button>
+                      {canDelete && (
+                        <button onClick={() => handleDelete(article.id, article.title)}
+                          className="p-1.5 text-[#6B756E] hover:text-red-600 rounded-sm hover:bg-red-50">
+                          <TrashIcon size={14} />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

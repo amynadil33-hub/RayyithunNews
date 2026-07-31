@@ -48,12 +48,12 @@ export default function EnglishHeader() {
           {/* Logo */}
           <Link
             to="/en"
-            className="isolate flex items-center overflow-hidden rounded-sm border border-[#D8C89F] bg-[url('/newspaper-logo-texture.png')] bg-cover bg-center shadow-sm"
+            className="isolate flex items-center overflow-hidden"
           >
             <img
-              src="/rayyithun-logo.png"
+              src="/rayyithun-logo-english-transparent.png"
               alt="RAYYITHUN"
-              className="h-20 w-48 object-cover object-center mix-blend-multiply"
+              className="h-20 w-48 object-contain object-center"
             />
           </Link>
 
