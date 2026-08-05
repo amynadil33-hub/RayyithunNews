@@ -1,7 +1,13 @@
 // Auto-generated TypeScript types matching the Supabase schema.
 // Run `supabase gen types typescript --local` to regenerate after schema changes.
 
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
 
 export type UserRole = "super_admin" | "admin" | "editor" | "author";
 export type ArticleStatus =
@@ -26,6 +32,7 @@ export type PageStatus = "draft" | "published";
 export type MessageStatus = "unread" | "read" | "archived";
 export type InquiryStatus = "new" | "in_progress" | "resolved";
 export type PortalSlug = "dhivehi" | "english";
+export type CommentStatus = "pending" | "approved" | "rejected" | "spam";
 
 export interface Profile {
   id: string;
@@ -72,12 +79,17 @@ export interface Article {
   excerpt: string | null;
   content: string | null;
   featured_image_url: string | null;
+  featured_image_caption: string | null;
+  featured_image_credit: string | null;
   additional_image_1_url: string | null;
+  additional_image_1_credit: string | null;
   additional_image_2_url: string | null;
+  additional_image_2_credit: string | null;
   status: ArticleStatus;
   is_breaking: boolean;
   is_featured: boolean;
   is_trending: boolean;
+  show_author: boolean;
   read_time: number | null;
   seo_title: string | null;
   seo_description: string | null;
@@ -95,6 +107,42 @@ export interface Article {
   portal?: Portal;
   category?: Category;
   author?: Profile;
+}
+
+export interface Tag {
+  id: string;
+  portal_id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+export interface ArticleTag {
+  article_id: string;
+  tag_id: string;
+  tag?: Tag;
+}
+
+export interface Comment {
+  id: string;
+  article_id: string;
+  name: string;
+  email: string;
+  comment: string;
+  status: CommentStatus;
+  approved_by: string | null;
+  approved_at: string | null;
+  created_at: string;
+  article?: Pick<Article, "id" | "title" | "slug">;
+}
+
+export interface ArticleLiveUpdate {
+  id: string;
+  article_id: string;
+  update_title: string | null;
+  update_body: string;
+  created_by: string | null;
+  created_at: string;
 }
 
 export type ArticleReviewAction =
@@ -222,19 +270,111 @@ export interface SiteSetting {
 export interface Database {
   public: {
     Tables: {
-      profiles: { Row: Profile; Insert: Omit<Profile, "created_at" | "updated_at">; Update: Partial<Profile> };
-      portals: { Row: Portal; Insert: Omit<Portal, "id" | "created_at">; Update: Partial<Portal> };
-      categories: { Row: Category; Insert: Omit<Category, "id" | "created_at">; Update: Partial<Category> };
-      articles: { Row: Article; Insert: Omit<Article, "id" | "created_at" | "updated_at">; Update: Partial<Article> };
-      article_reviews: { Row: ArticleReview; Insert: Omit<ArticleReview, "id" | "created_at">; Update: Partial<ArticleReview> };
-      media_assets: { Row: MediaAsset; Insert: Omit<MediaAsset, "id" | "created_at">; Update: Partial<MediaAsset> };
-      advertisements: { Row: Advertisement; Insert: Omit<Advertisement, "id" | "created_at" | "updated_at" | "impressions" | "clicks">; Update: Partial<Advertisement> };
-      podcasts: { Row: Podcast; Insert: Omit<Podcast, "id" | "created_at" | "updated_at">; Update: Partial<Podcast> };
-      contact_messages: { Row: ContactMessage; Insert: Omit<ContactMessage, "id" | "created_at">; Update: Partial<ContactMessage> };
-      advertiser_inquiries: { Row: AdvertiserInquiry; Insert: Omit<AdvertiserInquiry, "id" | "created_at">; Update: Partial<AdvertiserInquiry> };
-      newsletter_subscribers: { Row: NewsletterSubscriber; Insert: Omit<NewsletterSubscriber, "id" | "created_at">; Update: Partial<NewsletterSubscriber> };
-      static_pages: { Row: StaticPage; Insert: Omit<StaticPage, "id" | "created_at" | "updated_at">; Update: Partial<StaticPage> };
-      site_settings: { Row: SiteSetting; Insert: Omit<SiteSetting, "id">; Update: Partial<SiteSetting> };
+      profiles: {
+        Row: Profile;
+        Insert: Omit<Profile, "created_at" | "updated_at">;
+        Update: Partial<Profile>;
+      };
+      portals: {
+        Row: Portal;
+        Insert: Omit<Portal, "id" | "created_at">;
+        Update: Partial<Portal>;
+      };
+      categories: {
+        Row: Category;
+        Insert: Omit<Category, "id" | "created_at">;
+        Update: Partial<Category>;
+      };
+      articles: {
+        Row: Article;
+        Insert: Omit<Article, "id" | "created_at" | "updated_at">;
+        Update: Partial<Article>;
+      };
+      article_reviews: {
+        Row: ArticleReview;
+        Insert: Omit<ArticleReview, "id" | "created_at">;
+        Update: Partial<ArticleReview>;
+      };
+      tags: {
+        Row: Tag;
+        Insert: Omit<Tag, "id" | "created_at">;
+        Update: Partial<Tag>;
+      };
+      article_tags: {
+        Row: ArticleTag;
+        Insert: ArticleTag;
+        Update: Partial<ArticleTag>;
+      };
+      comments: {
+        Row: Comment;
+        Insert: Omit<Comment, "id" | "created_at">;
+        Update: Partial<Comment>;
+      };
+      article_live_updates: {
+        Row: ArticleLiveUpdate;
+        Insert: Omit<ArticleLiveUpdate, "id" | "created_at">;
+        Update: Partial<ArticleLiveUpdate>;
+      };
+      media_assets: {
+        Row: MediaAsset;
+        Insert: Omit<MediaAsset, "id" | "created_at">;
+        Update: Partial<MediaAsset>;
+      };
+      advertisements: {
+        Row: Advertisement;
+        Insert: Omit<
+          Advertisement,
+          "id" | "created_at" | "updated_at" | "impressions" | "clicks"
+        >;
+        Update: Partial<Advertisement>;
+      };
+      podcasts: {
+        Row: Podcast;
+        Insert: Omit<Podcast, "id" | "created_at" | "updated_at">;
+        Update: Partial<Podcast>;
+      };
+      contact_messages: {
+        Row: ContactMessage;
+        Insert: Omit<ContactMessage, "id" | "created_at">;
+        Update: Partial<ContactMessage>;
+      };
+      advertiser_inquiries: {
+        Row: AdvertiserInquiry;
+        Insert: Omit<AdvertiserInquiry, "id" | "created_at">;
+        Update: Partial<AdvertiserInquiry>;
+      };
+      newsletter_subscribers: {
+        Row: NewsletterSubscriber;
+        Insert: Omit<NewsletterSubscriber, "id" | "created_at">;
+        Update: Partial<NewsletterSubscriber>;
+      };
+      static_pages: {
+        Row: StaticPage;
+        Insert: Omit<StaticPage, "id" | "created_at" | "updated_at">;
+        Update: Partial<StaticPage>;
+      };
+      site_settings: {
+        Row: SiteSetting;
+        Insert: Omit<SiteSetting, "id">;
+        Update: Partial<SiteSetting>;
+      };
+    };
+    Views: {
+      public_profiles: {
+        Row: Pick<Profile, "id" | "full_name" | "avatar_url">;
+      };
+      public_comments: {
+        Row: Pick<
+          Comment,
+          "id" | "article_id" | "name" | "comment" | "created_at"
+        >;
+      };
+    };
+    Functions: {
+      set_profile_avatar: {
+        Args: { target_profile_id: string; new_avatar_url: string | null };
+        Returns: undefined;
+      };
     };
   };
 }

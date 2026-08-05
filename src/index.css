@@ -1,16 +1,28 @@
+/* Google Fonts - Editorial serif + clean sans */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+Thaana:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
-/* Google Fonts - Editorial serif + clean sans */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Sans+Thaana:wght@300;400;500;600;700&display=swap');
+@font-face {
+  font-family: "RayyithunDhivehi";
+  src: url("/fonts/RayyithunDhivehi.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @theme inline {
   --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
-  --font-thaana: "Noto Sans Thaana", "MV Waheed", "MV Amaan XP", "Faruma", sans-serif;
+  --font-dhivehi:
+    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "Noto Sans Thaana", sans-serif;
+  --font-thaana:
+    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "Noto Sans Thaana", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -57,44 +69,44 @@
   --brand-primary: #103820;
   --brand-footer: #183028;
   --brand-dark-text: #142820;
-  --brand-mint-bg: #D8E8D8;
-  --brand-page-bg: #F8F8F8;
-  --brand-border: #E5E7E2;
-  --brand-muted-text: #6B756E;
-  --brand-white: #FFFFFF;
+  --brand-mint-bg: #d8e8d8;
+  --brand-page-bg: #f8f8f8;
+  --brand-border: #e5e7e2;
+  --brand-muted-text: #6b756e;
+  --brand-white: #ffffff;
 
   /* Semantic mappings */
-  --background: #F8F8F8;
+  --background: #f8f8f8;
   --foreground: #142820;
-  --card: #FFFFFF;
+  --card: #ffffff;
   --card-foreground: #142820;
-  --popover: #FFFFFF;
+  --popover: #ffffff;
   --popover-foreground: #142820;
   --primary: #103820;
-  --primary-foreground: #FFFFFF;
-  --secondary: #D8E8D8;
+  --primary-foreground: #ffffff;
+  --secondary: #d8e8d8;
   --secondary-foreground: #103820;
-  --muted: #F0F4F0;
-  --muted-foreground: #6B756E;
-  --accent: #D8E8D8;
+  --muted: #f0f4f0;
+  --muted-foreground: #6b756e;
+  --accent: #d8e8d8;
   --accent-foreground: #103820;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #E5E7E2;
-  --input: #E5E7E2;
+  --border: #e5e7e2;
+  --input: #e5e7e2;
   --ring: #103820;
   --chart-1: #103820;
-  --chart-2: #2D6A4F;
-  --chart-3: #52B788;
-  --chart-4: #95D5B2;
-  --chart-5: #D8F3DC;
+  --chart-2: #2d6a4f;
+  --chart-3: #52b788;
+  --chart-4: #95d5b2;
+  --chart-5: #d8f3dc;
   --sidebar: #103820;
-  --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #FFFFFF;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ffffff;
   --sidebar-primary-foreground: #103820;
   --sidebar-accent: #1a4d2e;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: rgba(255,255,255,0.12);
-  --sidebar-ring: rgba(255,255,255,0.3);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: rgba(255, 255, 255, 0.3);
 }
 
 .dark {
@@ -104,7 +116,7 @@
   --card-foreground: #e8f0e8;
   --popover: #1a2e1f;
   --popover-foreground: #e8f0e8;
-  --primary: #52B788;
+  --primary: #52b788;
   --primary-foreground: #0f1e14;
   --secondary: #1a4d2e;
   --secondary-foreground: #e8f0e8;
@@ -113,22 +125,22 @@
   --accent: #1a4d2e;
   --accent-foreground: #e8f0e8;
   --destructive: oklch(0.704 0.191 22.216);
-  --border: rgba(255,255,255,0.1);
-  --input: rgba(255,255,255,0.1);
-  --ring: #52B788;
-  --chart-1: #52B788;
-  --chart-2: #95D5B2;
-  --chart-3: #D8F3DC;
-  --chart-4: #2D6A4F;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #52b788;
+  --chart-1: #52b788;
+  --chart-2: #95d5b2;
+  --chart-3: #d8f3dc;
+  --chart-4: #2d6a4f;
   --chart-5: #103820;
   --sidebar: #0d1a11;
   --sidebar-foreground: #e8f0e8;
-  --sidebar-primary: #52B788;
+  --sidebar-primary: #52b788;
   --sidebar-primary-foreground: #0f1e14;
   --sidebar-accent: #1a4d2e;
   --sidebar-accent-foreground: #e8f0e8;
-  --sidebar-border: rgba(255,255,255,0.08);
-  --sidebar-ring: rgba(82,183,136,0.4);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: rgba(82, 183, 136, 0.4);
 }
 
 @layer base {
@@ -152,6 +164,38 @@
   font-family: var(--font-thaana);
 }
 
+html[lang="dv"],
+html[lang="dv"] body,
+[dir="rtl"],
+.font-dhivehi,
+.dhivehi,
+.dv {
+  font-family:
+    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "Noto Sans Thaana", sans-serif;
+}
+
+html[lang="dv"] {
+  font-size: 112.5%;
+}
+
+html[lang="dv"]
+  :is(h1, h2, h3, h4, h5, h6):not([class*="text-white"]):not(
+    .dhivehi-title-inverse
+  ) {
+  color: #050505;
+  font-weight: 800;
+  -webkit-text-stroke: 0.2px currentColor;
+  text-rendering: optimizeLegibility;
+}
+
+html[lang="dv"] header nav a.font-thaana {
+  color: #050505;
+  font-weight: 800;
+  -webkit-text-stroke: 0.2px currentColor;
+  text-rendering: optimizeLegibility;
+}
+
 .font-serif {
   font-family: var(--font-serif);
 }
@@ -159,7 +203,7 @@
 /* Thaana specific line-height adjustments */
 .thaana-body {
   font-family: var(--font-thaana);
-  line-height: 2.0;
+  line-height: 2;
   letter-spacing: 0;
 }
 
@@ -185,10 +229,150 @@
 .article-prose-thaana {
   font-family: var(--font-thaana);
   font-size: 1.0625rem;
-  line-height: 2.0;
+  line-height: 2;
   color: var(--brand-dark-text);
   text-align: right;
   direction: rtl;
+}
+
+/* Rich article content shared by TinyMCE output and legacy articles. */
+.article-content {
+  color: var(--brand-dark-text);
+  font-size: 1.08rem;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.article-content-english {
+  font-family: var(--font-sans);
+  direction: ltr;
+  text-align: left;
+}
+
+.article-content-dhivehi {
+  font-family: var(--font-thaana);
+  direction: rtl;
+  text-align: right;
+  line-height: 2;
+}
+
+.article-content p {
+  margin: 0 0 1.25rem;
+}
+
+.article-content h2 {
+  margin: 2rem 0 1rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.article-content h3 {
+  margin: 1.6rem 0 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.article-content h4 {
+  margin: 1.4rem 0 0.7rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.article-content strong,
+.article-content b {
+  font-weight: 700;
+}
+
+.article-content blockquote {
+  margin: 1.8rem 0;
+  padding: 1rem 1.25rem;
+  border-inline-start: 4px solid #103820;
+  background: #d8e8d8;
+  color: #142820;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 1rem 0 1.25rem;
+  padding-inline-start: 1.5rem;
+}
+
+.article-content ul {
+  list-style: disc;
+}
+
+.article-content ol {
+  list-style: decimal;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+}
+
+.article-content a {
+  color: #103820;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.article-content figure {
+  max-width: 100%;
+  margin: 1.5rem 0;
+}
+
+.article-content figcaption {
+  margin-top: -1rem;
+  color: var(--brand-muted-text);
+  font-size: 0.8rem;
+}
+
+.article-content table {
+  display: block;
+  width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.article-content th,
+.article-content td {
+  min-width: 8rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--brand-border);
+  text-align: start;
+}
+
+.article-content th {
+  background: var(--brand-mint-bg);
+  font-weight: 700;
+}
+
+.article-content .article-align-left {
+  text-align: left;
+}
+
+.article-content .article-align-center {
+  text-align: center;
+}
+
+.article-content .article-align-right {
+  text-align: right;
+}
+
+.article-content .article-align-justify {
+  text-align: justify;
 }
 
 /* Thin divider */
@@ -225,7 +409,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #6B756E;
+  color: #6b756e;
   font-size: 0.75rem;
 }
 
@@ -242,5 +426,5 @@
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #6B756E;
+  background: #6b756e;
 }

@@ -4,6 +4,7 @@ import type {
   ArticleReviewAction,
   ArticleStatus,
   PortalSlug,
+  Profile,
 } from "../lib/database.types.ts";
 
 export interface ArticleFilters {
@@ -24,7 +25,12 @@ export interface ArticleFilters {
 // ambiguous profiles relationship. This remains a left embed, so legacy
 // articles with author_id = null are still returned to reviewer roles.
 const ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories(*), author:profiles!articles_author_id_fkey(id, full_name, avatar_url)`;
-const REVIEW_QUEUE_STATUSES: ArticleStatus[] = ["submitted", "in_review", "changes_requested", "approved"];
+const REVIEW_QUEUE_STATUSES: ArticleStatus[] = [
+  "submitted",
+  "in_review",
+  "changes_requested",
+  "approved",
+];
 
 function stripArticleRelations(article: Partial<Article>) {
   const {
@@ -37,8 +43,10 @@ function stripArticleRelations(article: Partial<Article>) {
     ...values
   } = article;
   const cleanValues: Partial<Article> = { ...values };
-  if (!cleanValues.additional_image_1_url) delete cleanValues.additional_image_1_url;
-  if (!cleanValues.additional_image_2_url) delete cleanValues.additional_image_2_url;
+  if (!cleanValues.additional_image_1_url)
+    delete cleanValues.additional_image_1_url;
+  if (!cleanValues.additional_image_2_url)
+    delete cleanValues.additional_image_2_url;
   return cleanValues;
 }
 
@@ -49,7 +57,10 @@ export async function supportsArticleGalleryImages() {
     .limit(1);
 
   if (!error) return true;
-  const missingColumn = /additional_image_[12]_url|schema cache|does not exist/i.test(error.message);
+  const missingColumn =
+    /additional_image_[12]_url|schema cache|does not exist/i.test(
+      error.message,
+    );
   if (missingColumn) return false;
   throw error;
 }
@@ -72,7 +83,12 @@ async function updateWorkflowState(id: string, values: Partial<Article>) {
   return data as Article;
 }
 
-async function logReview(articleId: string, reviewerId: string, action: ArticleReviewAction, notes?: string) {
+async function logReview(
+  articleId: string,
+  reviewerId: string,
+  action: ArticleReviewAction,
+  notes?: string,
+) {
   const { error } = await supabase.from("article_reviews").insert({
     article_id: articleId,
     reviewer_id: reviewerId,
@@ -81,18 +97,29 @@ async function logReview(articleId: string, reviewerId: string, action: ArticleR
   } as never);
   // Review history is supplementary. A missing history table or a narrower
   // history policy must not roll back an article state change that succeeded.
-  if (error) console.warn("Article review history could not be recorded:", error.message);
+  if (error)
+    console.warn(
+      "Article review history could not be recorded:",
+      error.message,
+    );
 }
 
 export async function getArticles(filters: ArticleFilters = {}) {
-  let query = supabase.from("articles").select(ARTICLE_SELECT).order("published_at", { ascending: false, nullsFirst: false });
+  let query = supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .order("published_at", { ascending: false, nullsFirst: false });
   if (filters.portalSlug) query = query.eq("portal.slug", filters.portalSlug);
-  if (filters.categorySlug) query = query.eq("category.slug", filters.categorySlug);
+  if (filters.categorySlug)
+    query = query.eq("category.slug", filters.categorySlug);
   if (filters.status) query = query.eq("status", filters.status);
   else if (!filters.includeAllStatuses) query = query.eq("status", "published");
-  if (filters.isFeatured !== undefined) query = query.eq("is_featured", filters.isFeatured);
-  if (filters.isTrending !== undefined) query = query.eq("is_trending", filters.isTrending);
-  if (filters.isBreaking !== undefined) query = query.eq("is_breaking", filters.isBreaking);
+  if (filters.isFeatured !== undefined)
+    query = query.eq("is_featured", filters.isFeatured);
+  if (filters.isTrending !== undefined)
+    query = query.eq("is_trending", filters.isTrending);
+  if (filters.isBreaking !== undefined)
+    query = query.eq("is_breaking", filters.isBreaking);
   if (filters.search?.trim()) {
     const term = filters.search.trim().replace(/[,%()]/g, " ");
     query = query.or(`title.ilike.%${term}%,excerpt.ilike.%${term}%`);
@@ -106,30 +133,106 @@ export async function getArticles(filters: ArticleFilters = {}) {
   return (data ?? []) as unknown as Article[];
 }
 
-export const getPublishedArticles = (portalSlug: string) => getArticles({ portalSlug });
-export const getFeaturedArticles = (portalSlug: string) => getArticles({ portalSlug, isFeatured: true });
-export const getTrendingArticles = (portalSlug: string) => getArticles({ portalSlug, isTrending: true });
-export const getLatestArticles = (portalSlug: string, limit = 10) => getArticles({ portalSlug, limit });
-export const getArticlesByCategory = (portalSlug: string, categorySlug: string) => getArticles({ portalSlug, categorySlug });
-export const searchArticles = (portalSlug: string, search: string) => getArticles({ portalSlug, search });
+export const getPublishedArticles = (portalSlug: string) =>
+  getArticles({ portalSlug });
+export const getFeaturedArticles = (portalSlug: string) =>
+  getArticles({ portalSlug, isFeatured: true });
+export const getTrendingArticles = (portalSlug: string) =>
+  getArticles({ portalSlug, isTrending: true });
+export const getLatestArticles = (portalSlug: string, limit = 10) =>
+  getArticles({ portalSlug, limit });
+export async function getArticlesByCategory(
+  portalSlug: string,
+  categorySlug: string,
+  limit?: number,
+  offset = 0,
+) {
+  const { data: portal, error: portalError } = await supabase
+    .from("portals")
+    .select("id")
+    .eq("slug", portalSlug)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (portalError) throw portalError;
+  if (!portal) return [];
+  const portalId = (portal as { id: string }).id;
+
+  const { data: category, error: categoryError } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("portal_id", portalId)
+    .eq("slug", categorySlug)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (categoryError) throw categoryError;
+  if (!category) return [];
+  const categoryId = (category as { id: string }).id;
+
+  let query = supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .eq("portal_id", portalId)
+    .eq("category_id", categoryId)
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+
+  if (limit) query = query.range(offset, offset + limit - 1);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as unknown as Article[];
+}
+export const searchArticles = (portalSlug: string, search: string) =>
+  getArticles({ portalSlug, search });
 
 export async function getArticleBySlug(portalSlug: string, slug?: string) {
   const actualSlug = slug ?? portalSlug;
-  let query = supabase.from("articles").select(ARTICLE_SELECT).eq("slug", actualSlug).eq("status", "published");
+  let query = supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .eq("slug", actualSlug)
+    .eq("status", "published");
   if (slug) query = query.eq("portal.slug", portalSlug);
   const { data, error } = await query.maybeSingle();
   if (error) throw error;
-  return data as unknown as Article | null;
+  if (!data) return null;
+  const article = data as unknown as Article;
+  if (article.show_author && article.author_id && !article.author) {
+    const { data: publicAuthor } = await supabase
+      .from("public_profiles")
+      .select("id, full_name, avatar_url")
+      .eq("id", article.author_id)
+      .maybeSingle();
+    if (publicAuthor) article.author = publicAuthor as Profile;
+  }
+  return article;
 }
 
-export async function getRelatedArticles(articleId: string, categoryId: string, portalId: string, limit = 4) {
-  const { data, error } = await supabase.from("articles").select(ARTICLE_SELECT).eq("portal_id", portalId).eq("category_id", categoryId).eq("status", "published").neq("id", articleId).order("published_at", { ascending: false }).limit(limit);
+export async function getRelatedArticles(
+  articleId: string,
+  categoryId: string,
+  portalId: string,
+  limit = 4,
+) {
+  const { data, error } = await supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .eq("portal_id", portalId)
+    .eq("category_id", categoryId)
+    .eq("status", "published")
+    .neq("id", articleId)
+    .order("published_at", { ascending: false })
+    .limit(limit);
   if (error) throw error;
   return (data ?? []) as unknown as Article[];
 }
 
 export async function adminGetArticles(portalId?: string) {
-  let query = supabase.from("articles").select(ARTICLE_SELECT).order("created_at", { ascending: false });
+  let query = supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .order("created_at", { ascending: false });
   if (portalId) query = query.eq("portal_id", portalId);
   const { data, error } = await query;
   if (error) throw error;
@@ -137,21 +240,37 @@ export async function adminGetArticles(portalId?: string) {
 }
 
 export async function adminGetArticle(id: string) {
-  const { data, error } = await supabase.from("articles").select(ARTICLE_SELECT).eq("id", id).single();
+  const { data, error } = await supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .eq("id", id)
+    .single();
   if (error) throw error;
   return data as unknown as Article;
 }
 
 export async function adminCreateArticle(article: Partial<Article>) {
   const values = stripArticleRelations(article);
-  const { data, error } = await supabase.from("articles").insert(values as never).select().single();
+  const { data, error } = await supabase
+    .from("articles")
+    .insert(values as never)
+    .select()
+    .single();
   if (error) throw error;
   return data as Article;
 }
 
-export async function adminUpdateArticle(id: string, article: Partial<Article>) {
+export async function adminUpdateArticle(
+  id: string,
+  article: Partial<Article>,
+) {
   const values = stripArticleRelations(article);
-  const { data, error } = await supabase.from("articles").update({ ...values, updated_at: new Date().toISOString() } as never).eq("id", id).select().single();
+  const { data, error } = await supabase
+    .from("articles")
+    .update({ ...values, updated_at: new Date().toISOString() } as never)
+    .eq("id", id)
+    .select()
+    .single();
   if (error) throw error;
   return data as Article;
 }
@@ -248,7 +367,12 @@ export async function publishArticle(id: string) {
     reviewed_at: reviewedAt,
     scheduled_at: null,
   });
-  await logReview(id, reviewerId, "published", article.approval_notes ?? undefined);
+  await logReview(
+    id,
+    reviewerId,
+    "published",
+    article.approval_notes ?? undefined,
+  );
   return article;
 }
 
@@ -263,7 +387,12 @@ export async function scheduleArticle(id: string, scheduledAt: string) {
 export async function archiveArticle(id: string) {
   const reviewerId = await requireCurrentUserId();
   const article = await updateWorkflowState(id, { status: "archived" });
-  await logReview(id, reviewerId, "archived", article.approval_notes ?? undefined);
+  await logReview(
+    id,
+    reviewerId,
+    "archived",
+    article.approval_notes ?? undefined,
+  );
   return article;
 }
 

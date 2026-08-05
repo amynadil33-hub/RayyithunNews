@@ -1,98 +1,80 @@
 import { Link } from "react-router-dom";
-// Social brand icons are not available in lucide-react; using text fallbacks
 
-
-const SECTIONS = [
-  { label: "News", href: "/en/news" },
-  { label: "Education", href: "/en/education" },
-  { label: "Business", href: "/en/business" },
-  { label: "Religion", href: "/en/religion" },
-  { label: "Innovation", href: "/en/innovation" },
-  { label: "World", href: "/en/world" },
-  { label: "Podcast", href: "/en/podcast" },
-  { label: "Citizen", href: "/en/citizen" },
-  { label: "Market", href: "/en/market" },
-];
-
-const ABOUT_LINKS = [
-  { label: "About Us", href: "/en/page/about" },
+const FOOTER_LINKS = [
   { label: "Contact", href: "/en/contact" },
   { label: "Advertise", href: "/en/advertise" },
   { label: "Privacy Policy", href: "/en/page/privacy" },
   { label: "Terms of Service", href: "/en/page/terms" },
 ];
 
+const SOCIAL_LINKS = [
+  { label: "Facebook", short: "f" },
+  { label: "Twitter", short: "𝕏" },
+  { label: "Instagram", short: "ig" },
+  { label: "YouTube", short: "yt" },
+];
+
 export default function EnglishFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#183028] text-white">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Link to="/en" className="isolate mb-4 inline-flex items-center overflow-hidden">
-              <img src="/rayyithun-logo-english-transparent.png" alt="Rayyithun News Network" className="h-20 w-48 object-contain object-center brightness-0 invert" />
+    <footer className="bg-[#183028] text-white" dir="ltr" lang="en">
+      <div className="mx-auto max-w-7xl px-4 py-10 md:py-12">
+        <div className="grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end">
+          <div>
+            <Link
+              to="/en"
+              className="isolate mb-3 inline-flex items-center overflow-hidden"
+            >
+              <img
+                src="/rayyithun-logo-english-transparent.png"
+                alt="Rayyithun News Network"
+                className="h-16 w-44 object-contain object-left brightness-0 invert"
+              />
             </Link>
-            <p className="text-sm text-[#95D5B2] leading-relaxed mb-5">
-              The digital voice of the Maldives. Independent journalism, community stories, and practical services for everyday life.
+            <p className="max-w-xl text-sm leading-relaxed text-[#95D5B2]">
+              The digital voice of the Maldives. Independent journalism,
+              community stories, and practical services for everyday life.
             </p>
-            <div className="flex gap-3">
-              {[
-                { label: "Facebook", short: "f" },
-                { label: "Twitter", short: "𝕏" },
-                { label: "Instagram", short: "ig" },
-                { label: "YouTube", short: "yt" },
-              ].map(({ label, short }) => (
-                <a key={label} href="#" aria-label={label}
-                  className="w-7 h-7 rounded-sm border border-[#52B788]/40 flex items-center justify-center text-[#95D5B2] hover:text-white hover:border-white transition-colors text-xs font-bold">
+            <div className="mt-5 flex gap-3">
+              {SOCIAL_LINKS.map(({ label, short }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#52B788]/40 text-xs font-bold text-[#95D5B2] transition-colors hover:border-white hover:text-white"
+                >
                   {short}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Sections */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4">Sections</h4>
-            <ul className="space-y-2">
-              {SECTIONS.map((s) => (
-                <li key={s.href}>
-                  <Link to={s.href} className="text-sm text-[#95D5B2] hover:text-white transition-colors">
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* About */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4">About</h4>
-            <ul className="space-y-2">
-              {ABOUT_LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link to={l.href} className="text-sm text-[#95D5B2] hover:text-white transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Portal switch */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4">Other Edition</h4>
+          <div className="flex flex-col items-start gap-5 lg:items-end">
             <Link
               to="/"
-              className="inline-flex items-center gap-2 border border-[#52B788] text-[#52B788] hover:bg-[#52B788] hover:text-[#103820] transition-colors px-4 py-2 text-sm font-medium rounded-sm font-thaana"
+              className="inline-flex items-center rounded-sm border border-[#52B788] px-4 py-2 text-sm font-medium text-[#52B788] transition-colors hover:bg-[#52B788] hover:text-[#103820] font-thaana"
             >
               ދިވެހި ޕޯޓަލް
             </Link>
+            <nav
+              aria-label="Footer"
+              className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end"
+            >
+              {FOOTER_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-sm text-[#95D5B2] transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-6 text-center">
+        <div className="mt-9 border-t border-white/10 pt-5">
           <p className="text-xs text-white/40">
             © {year} RAYYITHUN. All rights reserved. Made in the Maldives.
           </p>

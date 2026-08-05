@@ -15,7 +15,7 @@ export async function uploadMediaAsset(
   file: File,
   bucket: string,
   uploaderId?: string,
-  folder = "site"
+  folder = "site",
 ): Promise<MediaAsset> {
   const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
   const filePath = `${folder}/${Date.now()}-${safeName}`;
@@ -26,7 +26,9 @@ export async function uploadMediaAsset(
 
   if (uploadError) throw uploadError;
 
-  const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(filePath);
+  const { data: urlData } = supabase.storage
+    .from(bucket)
+    .getPublicUrl(filePath);
 
   const { data, error } = await supabase
     .from("media_assets")
@@ -44,13 +46,21 @@ export async function uploadMediaAsset(
 }
 
 async function uploadTo(file: File, bucket: string, folder: string) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return uploadMediaAsset(file, bucket, user?.id, folder);
 }
-export const uploadArticleImage = (file: File) => uploadTo(file, "article-images", "articles");
-export const uploadAdBanner = (file: File) => uploadTo(file, "ad-banners", "ads");
-export const uploadPodcastCover = (file: File) => uploadTo(file, "podcast-covers", "podcasts");
-export const uploadSiteAsset = (file: File) => uploadTo(file, "site-assets", "site");
+export const uploadArticleImage = (file: File) =>
+  uploadTo(file, "article-images", "articles");
+export const uploadAdBanner = (file: File) =>
+  uploadTo(file, "ad-banners", "ads");
+export const uploadPodcastCover = (file: File) =>
+  uploadTo(file, "podcast-covers", "podcasts");
+export const uploadSiteAsset = (file: File) =>
+  uploadTo(file, "site-assets", "site");
+export const uploadWriterAvatar = (file: File) =>
+  uploadTo(file, "site-assets", "writer-avatars");
 export function getPublicUrl(bucket: string, path: string) {
   return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 }
@@ -59,13 +69,21 @@ export async function deleteFile(bucket: string, path: string) {
   if (error) throw error;
 }
 
-export async function deleteMediaAsset(id: string, filePath: string, bucket: string) {
+export async function deleteMediaAsset(
+  id: string,
+  filePath: string,
+  bucket: string,
+) {
   await supabase.storage.from(bucket).remove([filePath]);
   const { error } = await supabase.from("media_assets").delete().eq("id", id);
   if (error) throw error;
 }
 
-export async function updateMediaAltText(id: string, altText: string, caption?: string) {
+export async function updateMediaAltText(
+  id: string,
+  altText: string,
+  caption?: string,
+) {
   const { error } = await supabase
     .from("media_assets")
     .update({ alt_text: altText, caption } as never)

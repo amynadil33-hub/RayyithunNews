@@ -77,8 +77,10 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
         aria-hidden="true"
         className="absolute inset-y-0 left-0 h-full w-full object-contain object-center opacity-90 mix-blend-luminosity md:w-[68%] md:object-left"
         style={{
-          WebkitMaskImage: "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
-          maskImage: "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
+          maskImage:
+            "linear-gradient(to right, black 0%, black 72%, transparent 100%)",
         }}
       />
       <div className="absolute inset-0 bg-[#103820]/42" aria-hidden="true" />
@@ -92,7 +94,10 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
       />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
-        <div className="flex items-start justify-between border-b border-white/20 py-3" dir="ltr">
+        <div
+          className="flex items-start justify-between border-b border-white/20 py-3"
+          dir="ltr"
+        >
           <div className="relative text-left">
             <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-white/65 sm:text-xs">
               {today}
@@ -132,7 +137,11 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
                   }`}
                   dir={isDhivehi ? "rtl" : "ltr"}
                 />
-                <button type="submit" className="bg-[#A61E2A] px-3 text-white" aria-label="Submit search">
+                <button
+                  type="submit"
+                  className="bg-[#A61E2A] px-3 text-white"
+                  aria-label="Submit search"
+                >
                   <SearchIcon size={15} />
                 </button>
               </form>
@@ -145,7 +154,11 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
             className="isolate overflow-hidden"
           >
             <img
-              src={isDhivehi ? "/rayyithun-logo-dhivehi-transparent.png" : "/rayyithun-logo-english-transparent.png"}
+              src={
+                isDhivehi
+                  ? "/rayyithun-logo-dhivehi-transparent.png"
+                  : "/rayyithun-logo-english-transparent.png"
+              }
               alt="RAYYITHUN"
               className="h-14 w-36 object-contain object-center brightness-0 invert sm:h-16 sm:w-44"
             />
@@ -174,8 +187,13 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
         </nav>
 
         <div className="flex min-h-0 flex-1 items-center py-3 sm:py-4">
-          <div className={`ml-auto w-full max-w-[34rem] ${isDhivehi ? "text-right" : "text-left"}`}>
-            <div className="mb-3 flex items-center justify-start gap-2" aria-hidden="true">
+          <div
+            className={`ml-auto w-full max-w-[34rem] ${isDhivehi ? "text-right" : "text-left"}`}
+          >
+            <div
+              className="mb-3 flex items-center justify-start gap-2"
+              aria-hidden="true"
+            >
               <span className="h-px w-10 bg-[#C12835]" />
               <span className="h-1.5 w-1.5 rounded-full bg-[#C12835]" />
             </div>
@@ -183,7 +201,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
               id={`brand-hero-heading-${language}`}
               className={
                 isDhivehi
-                  ? "font-thaana thaana-headline text-[1.75rem] font-bold leading-[1.4] text-balance sm:text-[2rem] md:text-[2.15rem]"
+                  ? "dhivehi-title-inverse font-thaana thaana-headline text-[2rem] font-bold leading-[1.4] text-balance sm:text-[2.25rem] md:text-[2.5rem]"
                   : "font-serif text-[1.95rem] font-bold leading-[1.02] tracking-[-0.025em] text-balance sm:text-[2.25rem] md:text-[2.4rem]"
               }
             >

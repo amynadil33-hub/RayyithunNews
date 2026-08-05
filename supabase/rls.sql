@@ -17,6 +17,10 @@ ALTER TABLE public.advertiser_inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.static_pages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.article_tags ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.article_live_updates ENABLE ROW LEVEL SECURITY;
 
 -- Helper function to get current user role
 CREATE OR REPLACE FUNCTION public.get_my_role()
@@ -53,6 +57,19 @@ RETURNS BOOLEAN LANGUAGE SQL STABLE SECURITY DEFINER SET search_path = public AS
       AND role IN ('admin','super_admin')
   );
 $$;
+
+CREATE OR REPLACE FUNCTION public.set_profile_avatar(target_profile_id UUID, new_avatar_url TEXT)
+RETURNS VOID LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+BEGIN
+  IF auth.uid() IS NULL OR (auth.uid() <> target_profile_id AND NOT public.is_editor_user()) THEN
+    RAISE EXCEPTION 'Not authorized to update this writer photo';
+  END IF;
+  UPDATE public.profiles SET avatar_url = NULLIF(trim(new_avatar_url), ''), updated_at = NOW()
+  WHERE id = target_profile_id;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.set_profile_avatar(UUID, TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.set_profile_avatar(UUID, TEXT) TO authenticated;
 
 -- ============================================================
 -- PROFILES
@@ -246,3 +263,28 @@ CREATE POLICY "Admins can manage site settings"
 
 CREATE POLICY "Anyone can read site settings"
   ON public.site_settings FOR SELECT USING (true);
+
+-- ============================================================
+-- NEWSROOM FEATURES
+-- ============================================================
+CREATE POLICY "Anyone can read tags" ON public.tags FOR SELECT USING (true);
+CREATE POLICY "Writers can create tags" ON public.tags FOR INSERT TO authenticated WITH CHECK (public.is_writer_user());
+CREATE POLICY "Editors can update tags" ON public.tags FOR UPDATE TO authenticated USING (public.is_editor_user()) WITH CHECK (public.is_editor_user());
+CREATE POLICY "Editors can delete tags" ON public.tags FOR DELETE TO authenticated USING (public.is_editor_user());
+CREATE POLICY "Anyone can read article tags" ON public.article_tags FOR SELECT USING (true);
+CREATE POLICY "Writers can attach tags" ON public.article_tags FOR INSERT TO authenticated WITH CHECK (EXISTS (SELECT 1 FROM public.articles JOIN public.tags ON tags.id = article_tags.tag_id AND tags.portal_id = articles.portal_id WHERE articles.id = article_tags.article_id AND (articles.author_id = auth.uid() OR public.is_editor_user())));
+CREATE POLICY "Writers can remove tags" ON public.article_tags FOR DELETE TO authenticated USING (EXISTS (SELECT 1 FROM public.articles WHERE articles.id = article_tags.article_id AND (articles.author_id = auth.uid() OR public.is_editor_user())));
+CREATE POLICY "Anyone can submit pending comments" ON public.comments FOR INSERT TO anon, authenticated WITH CHECK (status = 'pending' AND approved_by IS NULL AND approved_at IS NULL);
+CREATE POLICY "Editors can read all comments" ON public.comments FOR SELECT TO authenticated USING (public.is_editor_user());
+CREATE POLICY "Editors can moderate comments" ON public.comments FOR UPDATE TO authenticated USING (public.is_editor_user()) WITH CHECK (public.is_editor_user());
+CREATE POLICY "Editors can delete comments" ON public.comments FOR DELETE TO authenticated USING (public.is_editor_user());
+CREATE POLICY "Anyone can read published live updates" ON public.article_live_updates FOR SELECT TO anon, authenticated USING (EXISTS (SELECT 1 FROM public.articles WHERE articles.id = article_live_updates.article_id AND articles.status = 'published'));
+CREATE POLICY "Editors can read all live updates" ON public.article_live_updates FOR SELECT TO authenticated USING (public.is_editor_user());
+CREATE POLICY "Editors can add live updates" ON public.article_live_updates FOR INSERT TO authenticated WITH CHECK (public.is_editor_user());
+CREATE POLICY "Editors can update live updates" ON public.article_live_updates FOR UPDATE TO authenticated USING (public.is_editor_user()) WITH CHECK (public.is_editor_user());
+CREATE POLICY "Editors can delete live updates" ON public.article_live_updates FOR DELETE TO authenticated USING (public.is_editor_user());
+
+REVOKE ALL ON public.public_profiles FROM PUBLIC;
+GRANT SELECT ON public.public_profiles TO anon, authenticated;
+REVOKE ALL ON public.public_comments FROM PUBLIC;
+GRANT SELECT ON public.public_comments TO anon, authenticated;

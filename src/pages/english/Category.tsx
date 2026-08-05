@@ -4,11 +4,17 @@ import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
-import { useArticles } from "../../hooks/use-portal-data.ts";
+import { useArticlesByCategory } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "../../components/ui/empty.tsx";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+} from "../../components/ui/empty.tsx";
 import { NewspaperIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   news: "News",
@@ -27,20 +33,26 @@ export default function EnglishCategory() {
   const [page, setPage] = useState(0);
   const limit = 12;
 
-  const { data: articles, isLoading } = useArticles({
-    portalSlug: "english",
-    categorySlug: category,
-    limit,
-    offset: page * limit,
-  });
+  useEffect(() => setPage(0), [category]);
 
-  const categoryName = CATEGORY_LABELS[category ?? ""] ?? category ?? "Category";
+  const { data: articles, isLoading } = useArticlesByCategory(
+    "english",
+    category,
+    limit,
+    page * limit,
+  );
+
+  const categoryName =
+    CATEGORY_LABELS[category ?? ""] ?? category ?? "Category";
 
   return (
     <div className="min-h-screen bg-[#F8F8F8]">
       <Helmet>
         <title>{categoryName} — RAYYITHUN</title>
-        <meta name="description" content={`Latest ${categoryName} news from RAYYITHUN.`} />
+        <meta
+          name="description"
+          content={`Latest ${categoryName} news from RAYYITHUN.`}
+        />
       </Helmet>
 
       <EnglishHeader />
@@ -51,12 +63,16 @@ export default function EnglishCategory() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="border-b-2 border-[#103820] pb-3 mb-8">
-          <h1 className="font-serif text-3xl font-bold text-[#142820]">{categoryName}</h1>
+          <h1 className="font-serif text-3xl font-bold text-[#142820]">
+            {categoryName}
+          </h1>
         </div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {Array.from({ length: 9 }).map((_, i) => <Skeleton key={i} className="h-64" />)}
+            {Array.from({ length: 9 }).map((_, i) => (
+              <Skeleton key={i} className="h-64" />
+            ))}
           </div>
         ) : articles && articles.length > 0 ? (
           <>
@@ -69,7 +85,11 @@ export default function EnglishCategory() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               {(page === 0 ? articles.slice(1) : articles).map((article) => (
-                <ArticleCard key={article.id} article={article} variant="grid" />
+                <ArticleCard
+                  key={article.id}
+                  article={article}
+                  variant="grid"
+                />
               ))}
             </div>
 
@@ -96,9 +116,14 @@ export default function EnglishCategory() {
         ) : (
           <Empty>
             <EmptyHeader>
-              <EmptyMedia variant="icon"><NewspaperIcon /></EmptyMedia>
+              <EmptyMedia variant="icon">
+                <NewspaperIcon />
+              </EmptyMedia>
               <EmptyTitle>No articles yet</EmptyTitle>
-              <EmptyDescription>Check back soon for the latest {categoryName.toLowerCase()} stories.</EmptyDescription>
+              <EmptyDescription>
+                Check back soon for the latest {categoryName.toLowerCase()}{" "}
+                stories.
+              </EmptyDescription>
             </EmptyHeader>
           </Empty>
         )}

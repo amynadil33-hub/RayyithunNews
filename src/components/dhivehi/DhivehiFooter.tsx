@@ -1,102 +1,82 @@
 import { Link } from "react-router-dom";
-// Social brand icons are not available in lucide-react; using text fallbacks
 
-
-const SECTIONS = [
-  { label: "ހަބަރު", href: "/news" },
-  { label: "ތަޢުލީމް", href: "/education" },
-  { label: "ވިޔަފާރި", href: "/business" },
-  { label: "ތެދުމަގު", href: "/religion" },
-  { label: "އުފެއްދުންތެރިކަން", href: "/innovation" },
-  { label: "ދުނިޔެ", href: "/world" },
-  { label: "ޕޮޑްކާސްޓް", href: "/podcast" },
-  { label: "ރައްޔިތުން", href: "/citizen" },
-  { label: "ލިޔުން ހުށަހަޅާ", href: "/submit-article" },
-  { label: "ބާޒާރު", href: "/market" },
-];
-
-const ABOUT_LINKS = [
-  { label: "ރައްޔިތުންއާ ބެހޭ", href: "/en/page/about" },
+const FOOTER_LINKS = [
   { label: "ގުޅުއްވުމަށް", href: "/contact" },
   { label: "އިޢުލާން", href: "/advertise" },
   { label: "ޕްރައިވެސީ ޕޮލިސީ", href: "/en/page/privacy" },
   { label: "ޚިދުމަތުގެ ޝަރުތުތައް", href: "/en/page/terms" },
 ];
 
+const SOCIAL_LINKS = [
+  { label: "Facebook", short: "f" },
+  { label: "Twitter", short: "𝕏" },
+  { label: "Instagram", short: "ig" },
+  { label: "YouTube", short: "yt" },
+];
+
 export default function DhivehiFooter() {
   const year = new Date().getFullYear();
+
   return (
-    <footer className="bg-[#183028] text-white" dir="rtl">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Link to="/" className="isolate mb-4 inline-flex items-center overflow-hidden">
+    <footer className="bg-[#183028] text-white font-thaana" dir="rtl" lang="dv">
+      <div className="mx-auto max-w-7xl px-4 py-10 md:py-12">
+        <div className="grid grid-cols-1 gap-9 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end">
+          <div>
+            <Link
+              to="/"
+              className="isolate mb-3 inline-flex items-center overflow-hidden"
+            >
               <img
                 src="/rayyithun-logo-dhivehi-transparent.png"
                 alt="ރައްޔިތުން"
-                className="h-20 w-48 object-contain object-center brightness-0 invert"
+                className="h-16 w-44 object-contain object-right brightness-0 invert"
               />
             </Link>
-            <p className="text-sm text-[#95D5B2] leading-relaxed mb-5 font-thaana thaana-body">
-              ދިވެހިރާއްޖޭގެ ޑިޖިޓަލް ހަބަރު ހިދުމަތް. ހިއްސާ ނުކުރާ ނޫސްވެރިކަން، ތ ތ ތ.
+            <p className="max-w-xl text-sm leading-[2] text-[#95D5B2]">
+              ދިވެހިރާއްޖޭގެ ޑިޖިޓަލް ހަބަރު ޚިދުމަތް. މުސްތަޤިއްލު، ތެދުވެރި
+              އަދި އިތުބާރުހުރި ނޫސްވެރިކަން.
             </p>
-            <div className="flex gap-3 justify-end">
-              {[
-                { label: "Facebook", short: "f" },
-                { label: "Twitter", short: "𝕏" },
-                { label: "Instagram", short: "ig" },
-                { label: "YouTube", short: "yt" },
-              ].map(({ label, short }) => (
-                <a key={label} href="#" aria-label={label}
-                  className="w-7 h-7 rounded-sm border border-[#52B788]/40 flex items-center justify-center text-[#95D5B2] hover:text-white hover:border-white transition-colors text-xs font-bold">
+            <div className="mt-5 flex justify-start gap-3">
+              {SOCIAL_LINKS.map(({ label, short }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#52B788]/40 text-xs font-bold text-[#95D5B2] transition-colors hover:border-white hover:text-white"
+                >
                   {short}
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Sections */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4 font-thaana">ބައިތައް</h4>
-            <ul className="space-y-2">
-              {SECTIONS.map((s) => (
-                <li key={s.href}>
-                  <Link to={s.href} className="text-sm text-[#95D5B2] hover:text-white transition-colors font-thaana thaana-body">
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* About */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4 font-thaana">ލިންކްތައް</h4>
-            <ul className="space-y-2">
-              {ABOUT_LINKS.map((l) => (
-                <li key={l.href}>
-                  <Link to={l.href} className="text-sm text-[#95D5B2] hover:text-white transition-colors font-thaana thaana-body">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* English switch */}
-          <div>
-            <h4 className="text-xs font-bold tracking-widest uppercase text-[#52B788] mb-4">Other Edition</h4>
-            <Link to="/en"
-              className="inline-flex items-center gap-2 border border-[#52B788] text-[#52B788] hover:bg-[#52B788] hover:text-[#103820] transition-colors px-4 py-2 text-sm font-medium rounded-sm">
+          <div className="flex flex-col items-start gap-5 lg:items-end">
+            <Link
+              to="/en"
+              className="inline-flex items-center rounded-sm border border-[#52B788] px-4 py-2 text-sm font-medium text-[#52B788] transition-colors hover:bg-[#52B788] hover:text-[#103820] font-sans"
+            >
               English Portal
             </Link>
+            <nav
+              aria-label="ފުޓަރ ލިންކްތައް"
+              className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end"
+            >
+              {FOOTER_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-sm leading-[2] text-[#95D5B2] transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-6 text-center">
-          <p className="text-xs text-white/40 font-thaana">
-            © {year} ރައްޔިތުން. ހުރިހާ ހައްޤެއް ލ.
+        <div className="mt-9 border-t border-white/10 pt-5">
+          <p className="text-xs text-white/40">
+            © {year} ރައްޔިތުން. ހުރިހާ ހައްޤެއް މަހްފޫޒު.
           </p>
         </div>
       </div>

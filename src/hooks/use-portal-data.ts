@@ -1,5 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getArticles, type ArticleFilters } from "../services/articles.ts";
+import {
+  getArticles,
+  getArticlesByCategory,
+  type ArticleFilters,
+} from "../services/articles.ts";
 import { getCategories } from "../services/categories.ts";
 import { getActiveAds } from "../services/advertisements.ts";
 import { getPodcasts } from "../services/podcasts.ts";
@@ -11,6 +15,21 @@ export function useArticles(filters: ArticleFilters = {}) {
     queryKey: ["articles", filters],
     queryFn: () => getArticles(filters),
     staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+}
+
+export function useArticlesByCategory(
+  portalSlug: string,
+  categorySlug?: string,
+  limit = 12,
+  offset = 0,
+) {
+  return useQuery({
+    queryKey: ["articles", "category", portalSlug, categorySlug, limit, offset],
+    queryFn: () =>
+      getArticlesByCategory(portalSlug, categorySlug!, limit, offset),
+    enabled: Boolean(categorySlug),
+    staleTime: 1000 * 60 * 2,
   });
 }
 

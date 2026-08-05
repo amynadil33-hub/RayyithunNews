@@ -2,30 +2,63 @@ import { Navigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAdminAuth } from "../../hooks/use-admin-auth.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import {
-  LayoutDashboardIcon, NewspaperIcon, TagIcon, ImageIcon,
-  MonitorIcon, MicIcon, FileTextIcon, MailIcon, MegaphoneIcon,
-  UsersIcon, SettingsIcon, SendIcon, LogOutIcon, ChevronRightIcon,
+  LayoutDashboardIcon,
+  NewspaperIcon,
+  TagIcon,
+  ImageIcon,
+  MonitorIcon,
+  MicIcon,
+  FileTextIcon,
+  MailIcon,
+  MegaphoneIcon,
+  UsersIcon,
+  SettingsIcon,
+  SendIcon,
+  LogOutIcon,
+  ChevronRightIcon,
   ClipboardCheckIcon,
+  MessagesSquareIcon,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { icon: LayoutDashboardIcon, label: "Dashboard", href: "/admin/dashboard" },
   { icon: NewspaperIcon, label: "Articles", href: "/admin/articles" },
-  { icon: ClipboardCheckIcon, label: "Review Queue", href: "/admin/review", reviewerOnly: true },
+  {
+    icon: ClipboardCheckIcon,
+    label: "Review Queue",
+    href: "/admin/review",
+    reviewerOnly: true,
+  },
   { icon: TagIcon, label: "Categories", href: "/admin/categories" },
+  { icon: TagIcon, label: "Tags", href: "/admin/tags", reviewerOnly: true },
+  {
+    icon: MessagesSquareIcon,
+    label: "Comments",
+    href: "/admin/comments",
+    reviewerOnly: true,
+  },
   { icon: ImageIcon, label: "Media", href: "/admin/media" },
   { icon: MonitorIcon, label: "Advertisements", href: "/admin/advertisements" },
   { icon: MicIcon, label: "Podcasts", href: "/admin/podcasts" },
   { icon: FileTextIcon, label: "Pages", href: "/admin/pages" },
-  { icon: MailIcon, label: "Contact Messages", href: "/admin/contact-messages" },
-  { icon: MegaphoneIcon, label: "Advertiser Inquiries", href: "/admin/advertiser-inquiries" },
+  {
+    icon: MailIcon,
+    label: "Contact Messages",
+    href: "/admin/contact-messages",
+  },
+  {
+    icon: MegaphoneIcon,
+    label: "Advertiser Inquiries",
+    href: "/admin/advertiser-inquiries",
+  },
   { icon: SendIcon, label: "Newsletter", href: "/admin/newsletter" },
   { icon: UsersIcon, label: "Users", href: "/admin/users" },
   { icon: SettingsIcon, label: "Settings", href: "/admin/settings" },
 ];
 
 export default function AdminLayout() {
-  const { user, profile, isLoading, signOut, isAdminAreaAllowed, hasRole } = useAdminAuth();
+  const { user, profile, isLoading, signOut, isAdminAreaAllowed, hasRole } =
+    useAdminAuth();
   const location = useLocation();
 
   if (isLoading) {
@@ -51,15 +84,24 @@ export default function AdminLayout() {
         {/* Logo */}
         <div className="p-5 border-b border-white/10">
           <Link to="/en" className="block">
-            <img src="/rayyithun-logo-dhivehi-transparent.png" alt="RAYYITHUN" className="h-16 w-full object-contain object-center brightness-0 invert" />
-            <span className="block text-[#95D5B2] text-xs mt-0.5">Admin CMS</span>
+            <img
+              src="/rayyithun-logo-dhivehi-transparent.png"
+              alt="RAYYITHUN"
+              className="h-16 w-full object-contain object-center brightness-0 invert"
+            />
+            <span className="block text-[#95D5B2] text-xs mt-0.5">
+              Admin CMS
+            </span>
           </Link>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 p-3">
           <ul className="space-y-0.5">
-            {NAV_ITEMS.filter((item) => !item.reviewerOnly || hasRole("editor", "admin", "super_admin")).map(({ icon: Icon, label, href }) => {
+            {NAV_ITEMS.filter(
+              (item) =>
+                !item.reviewerOnly || hasRole("editor", "admin", "super_admin"),
+            ).map(({ icon: Icon, label, href }) => {
               const isActive = location.pathname.startsWith(href);
               return (
                 <li key={href}>
@@ -73,7 +115,9 @@ export default function AdminLayout() {
                   >
                     <Icon size={16} className="flex-shrink-0" />
                     <span className="flex-1">{label}</span>
-                    {isActive && <ChevronRightIcon size={12} className="opacity-60" />}
+                    {isActive && (
+                      <ChevronRightIcon size={12} className="opacity-60" />
+                    )}
                   </Link>
                 </li>
               );
@@ -84,16 +128,30 @@ export default function AdminLayout() {
         {/* User info + logout */}
         <div className="p-3 border-t border-white/10">
           <div className="flex items-center gap-2 px-3 py-2 mb-1">
-            <div className="w-7 h-7 rounded-full bg-[#52B788] flex items-center justify-center text-[#103820] text-xs font-bold flex-shrink-0">
-              {profile.full_name?.charAt(0).toUpperCase() ?? "A"}
-            </div>
+            {profile.avatar_url ? (
+              <img
+                src={profile.avatar_url}
+                alt=""
+                className="h-7 w-7 flex-shrink-0 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-[#52B788] flex items-center justify-center text-[#103820] text-xs font-bold flex-shrink-0">
+                {profile.full_name?.charAt(0).toUpperCase() ?? "A"}
+              </div>
+            )}
             <div className="min-w-0">
-              <p className="text-white text-xs font-medium truncate">{profile.full_name ?? "Admin"}</p>
-              <p className="text-[#95D5B2] text-[10px] capitalize">{profile.role.replace("_", " ")}</p>
+              <p className="text-white text-xs font-medium truncate">
+                {profile.full_name ?? "Admin"}
+              </p>
+              <p className="text-[#95D5B2] text-[10px] capitalize">
+                {profile.role.replace("_", " ")}
+              </p>
             </div>
           </div>
           <button
-            onClick={() => { signOut().catch(console.error); }}
+            onClick={() => {
+              signOut().catch(console.error);
+            }}
             className="w-full flex items-center gap-2 px-3 py-2 text-[#95D5B2] hover:text-white hover:bg-white/10 rounded-sm text-xs font-medium transition-colors"
           >
             <LogOutIcon size={14} />

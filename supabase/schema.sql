@@ -82,8 +82,12 @@ CREATE TABLE IF NOT EXISTS public.articles (
   excerpt           TEXT,
   content           TEXT,
   featured_image_url TEXT,
+  featured_image_caption TEXT,
+  featured_image_credit TEXT,
   additional_image_1_url TEXT,
+  additional_image_1_credit TEXT,
   additional_image_2_url TEXT,
+  additional_image_2_credit TEXT,
   status            TEXT NOT NULL DEFAULT 'draft' CHECK (status IN (
     'draft','submitted','in_review','changes_requested',
     'approved','published','scheduled','archived'
@@ -91,6 +95,7 @@ CREATE TABLE IF NOT EXISTS public.articles (
   is_breaking       BOOLEAN NOT NULL DEFAULT false,
   is_featured       BOOLEAN NOT NULL DEFAULT false,
   is_trending       BOOLEAN NOT NULL DEFAULT false,
+  show_author       BOOLEAN NOT NULL DEFAULT true,
   read_time         INT,
   seo_title         TEXT,
   seo_description   TEXT,
@@ -133,6 +138,54 @@ CREATE TABLE IF NOT EXISTS public.article_reviews (
 
 CREATE INDEX IF NOT EXISTS idx_article_reviews_article_created
   ON public.article_reviews(article_id, created_at DESC);
+
+-- Newsroom tags, moderated comments and breaking-news updates
+CREATE TABLE IF NOT EXISTS public.tags (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  portal_id UUID NOT NULL REFERENCES public.portals(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(portal_id, slug)
+);
+
+CREATE TABLE IF NOT EXISTS public.article_tags (
+  article_id UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  tag_id UUID NOT NULL REFERENCES public.tags(id) ON DELETE CASCADE,
+  PRIMARY KEY(article_id, tag_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.comments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  article_id UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  comment TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected','spam')),
+  approved_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+  approved_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.article_live_updates (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  article_id UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  update_title TEXT,
+  update_body TEXT NOT NULL,
+  created_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL DEFAULT auth.uid(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_comments_article_status ON public.comments(article_id, status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_live_updates_article_created ON public.article_live_updates(article_id, created_at DESC);
+
+CREATE OR REPLACE VIEW public.public_profiles AS
+SELECT id, full_name, avatar_url FROM public.profiles;
+
+CREATE OR REPLACE VIEW public.public_comments AS
+SELECT id, article_id, name, comment, created_at
+FROM public.comments
+WHERE status = 'approved';
 
 -- ============================================================
 -- 5. MEDIA ASSETS

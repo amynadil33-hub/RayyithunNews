@@ -1,7 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
-import { getArticleBySlug, getRelatedArticles } from "../../services/articles.ts";
+import {
+  getArticleBySlug,
+  getRelatedArticles,
+} from "../../services/articles.ts";
 import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
@@ -9,8 +12,18 @@ import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
-import { ClockIcon, UserIcon, CalendarIcon, ShareIcon } from "lucide-react";
-import { getArticleImageHeight, getArticleImageUrl } from "../../lib/article-images.ts";
+import { ShareIcon } from "lucide-react";
+import {
+  getArticleImageHeight,
+  getArticleImageUrl,
+} from "../../lib/article-images.ts";
+import { sanitizeArticleHtml } from "../../lib/sanitizeHtml.ts";
+import {
+  ArticleAuthorMeta,
+  ArticleComments,
+  ArticleLiveTimeline,
+  ArticleTags,
+} from "../../components/shared/ArticleNewsroom.tsx";
 
 export default function EnglishArticle() {
   const { slug } = useParams<{ slug: string }>();
@@ -23,7 +36,12 @@ export default function EnglishArticle() {
 
   const { data: related } = useQuery({
     queryKey: ["related", article?.id],
-    queryFn: () => getRelatedArticles(article!.id, article!.category_id!, article!.portal_id),
+    queryFn: () =>
+      getRelatedArticles(
+        article!.id,
+        article!.category_id!,
+        article!.portal_id,
+      ),
     enabled: !!article?.category_id,
   });
 
@@ -39,7 +57,9 @@ export default function EnglishArticle() {
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-6 w-2/3" />
           <Skeleton className="w-full h-72" />
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-4 w-full" />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-4 w-full" />
+          ))}
         </div>
         <EnglishFooter />
       </div>
@@ -51,8 +71,12 @@ export default function EnglishArticle() {
       <div className="min-h-screen bg-[#F8F8F8]">
         <EnglishHeader />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h1 className="font-serif text-3xl font-bold text-[#142820] mb-4">Article Not Found</h1>
-          <Link to="/en" className="text-[#103820] underline">← Back to home</Link>
+          <h1 className="font-serif text-3xl font-bold text-[#142820] mb-4">
+            Article Not Found
+          </h1>
+          <Link to="/en" className="text-[#103820] underline">
+            ← Back to home
+          </Link>
         </div>
         <EnglishFooter />
       </div>
@@ -64,14 +88,26 @@ export default function EnglishArticle() {
     : "";
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8]">
+    <div className="min-h-screen bg-[#F8F8F8]" lang="en" dir="ltr">
       <Helmet>
         <title>{article.seo_title ?? article.title} — RAYYITHUN</title>
-        <meta name="description" content={article.seo_description ?? article.excerpt ?? ""} />
-        <meta property="og:title" content={article.seo_title ?? article.title} />
-        <meta property="og:description" content={article.seo_description ?? article.excerpt ?? ""} />
+        <meta
+          name="description"
+          content={article.seo_description ?? article.excerpt ?? ""}
+        />
+        <meta
+          property="og:title"
+          content={article.seo_title ?? article.title}
+        />
+        <meta
+          property="og:description"
+          content={article.seo_description ?? article.excerpt ?? ""}
+        />
         {(article.og_image_url ?? article.featured_image_url) && (
-          <meta property="og:image" content={article.og_image_url ?? article.featured_image_url!} />
+          <meta
+            property="og:image"
+            content={article.og_image_url ?? article.featured_image_url!}
+          />
         )}
         <meta property="og:type" content="article" />
       </Helmet>
@@ -84,26 +120,37 @@ export default function EnglishArticle() {
           <main className="flex-1 min-w-0">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-xs text-[#6B756E] mb-5">
-              <Link to="/en" className="hover:text-[#103820]">Home</Link>
+              <Link to="/en" className="hover:text-[#103820]">
+                Home
+              </Link>
               <span>/</span>
               {article.category && (
                 <>
-                  <Link to={`/en/${article.category.slug}`} className="hover:text-[#103820]">
+                  <Link
+                    to={`/en/${article.category.slug}`}
+                    className="hover:text-[#103820]"
+                  >
                     {article.category.name}
                   </Link>
                   <span>/</span>
                 </>
               )}
-              <span className="text-[#142820] truncate max-w-[200px]">{article.title}</span>
+              <span className="text-[#142820] truncate max-w-[200px]">
+                {article.title}
+              </span>
             </div>
 
             {article.is_breaking && (
-              <span className="breaking-badge inline-block mb-3">Breaking News</span>
+              <span className="breaking-badge inline-block mb-3">
+                Breaking News
+              </span>
             )}
 
             {article.category && (
               <Link to={`/en/${article.category.slug}`}>
-                <span className="category-label mb-3 block">{article.category.name}</span>
+                <span className="category-label mb-3 block">
+                  {article.category.name}
+                </span>
               </Link>
             )}
 
@@ -118,28 +165,12 @@ export default function EnglishArticle() {
             )}
 
             {/* Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-sm text-[#6B756E] mb-6 pb-5 border-b border-[#E5E7E2]">
-              {article.author?.full_name && (
-                <span className="flex items-center gap-1">
-                  <UserIcon size={14} />
-                  {article.author.full_name}
-                </span>
-              )}
-              {publishDate && (
-                <span className="flex items-center gap-1">
-                  <CalendarIcon size={14} />
-                  {publishDate}
-                </span>
-              )}
-              {article.read_time && (
-                <span className="flex items-center gap-1">
-                  <ClockIcon size={14} />
-                  {article.read_time} min read
-                </span>
-              )}
+            <div className="flex justify-end text-sm text-[#6B756E] mb-6 pb-5 border-b border-[#E5E7E2]">
               {/* Share buttons */}
-              <div className="ml-auto flex items-center gap-2">
-                <span className="flex items-center gap-1 text-xs text-[#6B756E]"><ShareIcon size={13} /> Share</span>
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1 text-xs text-[#6B756E]">
+                  <ShareIcon size={13} /> Share
+                </span>
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
@@ -177,24 +208,68 @@ export default function EnglishArticle() {
                   src={getArticleImageUrl(article.featured_image_url)}
                   alt={article.title}
                   className="w-full rounded-sm object-cover"
-                  style={{ height: getArticleImageHeight(article.featured_image_url), maxHeight: "70vh" }}
+                  style={{
+                    height: getArticleImageHeight(article.featured_image_url),
+                    maxHeight: "70vh",
+                  }}
                 />
+                {(article.featured_image_caption ||
+                  article.featured_image_credit) && (
+                  <figcaption className="mt-2 text-xs leading-relaxed text-[#6B756E]">
+                    {article.featured_image_caption}
+                    {article.featured_image_caption &&
+                    article.featured_image_credit
+                      ? " — "
+                      : ""}
+                    {article.featured_image_credit}
+                  </figcaption>
+                )}
               </figure>
             )}
 
-            {(article.additional_image_1_url || article.additional_image_2_url) && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8" aria-label="Additional article images">
-                {[article.additional_image_1_url, article.additional_image_2_url]
-                  .filter((imageUrl): imageUrl is string => Boolean(imageUrl))
-                  .map((imageUrl, index) => (
-                    <figure key={`${imageUrl}-${index}`} className="overflow-hidden rounded-sm bg-[#E5E7E2]">
+            <ArticleAuthorMeta article={article} publishDate={publishDate} />
+            <ArticleLiveTimeline articleId={article.id} />
+
+            {(article.additional_image_1_url ||
+              article.additional_image_2_url) && (
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
+                aria-label="Additional article images"
+              >
+                {[
+                  {
+                    url: article.additional_image_1_url,
+                    credit: article.additional_image_1_credit,
+                  },
+                  {
+                    url: article.additional_image_2_url,
+                    credit: article.additional_image_2_credit,
+                  },
+                ]
+                  .filter(
+                    (image): image is { url: string; credit: string | null } =>
+                      Boolean(image.url),
+                  )
+                  .map((image, index) => (
+                    <figure
+                      key={`${image.url}-${index}`}
+                      className="overflow-hidden rounded-sm bg-[#E5E7E2]"
+                    >
                       <img
-                        src={getArticleImageUrl(imageUrl)}
+                        src={getArticleImageUrl(image.url)}
                         alt={`${article.title} — image ${index + 2}`}
                         className="w-full object-cover"
-                        style={{ height: getArticleImageHeight(imageUrl), maxHeight: "70vh" }}
+                        style={{
+                          height: getArticleImageHeight(image.url),
+                          maxHeight: "70vh",
+                        }}
                         loading="lazy"
                       />
+                      {image.credit && (
+                        <figcaption className="bg-white px-1 pt-2 text-xs leading-relaxed text-[#6B756E]">
+                          {image.credit}
+                        </figcaption>
+                      )}
                     </figure>
                   ))}
               </div>
@@ -202,13 +277,12 @@ export default function EnglishArticle() {
 
             {/* Article body */}
             <div
-              className="article-prose prose prose-lg max-w-none
-                prose-headings:font-serif prose-headings:text-[#142820]
-                prose-p:text-[#142820] prose-p:leading-[1.85]
-                prose-a:text-[#103820] prose-a:underline
-                prose-img:rounded-sm prose-blockquote:border-l-[#103820]"
-              dangerouslySetInnerHTML={{ __html: article.content ?? "" }}
+              className="article-content article-content-english"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeArticleHtml(article.content),
+              }}
             />
+            <ArticleTags articleId={article.id} />
 
             {/* Inline ad */}
             <div className="my-8">
@@ -218,7 +292,9 @@ export default function EnglishArticle() {
             {/* Related articles */}
             {related && related.length > 0 && (
               <section className="mt-10 pt-8 border-t border-[#E5E7E2]">
-                <h2 className="font-serif text-xl font-bold text-[#142820] mb-5">Related Stories</h2>
+                <h2 className="font-serif text-xl font-bold text-[#142820] mb-5">
+                  Related Stories
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {related.slice(0, 4).map((a) => (
                     <ArticleCard key={a.id} article={a} variant="compact" />
@@ -226,6 +302,7 @@ export default function EnglishArticle() {
                 </div>
               </section>
             )}
+            <ArticleComments articleId={article.id} />
           </main>
 
           {/* Sidebar */}

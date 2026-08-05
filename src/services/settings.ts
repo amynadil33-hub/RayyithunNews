@@ -1,12 +1,14 @@
 import { supabase } from "../lib/supabaseClient.ts";
-import type { SiteSetting, StaticPage, Portal, Profile } from "../lib/database.types.ts";
+import type {
+  SiteSetting,
+  StaticPage,
+  Portal,
+  Profile,
+} from "../lib/database.types.ts";
 
 // Site Settings
 export async function getSiteSetting(key: string, portalId?: string) {
-  let query = supabase
-    .from("site_settings")
-    .select("*")
-    .eq("key", key);
+  let query = supabase.from("site_settings").select("*").eq("key", key);
   if (portalId) {
     query = query.eq("portal_id", portalId);
   }
@@ -15,7 +17,11 @@ export async function getSiteSetting(key: string, portalId?: string) {
   return data as SiteSetting;
 }
 
-export async function upsertSiteSetting(key: string, value: unknown, portalId?: string) {
+export async function upsertSiteSetting(
+  key: string,
+  value: unknown,
+  portalId?: string,
+) {
   const { error } = await supabase.from("site_settings").upsert(
     {
       key,
@@ -23,7 +29,7 @@ export async function upsertSiteSetting(key: string, value: unknown, portalId?: 
       portal_id: portalId ?? null,
       updated_at: new Date().toISOString(),
     } as never,
-    { onConflict: "portal_id,key" }
+    { onConflict: "portal_id,key" },
   );
   if (error) throw error;
 }
@@ -98,5 +104,13 @@ export async function updateUserRole(id: string, role: Profile["role"]) {
     .from("profiles")
     .update({ role, updated_at: new Date().toISOString() } as never)
     .eq("id", id);
+  if (error) throw error;
+}
+
+export async function updateUserAvatar(id: string, avatarUrl: string | null) {
+  const { error } = await supabase.rpc("set_profile_avatar", {
+    target_profile_id: id,
+    new_avatar_url: avatarUrl,
+  } as never);
   if (error) throw error;
 }

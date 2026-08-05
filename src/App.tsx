@@ -1,4 +1,11 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { DefaultProviders } from "./components/providers/default.tsx";
@@ -40,6 +47,8 @@ import AdminInquiries from "./pages/admin/AdvertiserInquiries.tsx";
 import AdminNewsletter from "./pages/admin/Newsletter.tsx";
 import AdminUsers from "./pages/admin/Users.tsx";
 import AdminSettings from "./pages/admin/Settings.tsx";
+import AdminTags from "./pages/admin/Tags.tsx";
+import AdminComments from "./pages/admin/Comments.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 
 import NotFound from "./pages/NotFound.tsx";
@@ -50,6 +59,19 @@ const queryClient = new QueryClient({
   },
 });
 
+function PortalDocumentAttributes() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
+    const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+    document.documentElement.lang = isEnglish || isAdmin ? "en" : "dv";
+    document.documentElement.dir = isEnglish || isAdmin ? "ltr" : "rtl";
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <HelmetProvider>
@@ -57,6 +79,7 @@ export default function App() {
         <AdminAuthProvider>
           <DefaultProviders>
             <BrowserRouter>
+              <PortalDocumentAttributes />
               <ScrollToTop />
               <Routes>
                 {/* Dhivehi Portal (root) */}
@@ -65,7 +88,10 @@ export default function App() {
                 <Route path="/contact" element={<DhivehiContact />} />
                 <Route path="/advertise" element={<DhivehiAdvertise />} />
                 <Route path="/podcast" element={<DhivehiPodcast />} />
-                <Route path="/submit-article" element={<DhivehiSubmitArticle />} />
+                <Route
+                  path="/submit-article"
+                  element={<DhivehiSubmitArticle />}
+                />
                 <Route path="/:category" element={<DhivehiCategory />} />
 
                 {/* English Portal */}
@@ -85,16 +111,30 @@ export default function App() {
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="articles" element={<AdminArticles />} />
                   <Route path="articles/new" element={<AdminArticleEdit />} />
-                  <Route path="articles/edit/:id" element={<AdminArticleEdit />} />
+                  <Route
+                    path="articles/edit/:id"
+                    element={<AdminArticleEdit />}
+                  />
                   <Route path="review" element={<AdminReviewQueue />} />
-                  <Route path="review-queue" element={<Navigate to="/admin/review" replace />} />
+                  <Route
+                    path="review-queue"
+                    element={<Navigate to="/admin/review" replace />}
+                  />
                   <Route path="categories" element={<AdminCategories />} />
+                  <Route path="tags" element={<AdminTags />} />
+                  <Route path="comments" element={<AdminComments />} />
                   <Route path="media" element={<AdminMedia />} />
                   <Route path="advertisements" element={<AdminAds />} />
                   <Route path="podcasts" element={<AdminPodcasts />} />
                   <Route path="pages" element={<AdminPages />} />
-                  <Route path="contact-messages" element={<AdminContactMessages />} />
-                  <Route path="advertiser-inquiries" element={<AdminInquiries />} />
+                  <Route
+                    path="contact-messages"
+                    element={<AdminContactMessages />}
+                  />
+                  <Route
+                    path="advertiser-inquiries"
+                    element={<AdminInquiries />}
+                  />
                   <Route path="newsletter" element={<AdminNewsletter />} />
                   <Route path="users" element={<AdminUsers />} />
                   <Route path="settings" element={<AdminSettings />} />
