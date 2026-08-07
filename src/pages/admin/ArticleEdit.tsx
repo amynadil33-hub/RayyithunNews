@@ -308,20 +308,6 @@ export default function AdminArticleEdit() {
     mutationFn: async (action: WorkflowAction) => {
       const payload = await buildPayload();
 
-      if (
-        !["save", "in_review", "changes_requested", "archive"].includes(action)
-      ) {
-        const imageMissingCredit = IMAGE_FIELDS.find(
-          ({ key, creditKey }) =>
-            Boolean(payload[key]) && !payload[creditKey]?.trim(),
-        );
-        if (imageMissingCredit) {
-          throw new Error(
-            `Add a photo credit for the ${imageMissingCredit.label.toLowerCase()} before continuing.`,
-          );
-        }
-      }
-
       if (action === "save") {
         const article = isNew
           ? await createDraftArticle(payload)
@@ -681,7 +667,7 @@ export default function AdminArticleEdit() {
                   plugins:
                     "lists link image table code autoresize directionality",
                   toolbar:
-                    "undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | blockquote | link image table | removeformat | code",
+                    "undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | blockquote | link inlinearticleimage table | removeformat | code",
                   block_formats: "Paragraph=p; Heading 2=h2; Heading 3=h3",
                   directionality: portalSlug === "dhivehi" ? "rtl" : "ltr",
                   formats: {
@@ -702,9 +688,58 @@ export default function AdminArticleEdit() {
                       classes: "article-align-justify",
                     },
                   },
+                  setup: (editor) => {
+                    editor.ui.registry.addButton("inlinearticleimage", {
+                      icon: "image",
+                      text: "Add photo",
+                      tooltip: "Insert an image at the cursor",
+                      onAction: () => {
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.accept = ".png,.jpg,.jpeg,.webp";
+                        input.addEventListener("change", () => {
+                          const file = input.files?.[0];
+                          if (!file) return;
+                          if (
+                            ![
+                              "image/png",
+                              "image/jpeg",
+                              "image/webp",
+                            ].includes(file.type)
+                          ) {
+                            toast.error("Choose a PNG, JPG, JPEG, or WebP image.");
+                            return;
+                          }
+                          if (file.size > 10 * 1024 * 1024) {
+                            toast.error("Images must be smaller than 10 MB.");
+                            return;
+                          }
+
+                          editor.setProgressState(true);
+                          void uploadArticleImage(file)
+                            .then((asset) => {
+                              const image = document.createElement("img");
+                              image.src = asset.file_url;
+                              image.alt = file.name.replace(/\.[^.]+$/, "");
+                              editor.insertContent(`${image.outerHTML}<p></p>`);
+                              toast.success("Image inserted into the article");
+                            })
+                            .catch((error: unknown) => {
+                              toast.error(
+                                error instanceof Error
+                                  ? error.message
+                                  : "The image could not be uploaded.",
+                              );
+                            })
+                            .finally(() => editor.setProgressState(false));
+                        });
+                        input.click();
+                      },
+                    });
+                  },
                   content_style:
                     portalSlug === "dhivehi"
-                      ? `@font-face { font-family: "RayyithunDhivehi"; src: url("/fonts/RayyithunDhivehi.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; } body { font-family: "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana", sans-serif; direction: rtl; text-align: right; line-height: 1.9; font-size: 20px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-right: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; } .article-align-left { text-align: left; } .article-align-center { text-align: center; } .article-align-right { text-align: right; } .article-align-justify { text-align: justify; }`
+                      ? `@font-face { font-family: "MV Faseyha"; src: url("/fonts/MV_Faseyha.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; } body { font-family: "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana", sans-serif; direction: rtl; text-align: right; line-height: 1.9; font-size: 20px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-right: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; } .article-align-left { text-align: left; } .article-align-center { text-align: center; } .article-align-right { text-align: right; } .article-align-justify { text-align: justify; }`
                       : `body { font-family: Inter, Arial, sans-serif; direction: ltr; text-align: left; line-height: 1.8; font-size: 17px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-left: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; } .article-align-left { text-align: left; } .article-align-center { text-align: center; } .article-align-right { text-align: right; } .article-align-justify { text-align: justify; }`,
                   image_caption: true,
                   file_picker_types: "image",
@@ -721,8 +756,8 @@ export default function AdminArticleEdit() {
                 }}
               />
               <p className="mt-1.5 text-[11px] text-[#6B756E]">
-                Formatting and paragraph breaks are preserved when the article
-                is saved.
+                Place the cursor between two paragraphs and use the image
+                button to insert another photo inside the story.
               </p>
             </div>
           </div>
@@ -963,7 +998,7 @@ export default function AdminArticleEdit() {
                         htmlFor={`${key}-credit`}
                         className="block text-[11px] font-medium text-[#142820] mb-1"
                       >
-                        Photo credit <span className="text-red-700">*</span>
+                        Photo credit <span className="text-[#6B756E]">(optional)</span>
                       </label>
                       <input
                         id={`${key}-credit`}
@@ -978,8 +1013,8 @@ export default function AdminArticleEdit() {
                         className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs focus:outline-none focus:border-[#103820] disabled:bg-[#F8F8F8]"
                       />
                       <p className="mt-1 text-[10px] text-[#6B756E]">
-                        This line will appear directly below the image in the
-                        article.
+                        When provided, this line appears directly below the
+                        image in the article.
                       </p>
                     </div>
                     <div>

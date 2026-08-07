@@ -43,22 +43,30 @@ function stripArticleRelations(article: Partial<Article>) {
     ...values
   } = article;
   const cleanValues: Partial<Article> = { ...values };
+  if (!cleanValues.featured_image_credit)
+    delete cleanValues.featured_image_credit;
   if (!cleanValues.additional_image_1_url)
     delete cleanValues.additional_image_1_url;
+  if (!cleanValues.additional_image_1_credit)
+    delete cleanValues.additional_image_1_credit;
   if (!cleanValues.additional_image_2_url)
     delete cleanValues.additional_image_2_url;
+  if (!cleanValues.additional_image_2_credit)
+    delete cleanValues.additional_image_2_credit;
   return cleanValues;
 }
 
 export async function supportsArticleGalleryImages() {
   const { error } = await supabase
     .from("articles")
-    .select("additional_image_1_url, additional_image_2_url")
+    .select(
+      "additional_image_1_url, additional_image_1_credit, additional_image_2_url, additional_image_2_credit",
+    )
     .limit(1);
 
   if (!error) return true;
   const missingColumn =
-    /additional_image_[12]_url|schema cache|does not exist/i.test(
+    /additional_image_[12]_(?:url|credit)|schema cache|does not exist/i.test(
       error.message,
     );
   if (missingColumn) return false;

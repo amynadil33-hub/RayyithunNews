@@ -7,8 +7,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "RayyithunDhivehi";
-  src: url("/fonts/RayyithunDhivehi.woff2") format("woff2");
+  font-family: "MV Faseyha";
+  src: url("/fonts/MV_Faseyha.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -18,10 +18,10 @@
   --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, "Times New Roman", serif;
   --font-dhivehi:
-    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
     "Noto Sans Thaana", sans-serif;
   --font-thaana:
-    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
     "Noto Sans Thaana", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
@@ -171,7 +171,7 @@ html[lang="dv"] body,
 .dhivehi,
 .dv {
   font-family:
-    "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma",
+    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
     "Noto Sans Thaana", sans-serif;
 }
 

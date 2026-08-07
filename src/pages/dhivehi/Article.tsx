@@ -12,6 +12,11 @@ import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
+import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
+import {
+  getAbsoluteSiteUrl,
+  getCanonicalPageUrl,
+} from "../../lib/site-url.ts";
 import {
   getArticleImageHeight,
   getArticleImageUrl,
@@ -43,9 +48,6 @@ export default function DhivehiArticle() {
       ),
     enabled: !!article?.category_id,
   });
-
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareTitle = article?.title ?? "";
 
   if (isLoading) {
     return (
@@ -84,6 +86,10 @@ export default function DhivehiArticle() {
   const publishDate = article.published_at
     ? format(new Date(article.published_at), "d MMMM yyyy")
     : "";
+  const canonicalUrl = getCanonicalPageUrl();
+  const shareImage = getAbsoluteSiteUrl(
+    article.og_image_url ?? article.featured_image_url,
+  );
 
   return (
     <div className="min-h-screen bg-[#F8F8F8]" dir="rtl" lang="dv">
@@ -97,6 +103,25 @@ export default function DhivehiArticle() {
           property="og:title"
           content={article.seo_title ?? article.title}
         />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content="RAYYITHUN" />
+        <meta
+          property="og:description"
+          content={article.seo_description ?? article.excerpt ?? ""}
+        />
+        {shareImage && <meta property="og:image" content={shareImage} />}
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={article.seo_title ?? article.title}
+        />
+        <meta
+          name="twitter:description"
+          content={article.seo_description ?? article.excerpt ?? ""}
+        />
+        {shareImage && <meta name="twitter:image" content={shareImage} />}
+        <link rel="canonical" href={canonicalUrl} />
         <html lang="dv" dir="rtl" />
       </Helmet>
 
@@ -146,36 +171,8 @@ export default function DhivehiArticle() {
               </p>
             )}
 
-            {/* Meta */}
-            <div className="flex justify-end text-sm text-[#6B756E] mb-6 pb-5 border-b border-[#E5E7E2] font-thaana">
-              <div className="flex items-center gap-2">
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#6B756E] hover:text-[#1877F2] transition-colors text-xs font-bold"
-                  aria-label="Share on Facebook"
-                >
-                  f
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#6B756E] hover:text-[#1DA1F2] transition-colors text-xs font-bold"
-                  aria-label="Share on Twitter"
-                >
-                  𝕏
-                </a>
-                <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareTitle + " " + shareUrl)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#6B756E] hover:text-[#25D366] transition-colors text-xs font-bold"
-                >
-                  WA
-                </a>
-              </div>
+            <div className="mb-6 font-sans" dir="ltr">
+              <ArticleShareButtons title={article.title} url={canonicalUrl} />
             </div>
 
             {article.featured_image_url && (
@@ -264,6 +261,13 @@ export default function DhivehiArticle() {
               }}
             />
             <ArticleTags articleId={article.id} isDhivehi />
+            <div className="mt-8 font-sans" dir="ltr">
+              <ArticleShareButtons
+                title={article.title}
+                url={canonicalUrl}
+                compact
+              />
+            </div>
 
             <div className="my-8">
               <AdBanner placement="article_inline" label="އިޢުލާން" />
