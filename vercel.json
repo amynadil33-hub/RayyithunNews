@@ -3,6 +3,28 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/article/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|WhatsApp|TelegramBot|Slackbot|Discordbot|Pinterestbot).*"
+        }
+      ],
+      "destination": "/api/article-meta?portal=dhivehi&slug=:slug"
+    },
+    {
+      "source": "/en/article/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|WhatsApp|TelegramBot|Slackbot|Discordbot|Pinterestbot).*"
+        }
+      ],
+      "destination": "/api/article-meta?portal=english&slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
