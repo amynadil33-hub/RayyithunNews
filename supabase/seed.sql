@@ -23,7 +23,8 @@ INSERT INTO public.categories (portal_id, name, slug, description, sort_order) V
   ('00000000-0000-0000-0000-000000000002', 'World', 'world', 'International news', 6),
   ('00000000-0000-0000-0000-000000000002', 'Citizen', 'citizen', 'Community and citizen stories', 7),
   ('00000000-0000-0000-0000-000000000002', 'Market', 'market', 'Market and trade updates', 8),
-  ('00000000-0000-0000-0000-000000000002', 'Podcast', 'podcast', 'Audio stories and conversations', 9)
+  ('00000000-0000-0000-0000-000000000002', 'Podcast', 'podcast', 'Audio stories and conversations', 9),
+  ('00000000-0000-0000-0000-000000000002', 'Travel and tourism', 'travel-tourism', 'Travel and tourism news from the Maldives', 10)
 ON CONFLICT DO NOTHING;
 
 -- ============================================================
@@ -37,7 +38,8 @@ INSERT INTO public.categories (portal_id, name, slug, description, sort_order) V
   ('00000000-0000-0000-0000-000000000001', 'އުފެއްދުންތެރިކަން', 'innovation', 'ޓެކްނޮލޮޖީ އަދި ނަވައިދާ', 5),
   ('00000000-0000-0000-0000-000000000001', 'ދުނިޔެ', 'world', 'ބައިނަލްއަޤްވާމީ ހަބަރު', 6),
   ('00000000-0000-0000-0000-000000000001', 'ރައްޔިތުން', 'citizen', 'ރައްޔިތުންގެ ވާހަކަ', 7),
-  ('00000000-0000-0000-0000-000000000001', 'ބާޒާރު', 'market', 'ތިޔަ ބާޒާރުގެ ހަލަތު', 8)
+  ('00000000-0000-0000-0000-000000000001', 'ބާޒާރު', 'market', 'ތިޔަ ބާޒާރުގެ ހަލަތު', 8),
+  ('00000000-0000-0000-0000-000000000001', 'ފަތުރުވެރިކަން', 'travel-tourism', 'ފަތުރުވެރިކަމާއި ޓޫރިޒަމް ދާއިރާގެ ހަބަރު', 9)
 ON CONFLICT DO NOTHING;
 
 -- ============================================================

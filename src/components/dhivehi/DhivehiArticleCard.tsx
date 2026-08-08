@@ -45,7 +45,11 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
+<<<<<<< HEAD
           <h2 className="font-article-title text-white text-2xl md:text-3xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
+=======
+          <h2 className="thaana-headline text-white text-3xl md:text-4xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
+>>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
             {article.title}
           </h2>
           {article.excerpt && (
@@ -91,7 +95,11 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
+<<<<<<< HEAD
           <h3 className="font-article-title text-sm font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-3">
+=======
+          <h3 className="text-base font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-3">
+>>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
             {article.title}
           </h3>
           {date && (
@@ -119,7 +127,11 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
+<<<<<<< HEAD
         <h3 className="font-article-title text-sm font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
+=======
+        <h3 className="text-base font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+>>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
           {article.title}
         </h3>
       </Link>
@@ -139,7 +151,11 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
+<<<<<<< HEAD
           <h3 className="font-article-title text-sm font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
+=======
+          <h3 className="text-base font-medium text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+>>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
             {article.title}
           </h3>
           {date && (
@@ -185,7 +201,11 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
+<<<<<<< HEAD
         <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-base">
+=======
+        <h3 className="text-[#142820] font-semibold thaana-headline leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-lg">
+>>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
           {article.title}
         </h3>
         {article.excerpt && (

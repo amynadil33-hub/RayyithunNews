@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { label: "ރައްޔިތުން", href: "/citizen" },
   { label: "ލިޔުން ހުށަހަޅާ", href: "/submit-article" },
   { label: "ބާޒާރު", href: "/market" },
+  { label: "ފަތުރުވެރިކަން", href: "/travel-tourism" },
 ];
 
 export default function DhivehiHeader() {

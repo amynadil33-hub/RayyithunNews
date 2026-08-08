@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: "Podcast", href: "/en/podcast" },
   { label: "Citizen", href: "/en/citizen" },
   { label: "Market", href: "/en/market" },
+  { label: "Travel and tourism", href: "/en/travel-tourism" },
 ];
 
 export default function EnglishHeader() {
@@ -38,7 +39,9 @@ export default function EnglishHeader() {
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E]">
           <span>{today}</span>
-          <span className="font-medium tracking-wide">The Voice of the Maldives</span>
+          <span className="font-medium tracking-wide">
+            The Voice of the Maldives
+          </span>
         </div>
       </div>
 
@@ -46,10 +49,7 @@ export default function EnglishHeader() {
       <div className="px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
-          <Link
-            to="/en"
-            className="isolate flex items-center overflow-hidden"
-          >
+          <Link to="/en" className="isolate flex items-center overflow-hidden">
             <img
               src="/rayyithun-logo-transparent-v2.png"
               alt="RAYYITHUN"
