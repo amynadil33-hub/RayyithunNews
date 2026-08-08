@@ -64,9 +64,7 @@ export async function supportsArticleGalleryImages() {
 
   if (!error) return true;
   const missingColumn =
-    /additional_image_1_url|schema cache|does not exist/i.test(
-      error.message,
-    );
+    /additional_image_1_url|schema cache|does not exist/i.test(error.message);
   if (missingColumn) return false;
   throw error;
 }
@@ -163,22 +161,28 @@ export async function getArticlesByCategory(
   if (!portal) return [];
   const portalId = (portal as { id: string }).id;
 
-  const { data: category, error: categoryError } = await supabase
+  const categorySlugs =
+    portalSlug === "dhivehi" && !categorySlug.startsWith("dv-")
+      ? [categorySlug, `dv-${categorySlug}`]
+      : [categorySlug];
+
+  const { data: categories, error: categoryError } = await supabase
     .from("categories")
     .select("id")
     .eq("portal_id", portalId)
-    .eq("slug", categorySlug)
     .eq("is_active", true)
-    .maybeSingle();
+    .in("slug", categorySlugs);
   if (categoryError) throw categoryError;
-  if (!category) return [];
-  const categoryId = (category as { id: string }).id;
+  const categoryIds = (categories ?? []).map(
+    (category) => (category as { id: string }).id,
+  );
+  if (categoryIds.length === 0) return [];
 
   let query = supabase
     .from("articles")
     .select(ARTICLE_SELECT)
     .eq("portal_id", portalId)
-    .eq("category_id", categoryId)
+    .in("category_id", categoryIds)
     .eq("status", "published")
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });

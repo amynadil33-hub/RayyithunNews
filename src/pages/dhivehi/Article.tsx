@@ -158,7 +158,7 @@ export default function DhivehiArticle() {
               </span>
             )}
 
-            <h1 className="font-article-title text-4xl md:text-5xl font-bold text-[#142820] leading-tight mb-4 text-right">
+            <h1 className="font-article-title text-6xl md:text-7xl font-bold text-[#142820] leading-tight mb-4 text-right">
               {article.title}
             </h1>
 

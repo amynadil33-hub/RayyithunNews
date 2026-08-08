@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => {
   const categoryQuery = {
     select: vi.fn(),
     eq: vi.fn(),
-    maybeSingle: vi.fn(),
+    in: vi.fn(),
   };
   categoryQuery.select.mockReturnValue(categoryQuery);
   categoryQuery.eq.mockReturnValue(categoryQuery);
@@ -20,6 +20,7 @@ const mocks = vi.hoisted(() => {
   const articleQuery = {
     select: vi.fn(),
     eq: vi.fn(),
+    in: vi.fn(),
     order: vi.fn(),
     range: vi.fn(),
   };
@@ -52,6 +53,7 @@ describe("getArticlesByCategory", () => {
     mocks.portalQuery.eq.mockReturnValue(mocks.portalQuery);
     mocks.categoryQuery.select.mockReturnValue(mocks.categoryQuery);
     mocks.categoryQuery.eq.mockReturnValue(mocks.categoryQuery);
+    mocks.articleQuery.in.mockReturnValue(mocks.articleQuery);
     mocks.articleQuery.select.mockReturnValue(mocks.articleQuery);
     mocks.articleQuery.eq.mockReturnValue(mocks.articleQuery);
     mocks.articleQuery.order.mockReturnValue(mocks.articleQuery);
@@ -62,8 +64,8 @@ describe("getArticlesByCategory", () => {
       data: { id: "portal-dhivehi" },
       error: null,
     });
-    mocks.categoryQuery.maybeSingle.mockResolvedValue({
-      data: { id: "category-religion" },
+    mocks.categoryQuery.in.mockResolvedValue({
+      data: [{ id: "category-religion" }],
       error: null,
     });
     mocks.articleQuery.range.mockResolvedValue({ data: [], error: null });
@@ -74,15 +76,17 @@ describe("getArticlesByCategory", () => {
       "portal_id",
       "portal-dhivehi",
     );
-    expect(mocks.categoryQuery.eq).toHaveBeenCalledWith("slug", "religion");
+    expect(mocks.categoryQuery.in).toHaveBeenCalledWith("slug", [
+      "religion",
+      "dv-religion",
+    ]);
     expect(mocks.articleQuery.eq).toHaveBeenCalledWith(
       "portal_id",
       "portal-dhivehi",
     );
-    expect(mocks.articleQuery.eq).toHaveBeenCalledWith(
-      "category_id",
+    expect(mocks.articleQuery.in).toHaveBeenCalledWith("category_id", [
       "category-religion",
-    );
+    ]);
     expect(mocks.articleQuery.eq).toHaveBeenCalledWith("status", "published");
   });
 
@@ -91,8 +95,8 @@ describe("getArticlesByCategory", () => {
       data: { id: "portal-english" },
       error: null,
     });
-    mocks.categoryQuery.maybeSingle.mockResolvedValue({
-      data: null,
+    mocks.categoryQuery.in.mockResolvedValue({
+      data: [],
       error: null,
     });
 
