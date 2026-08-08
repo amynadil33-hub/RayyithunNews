@@ -155,41 +155,12 @@ export async function getArticlesByCategory(
   limit?: number,
   offset = 0,
 ) {
-  const { data: portal, error: portalError } = await supabase
-    .from("portals")
-    .select("id")
-    .eq("slug", portalSlug)
-    .eq("is_active", true)
-    .maybeSingle();
-  if (portalError) throw portalError;
-  if (!portal) return [];
-  const portalId = (portal as { id: string }).id;
-
-  const { data: category, error: categoryError } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("portal_id", portalId)
-    .eq("slug", categorySlug)
-    .eq("is_active", true)
-    .maybeSingle();
-  if (categoryError) throw categoryError;
-  if (!category) return [];
-  const categoryId = (category as { id: string }).id;
-
-  let query = supabase
-    .from("articles")
-    .select(ARTICLE_SELECT)
-    .eq("portal_id", portalId)
-    .eq("category_id", categoryId)
-    .eq("status", "published")
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false });
-
-  if (limit) query = query.range(offset, offset + limit - 1);
-
-  const { data, error } = await query;
-  if (error) throw error;
-  return (data ?? []) as unknown as Article[];
+  return getArticles({
+    portalSlug,
+    categorySlug,
+    limit,
+    offset,
+  });
 }
 export const searchArticles = (portalSlug: string, search: string) =>
   getArticles({ portalSlug, search });
