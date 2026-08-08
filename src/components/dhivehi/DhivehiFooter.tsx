@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SocialIcon from "../shared/SocialIcon.tsx";
 
 const FOOTER_LINKS = [
   { label: "ގުޅުއްވުމަށް", href: "/contact" },
@@ -7,12 +8,7 @@ const FOOTER_LINKS = [
   { label: "ޚިދުމަތުގެ ޝަރުތުތައް", href: "/en/page/terms" },
 ];
 
-const SOCIAL_LINKS = [
-  { label: "Facebook", short: "f" },
-  { label: "Twitter", short: "𝕏" },
-  { label: "Instagram", short: "ig" },
-  { label: "YouTube", short: "yt" },
-];
+const SOCIAL_LINKS = ["Facebook", "Twitter", "Instagram", "YouTube"] as const;
 
 export default function DhivehiFooter() {
   const year = new Date().getFullYear();
@@ -37,14 +33,14 @@ export default function DhivehiFooter() {
               އަދި އިތުބާރުހުރި ނޫސްވެރިކަން.
             </p>
             <div className="mt-5 flex justify-start gap-3">
-              {SOCIAL_LINKS.map(({ label, short }) => (
+              {SOCIAL_LINKS.map((label) => (
                 <a
                   key={label}
                   href="#"
                   aria-label={label}
                   className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#52B788]/40 text-xs font-bold text-[#95D5B2] transition-colors hover:border-white hover:text-white"
                 >
-                  {short}
+                  <SocialIcon name={label} />
                 </a>
               ))}
             </div>

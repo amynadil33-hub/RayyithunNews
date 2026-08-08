@@ -13,10 +13,7 @@ import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
-import {
-  getAbsoluteSiteUrl,
-  getCanonicalPageUrl,
-} from "../../lib/site-url.ts";
+import { getAbsoluteSiteUrl, getCanonicalPageUrl } from "../../lib/site-url.ts";
 import {
   getArticleImageHeight,
   getArticleImageUrl,
@@ -230,7 +227,7 @@ export default function DhivehiArticle() {
                   .map((image, index) => (
                     <figure
                       key={`${image.url}-${index}`}
-                      className="overflow-hidden rounded-sm bg-[#E5E7E2]"
+                      className="overflow-hidden rounded-sm bg-[#E5E7E2] only:sm:col-span-2"
                     >
                       <img
                         src={getArticleImageUrl(image.url)}
