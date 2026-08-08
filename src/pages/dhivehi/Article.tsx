@@ -13,10 +13,7 @@ import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
-import {
-  getAbsoluteSiteUrl,
-  getCanonicalPageUrl,
-} from "../../lib/site-url.ts";
+import { getAbsoluteSiteUrl, getCanonicalPageUrl } from "../../lib/site-url.ts";
 import {
   getArticleImageHeight,
   getArticleImageUrl,
@@ -207,12 +204,67 @@ export default function DhivehiArticle() {
             />
             <ArticleLiveTimeline articleId={article.id} isDhivehi />
 
+<<<<<<< HEAD
             <ArticleBody
               content={article.content}
               imageUrl={article.additional_image_1_url}
               imageCredit={article.additional_image_1_credit}
               title={article.title}
               isDhivehi
+=======
+            {(article.additional_image_1_url ||
+              article.additional_image_2_url) && (
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
+                aria-label="Additional article images"
+              >
+                {[
+                  {
+                    url: article.additional_image_1_url,
+                    credit: article.additional_image_1_credit,
+                  },
+                  {
+                    url: article.additional_image_2_url,
+                    credit: article.additional_image_2_credit,
+                  },
+                ]
+                  .filter(
+                    (image): image is { url: string; credit: string | null } =>
+                      Boolean(image.url),
+                  )
+                  .map((image, index) => (
+                    <figure
+                      key={`${image.url}-${index}`}
+                      className="overflow-hidden rounded-sm bg-[#E5E7E2] only:sm:col-span-2"
+                    >
+                      <img
+                        src={getArticleImageUrl(image.url)}
+                        alt={`${article.title} — image ${index + 2}`}
+                        className="w-full object-cover"
+                        style={{
+                          height: getArticleImageHeight(image.url),
+                          maxHeight: "70vh",
+                        }}
+                        loading="lazy"
+                      />
+                      {image.credit && (
+                        <figcaption className="bg-white px-1 pt-2 text-xs leading-relaxed text-[#6B756E]">
+                          {image.credit}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ))}
+              </div>
+            )}
+
+            <div
+              className="article-content article-content-dhivehi"
+              lang="dv"
+              dir="rtl"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeArticleHtml(article.content),
+              }}
+>>>>>>> 792713cf57167d19c4b18bdc2fd92c7921b2e7b8
             />
             <ArticleTags articleId={article.id} isDhivehi />
             <div className="mt-8 font-sans" dir="ltr">
