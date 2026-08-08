@@ -23,7 +23,6 @@ import {
   requestArticleChanges,
   scheduleArticle,
   submitArticle,
-  supportsArticleGalleryImages,
   adminGetArticle,
   updateArticle,
 } from "../../services/articles.ts";
@@ -77,7 +76,9 @@ type WorkflowAction =
   | "archive";
 
 type ArticleImageField =
-  "featured_image_url" | "additional_image_1_url" | "additional_image_2_url";
+  | "featured_image_url"
+  | "additional_image_1_url"
+  | "additional_image_2_url";
 type ArticleImageCreditField =
   | "featured_image_credit"
   | "additional_image_1_credit"
@@ -98,13 +99,7 @@ const IMAGE_FIELDS: {
   {
     key: "additional_image_1_url",
     creditKey: "additional_image_1_credit",
-    label: "Additional image 1",
-    required: false,
-  },
-  {
-    key: "additional_image_2_url",
-    creditKey: "additional_image_2_credit",
-    label: "Additional image 2",
+    label: "Article image",
     required: false,
   },
 ];
@@ -248,11 +243,6 @@ export default function AdminArticleEdit() {
       toast.success("Tag created and selected");
     },
     onError: (error: Error) => toast.error(error.message),
-  });
-
-  const { data: galleryImagesSupported = false } = useQuery({
-    queryKey: ["article-gallery-image-support"],
-    queryFn: supportsArticleGalleryImages,
   });
 
   const currentStatus: ArticleStatus =
@@ -701,13 +691,13 @@ export default function AdminArticleEdit() {
                           const file = input.files?.[0];
                           if (!file) return;
                           if (
-                            ![
-                              "image/png",
-                              "image/jpeg",
-                              "image/webp",
-                            ].includes(file.type)
+                            !["image/png", "image/jpeg", "image/webp"].includes(
+                              file.type,
+                            )
                           ) {
-                            toast.error("Choose a PNG, JPG, JPEG, or WebP image.");
+                            toast.error(
+                              "Choose a PNG, JPG, JPEG, or WebP image.",
+                            );
                             return;
                           }
                           if (file.size > 10 * 1024 * 1024) {
@@ -756,8 +746,8 @@ export default function AdminArticleEdit() {
                 }}
               />
               <p className="mt-1.5 text-[11px] text-[#6B756E]">
-                Place the cursor between two paragraphs and use the image
-                button to insert another photo inside the story.
+                Place the cursor between two paragraphs and use the image button
+                to insert another photo inside the story.
               </p>
             </div>
           </div>
@@ -921,14 +911,10 @@ export default function AdminArticleEdit() {
               Article Images
             </h3>
             <p className="text-xs text-[#6B756E]">
-              {galleryImagesSupported
-                ? "Upload a hero image and up to two gallery images directly from your device."
-                : "Upload the hero image directly from your device."}
+              Upload a hero image and another image for the article directly
+              from your device.
             </p>
-            {(galleryImagesSupported
-              ? IMAGE_FIELDS
-              : IMAGE_FIELDS.slice(0, 1)
-            ).map(({ key, creditKey, label, required }) => (
+            {IMAGE_FIELDS.map(({ key, creditKey, label, required }) => (
               <div key={key} className="space-y-2 pt-1">
                 <label className="block text-xs font-medium text-[#142820]">
                   {label}
@@ -998,7 +984,8 @@ export default function AdminArticleEdit() {
                         htmlFor={`${key}-credit`}
                         className="block text-[11px] font-medium text-[#142820] mb-1"
                       >
-                        Photo credit <span className="text-[#6B756E]">(optional)</span>
+                        Photo credit{" "}
+                        <span className="text-[#6B756E]">(optional)</span>
                       </label>
                       <input
                         id={`${key}-credit`}
