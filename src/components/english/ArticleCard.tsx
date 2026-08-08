@@ -26,7 +26,6 @@ export default function ArticleCard({
     return (
       <Link
         to={href}
-        className="group block relative overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
         className="group block relative w-full max-w-full min-w-0 overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
       >
         {article.featured_image_url && (
@@ -47,7 +46,6 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-          <h2 className="font-serif text-white text-4xl md:text-5xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
           <h2 className="font-article-title text-white text-4xl md:text-5xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
             {article.title}
           </h2>
@@ -64,7 +62,6 @@ export default function ArticleCard({
             {date && <span>{date}</span>}
           </div>
         </div>
-        {/* Watermark */}
         <div className="absolute bottom-4 right-4 opacity-20 pointer-events-none select-none">
           <span className="font-serif text-white text-xs font-bold tracking-wider">
             RAYYITHUN
@@ -100,7 +97,6 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
           <h3 className="font-article-title text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
@@ -124,7 +120,6 @@ export default function ArticleCard({
         {article.category && (
           <span className="category-label">{article.category.name}</span>
         )}
-        <h3 className="text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
         <h3 className="font-article-title text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
@@ -136,7 +131,6 @@ export default function ArticleCard({
     return (
       <Link
         to={href}
-        className="group flex gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0"
         className="group flex min-w-0 max-w-full gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0"
       >
         <div className="flex-1">
@@ -145,7 +139,6 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="text-xl font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
           <h3 className="font-article-title text-xl font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
@@ -163,11 +156,9 @@ export default function ArticleCard({
     );
   }
 
-  // Default: grid card
   return (
     <Link
       to={href}
-      className="group bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
       className="group min-w-0 max-w-full bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
     >
       {article.featured_image_url ? (
@@ -190,7 +181,6 @@ export default function ArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="font-serif text-2xl text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors">
         <h3 className="font-article-title text-2xl text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors">
           {article.title}
         </h3>
