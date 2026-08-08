@@ -59,14 +59,12 @@ function stripArticleRelations(article: Partial<Article>) {
 export async function supportsArticleGalleryImages() {
   const { error } = await supabase
     .from("articles")
-    .select(
-      "additional_image_1_url, additional_image_1_credit, additional_image_2_url, additional_image_2_credit",
-    )
+    .select("additional_image_1_url,additional_image_2_url")
     .limit(1);
 
   if (!error) return true;
   const missingColumn =
-    /additional_image_[12]_(?:url|credit)|schema cache|does not exist/i.test(
+    /additional_image_[12]_url|schema cache|does not exist/i.test(
       error.message,
     );
   if (missingColumn) return false;
@@ -155,12 +153,47 @@ export async function getArticlesByCategory(
   limit?: number,
   offset = 0,
 ) {
-  return getArticles({
-    portalSlug,
-    categorySlug,
-    limit,
-    offset,
-  });
+  const { data: portal, error: portalError } = await supabase
+    .from("portals")
+    .select("id")
+    .eq("slug", portalSlug)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (portalError) throw portalError;
+  if (!portal) return [];
+  const portalId = (portal as { id: string }).id;
+
+  const categorySlugs =
+    portalSlug === "dhivehi" && !categorySlug.startsWith("dv-")
+      ? [categorySlug, `dv-${categorySlug}`]
+      : [categorySlug];
+
+  const { data: categories, error: categoryError } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("portal_id", portalId)
+    .eq("is_active", true)
+    .in("slug", categorySlugs);
+  if (categoryError) throw categoryError;
+  const categoryIds = (categories ?? []).map(
+    (category) => (category as { id: string }).id,
+  );
+  if (categoryIds.length === 0) return [];
+
+  let query = supabase
+    .from("articles")
+    .select(ARTICLE_SELECT)
+    .eq("portal_id", portalId)
+    .in("category_id", categoryIds)
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+
+  if (limit) query = query.range(offset, offset + limit - 1);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as unknown as Article[];
 }
 export const searchArticles = (portalSlug: string, search: string) =>
   getArticles({ portalSlug, search });

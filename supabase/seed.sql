@@ -23,7 +23,8 @@ INSERT INTO public.categories (portal_id, name, slug, description, sort_order) V
   ('00000000-0000-0000-0000-000000000002', 'World', 'world', 'International news', 6),
   ('00000000-0000-0000-0000-000000000002', 'Citizen', 'citizen', 'Community and citizen stories', 7),
   ('00000000-0000-0000-0000-000000000002', 'Market', 'market', 'Market and trade updates', 8),
-  ('00000000-0000-0000-0000-000000000002', 'Podcast', 'podcast', 'Audio stories and conversations', 9)
+  ('00000000-0000-0000-0000-000000000002', 'Podcast', 'podcast', 'Audio stories and conversations', 9),
+  ('00000000-0000-0000-0000-000000000002', 'Travel and tourism', 'travel-tourism', 'Travel and tourism news from the Maldives', 10)
 ON CONFLICT DO NOTHING;
 
 -- ============================================================
@@ -37,7 +38,8 @@ INSERT INTO public.categories (portal_id, name, slug, description, sort_order) V
   ('00000000-0000-0000-0000-000000000001', 'އުފެއްދުންތެރިކަން', 'innovation', 'ޓެކްނޮލޮޖީ އަދި ނަވައިދާ', 5),
   ('00000000-0000-0000-0000-000000000001', 'ދުނިޔެ', 'world', 'ބައިނަލްއަޤްވާމީ ހަބަރު', 6),
   ('00000000-0000-0000-0000-000000000001', 'ރައްޔިތުން', 'citizen', 'ރައްޔިތުންގެ ވާހަކަ', 7),
-  ('00000000-0000-0000-0000-000000000001', 'ބާޒާރު', 'market', 'ތިޔަ ބާޒާރުގެ ހަލަތު', 8)
+  ('00000000-0000-0000-0000-000000000001', 'ބާޒާރު', 'market', 'ތިޔަ ބާޒާރުގެ ހަލަތު', 8),
+  ('00000000-0000-0000-0000-000000000001', 'ފަތުރުވެރިކަން', 'travel-tourism', 'ފަތުރުވެރިކަމާއި ޓޫރިޒަމް ދާއިރާގެ ހަބަރު', 9)
 ON CONFLICT DO NOTHING;
 
 -- ============================================================
@@ -66,7 +68,7 @@ FROM (VALUES
    'The Maldives welcomed over 500,000 tourists in Q2 2026, surpassing all previous records and signaling a strong recovery for the tourism sector.',
    '<p>The Maldives Tourism Ministry announced that tourist arrivals reached an all-time quarterly high of 512,400 visitors between April and June 2026, a 14% increase compared to the same period last year.</p><p>Europe remained the top source market, with the United Kingdom, Germany, and Italy leading arrivals. The Asia-Pacific region showed the fastest growth, with visitors from India and China increasing by 28%.</p><p>Tourism Minister Ahmed Waheed noted that the government''s targeted marketing campaigns and new direct flight routes contributed significantly to the record figures. The sector now contributes approximately 28% of GDP.</p>',
    'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&auto=format',
-   true, true, false, 3, 2, 'news'),
+   true, true, false, 3, 2, 'travel-tourism'),
   ('New Scholarship Program Opens for Island Students',
    'new-scholarship-program-island-students-2026',
    'The Ministry of Education has launched a new scholarship program providing 200 full scholarships for students from outer islands to pursue higher education.',
@@ -139,7 +141,7 @@ FROM (VALUES
    'ފާއިތުވި ދެ ވަނަ ކްއާޓަރުުގައި ރިކޯޑު ގޮތެއްގައި 512,000 ފަތުރުވެރިން ދިވެހިރާއްޖެ ވަޑައިގެންފިއެވެ.',
    '<p>ޓޫރިޒަމް މިނިސްޓްރީ ހާމަ ކުުރި ތަފާސް ހިސާބުން ދައްކާ ގޮތުގައި 2026 ވަނަ އަހަރުގެ ދެ ވަނަ ކްއާޓަރުުގައި 512,400 ފަތުރުވެރިން ދިވެހިރާއްޖެ ޒިޔާރަތްކޮށްފިއެވެ. ގިނަ ފަތުރުވެރިން ޔޫރަޕްގެ ހިސާބުތަކުން ދިވެހިރާއްޖެ ވަޑައިގެންފައިވެ.</p>',
    'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&auto=format',
-   true, true, false, 3, 2, 'dv-news'),
+   true, true, false, 3, 2, 'travel-tourism'),
   ('ރަށްފުުށުުގެ ދަރިވަރުންނަށް ސްކޮލަރޝިޕްގެ ފުުރުސަތު ހުޅުުވާލައިފި',
    'dv-scholarship-island-students-2026',
    'ތަޢުލީމު މިނިސްޓްރީން 200 ފުުލް ސްކޮލަރޝިޕް ދެ ރަށްފުުށުުގެ ދަރިވަރުންނަށް ދިނުުމުގެ ޕްރޮގްރާމެއް ތަޢާރުފުކޮށްފިއެވެ.',
