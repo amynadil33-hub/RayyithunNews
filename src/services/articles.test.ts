@@ -53,6 +53,7 @@ describe("getArticlesByCategory", () => {
     mocks.articleQuery.order.mockReturnValue(mocks.articleQuery);
   });
 
+  it("uses the same portal and category relationship filters as homepage sections", async () => {
   it("constrains published articles to the resolved portal and category IDs", async () => {
     mocks.portalQuery.maybeSingle.mockResolvedValue({
       data: { id: "portal-dhivehi" },
@@ -66,6 +67,12 @@ describe("getArticlesByCategory", () => {
 
     await getArticlesByCategory("english", "news", 12, 0);
 
+    expect(mocks.from).toHaveBeenCalledWith("articles");
+    expect(mocks.articleQuery.eq).toHaveBeenCalledWith(
+      "portal.slug",
+      "english",
+    );
+    expect(mocks.articleQuery.eq).toHaveBeenCalledWith("category.slug", "news");
     expect(mocks.categoryQuery.eq).toHaveBeenCalledWith(
       "portal_id",
       "portal-dhivehi",
@@ -85,6 +92,10 @@ describe("getArticlesByCategory", () => {
     expect(mocks.articleQuery.range).toHaveBeenCalledWith(0, 11);
   });
 
+  it("applies the requested category-page offset", async () => {
+    mocks.articleQuery.range.mockResolvedValue({ data: [], error: null });
+
+    await getArticlesByCategory("dhivehi", "business", 12, 12);
   it("returns an empty category without falling back to unrelated articles", async () => {
     mocks.portalQuery.maybeSingle.mockResolvedValue({
       data: { id: "portal-english" },

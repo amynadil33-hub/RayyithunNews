@@ -153,6 +153,12 @@ export async function getArticlesByCategory(
   limit?: number,
   offset = 0,
 ) {
+  return getArticles({
+    portalSlug,
+    categorySlug,
+    limit,
+    offset,
+  });
   const { data: portal, error: portalError } = await supabase
     .from("portals")
     .select("id")

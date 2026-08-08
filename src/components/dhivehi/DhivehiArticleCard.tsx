@@ -139,6 +139,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
+          <h3 className="text-xl font-medium text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
           <h3 className="font-article-title text-xl font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
@@ -185,6 +186,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
+        <h3 className="text-[#142820] font-semibold thaana-headline leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
         <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
           {article.title}
         </h3>
