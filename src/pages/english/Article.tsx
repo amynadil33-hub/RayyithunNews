@@ -18,7 +18,7 @@ import {
   getArticleImageHeight,
   getArticleImageUrl,
 } from "../../lib/article-images.ts";
-import { sanitizeArticleHtml } from "../../lib/sanitizeHtml.ts";
+import ArticleBody from "../../components/shared/ArticleBody.tsx";
 import {
   ArticleAuthorMeta,
   ArticleComments,
@@ -164,7 +164,7 @@ export default function EnglishArticle() {
               </Link>
             )}
 
-            <h1 className="font-serif text-3xl md:text-4xl font-bold text-[#142820] leading-tight mb-4 text-balance">
+            <h1 className="font-article-title text-4xl sm:text-5xl md:text-6xl font-bold text-[#142820] leading-tight mb-4 text-balance">
               {article.title}
             </h1>
 
@@ -258,6 +258,13 @@ export default function EnglishArticle() {
               dangerouslySetInnerHTML={{
                 __html: sanitizeArticleHtml(article.content),
               }}
+            <ArticleBody
+              content={article.content}
+              imageUrl={article.additional_image_1_url}
+              imageCredit={article.additional_image_1_credit}
+              secondImageUrl={article.additional_image_2_url}
+              secondImageCredit={article.additional_image_2_credit}
+              title={article.title}
             />
             <ArticleTags articleId={article.id} />
             <div className="mt-8">

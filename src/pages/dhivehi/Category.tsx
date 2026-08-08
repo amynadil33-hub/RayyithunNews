@@ -25,6 +25,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   world: "ދުނިޔެ",
   citizen: "ރައްޔިތުން",
   market: "ބާޒާރު",
+  "travel-tourism": "ފަތުރުވެރިކަން",
   podcast: "ޕޮޑްކާސްޓް",
 };
 
@@ -39,6 +40,7 @@ const SLUG_MAP: Record<string, string> = {
   podcast: "podcast",
   citizen: "citizen",
   market: "market",
+  "travel-tourism": "travel-tourism",
 };
 
 export default function DhivehiCategory() {

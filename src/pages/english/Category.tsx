@@ -25,6 +25,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   world: "World",
   citizen: "Citizen",
   market: "Market",
+  "travel-tourism": "Travel and tourism",
   podcast: "Podcast",
 };
 

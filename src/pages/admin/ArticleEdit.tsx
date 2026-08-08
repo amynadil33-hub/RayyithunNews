@@ -86,7 +86,7 @@ type ArticleImageCreditField =
 
 const IMAGE_FIELDS: {
   key: ArticleImageField;
-  creditKey: ArticleImageCreditField;
+  creditKey?: ArticleImageCreditField;
   label: string;
   required: boolean;
 }[] = [
@@ -100,6 +100,13 @@ const IMAGE_FIELDS: {
     key: "additional_image_1_url",
     creditKey: "additional_image_1_credit",
     label: "Article image",
+    label: "First article image (inside story)",
+    required: false,
+  },
+  {
+    key: "additional_image_2_url",
+    creditKey: "additional_image_2_credit",
+    label: "Second article image (inside story)",
     required: false,
   },
 ];
@@ -173,6 +180,11 @@ export default function AdminArticleEdit() {
     queryKey: ["admin-article", id],
     queryFn: () => adminGetArticle(id!),
     enabled: !isNew,
+  });
+
+  const { data: galleryImagesSupported = false } = useQuery({
+    queryKey: ["article-gallery-image-support"],
+    queryFn: supportsArticleGalleryImages,
   });
 
   useEffect(() => {
@@ -913,6 +925,9 @@ export default function AdminArticleEdit() {
             <p className="text-xs text-[#6B756E]">
               Upload a hero image and another image for the article directly
               from your device.
+              {galleryImagesSupported
+                ? "Upload a hero image and up to two article images. Article images appear between story sections in one responsive reading flow."
+                : "Upload the hero image directly from your device. Run the article image database migration to enable both article images."}
             </p>
             {IMAGE_FIELDS.map(({ key, creditKey, label, required }) => (
               <div key={key} className="space-y-2 pt-1">
@@ -932,7 +947,9 @@ export default function AdminArticleEdit() {
                     <ImagePlusIcon size={20} className="text-[#103820]" />
                   )}
                   <span className="text-xs font-medium text-[#142820]">
-                    {uploadingImage === key
+                    {!galleryImagesSupported && key !== "featured_image_url"
+                      ? "Database upgrade required"
+                      : uploadingImage === key
                       ? "Uploading…"
                       : form[key]
                         ? "Replace image"
@@ -945,7 +962,10 @@ export default function AdminArticleEdit() {
                     type="file"
                     accept=".png,.jpg,.jpeg,.webp"
                     className="sr-only"
-                    disabled={uploadingImage !== null}
+                    disabled={
+                      uploadingImage !== null ||
+                      (!galleryImagesSupported && key !== "featured_image_url")
+                    }
                     onChange={(event) => {
                       void handleImageUpload(
                         key,
@@ -1003,6 +1023,33 @@ export default function AdminArticleEdit() {
                         When provided, this line appears directly below the
                         image in the article.
                       </p>
+                      {creditKey && (
+                        <>
+                          <label
+                            htmlFor={`${key}-credit`}
+                            className="block text-[11px] font-medium text-[#142820] mb-1"
+                          >
+                            Photo credit{" "}
+                            <span className="text-[#6B756E]">(optional)</span>
+                          </label>
+                          <input
+                            id={`${key}-credit`}
+                            value={form[creditKey] ?? ""}
+                            onChange={(event) =>
+                              setForm((current) => ({
+                                ...current,
+                                [creditKey]: event.target.value,
+                              }))
+                            }
+                            placeholder="Photo: Photographer or source"
+                            className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs focus:outline-none focus:border-[#103820] disabled:bg-[#F8F8F8]"
+                          />
+                          <p className="mt-1 text-[10px] text-[#6B756E]">
+                            When provided, this line appears directly below the
+                            image in the article.
+                          </p>
+                        </>
+                      )}
                     </div>
                     <div>
                       <div className="mb-1 flex items-center justify-between gap-2">
@@ -1046,7 +1093,7 @@ export default function AdminArticleEdit() {
                           setForm((current) => ({
                             ...current,
                             [key]: "",
-                            [creditKey]: "",
+                            ...(creditKey ? { [creditKey]: "" } : {}),
                             ...(key === "featured_image_url"
                               ? { featured_image_caption: "" }
                               : {}),

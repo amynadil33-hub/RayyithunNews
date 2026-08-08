@@ -22,7 +22,7 @@ export default function DhivehiArticleCard({
     return (
       <Link
         to={href}
-        className="group block relative overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
+        className="group block relative w-full max-w-full min-w-0 overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
         dir="rtl"
       >
         {article.featured_image_url && (
@@ -45,7 +45,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h2 className="thaana-headline text-white text-5xl md:text-6xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
+          <h2 className="font-article-title text-white text-5xl md:text-6xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
             {article.title}
           </h2>
           {article.excerpt && (
@@ -68,7 +68,7 @@ export default function DhivehiArticleCard({
     return (
       <Link
         to={href}
-        className="group flex gap-3 items-start flex-row-reverse"
+        className="group flex min-w-0 max-w-full gap-3 items-start flex-row-reverse"
         dir="rtl"
       >
         {article.featured_image_url ? (
@@ -91,7 +91,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="text-xl font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-3">
+          <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
           {date && (
@@ -119,7 +119,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="text-xl font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+        <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
       </Link>
@@ -130,7 +130,7 @@ export default function DhivehiArticleCard({
     return (
       <Link
         to={href}
-        className="group flex gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0 flex-row-reverse"
+        className="group flex min-w-0 max-w-full gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0 flex-row-reverse"
         dir="rtl"
       >
         <div className="flex-1 text-right">
@@ -140,6 +140,7 @@ export default function DhivehiArticleCard({
             </span>
           )}
           <h3 className="text-xl font-medium text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+          <h3 className="font-article-title text-xl font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
           {date && (
@@ -162,7 +163,7 @@ export default function DhivehiArticleCard({
   return (
     <Link
       to={href}
-      className="group bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
+      className="group min-w-0 max-w-full bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
       dir="rtl"
     >
       {article.featured_image_url ? (
@@ -186,6 +187,7 @@ export default function DhivehiArticleCard({
           </span>
         )}
         <h3 className="text-[#142820] font-semibold thaana-headline leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
+        <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
           {article.title}
         </h3>
         {article.excerpt && (

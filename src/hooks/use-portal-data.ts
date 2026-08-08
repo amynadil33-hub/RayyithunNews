@@ -25,7 +25,14 @@ export function useArticlesByCategory(
   offset = 0,
 ) {
   return useQuery({
-    queryKey: ["articles", "category", portalSlug, categorySlug, limit, offset],
+    queryKey: [
+      "articles",
+      "category-v2",
+      portalSlug,
+      categorySlug,
+      limit,
+      offset,
+    ],
     queryFn: () =>
       getArticlesByCategory(portalSlug, categorySlug!, limit, offset),
     enabled: Boolean(categorySlug),

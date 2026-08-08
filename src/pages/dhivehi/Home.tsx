@@ -15,12 +15,24 @@ const DV_CATEGORIES = [
   { name: "ތަޢުލީމް", slug: "dv-education" },
   { name: "ވިޔަފާރި", slug: "dv-business" },
   { name: "ތެދުމަގު", slug: "dv-religion" },
+  { name: "ފަތުރުވެރިކަން", slug: "travel-tourism" },
 ];
 
 export default function DhivehiHome() {
-  const { data: featured, isLoading: featuredLoading } = useArticles({ portalSlug: "dhivehi", isFeatured: true, limit: 4 });
-  const { data: trending, isLoading: trendingLoading } = useArticles({ portalSlug: "dhivehi", isTrending: true, limit: 5 });
-  const { data: latest, isLoading: latestLoading } = useArticles({ portalSlug: "dhivehi", limit: 9 });
+  const { data: featured, isLoading: featuredLoading } = useArticles({
+    portalSlug: "dhivehi",
+    isFeatured: true,
+    limit: 4,
+  });
+  const { data: trending, isLoading: trendingLoading } = useArticles({
+    portalSlug: "dhivehi",
+    isTrending: true,
+    limit: 5,
+  });
+  const { data: latest, isLoading: latestLoading } = useArticles({
+    portalSlug: "dhivehi",
+    limit: 9,
+  });
   const featuredHeight = useHomepageFeaturedHeight("dhivehi");
 
   const heroArticle = featured?.[0];
@@ -30,7 +42,10 @@ export default function DhivehiHome() {
     <div className="min-h-screen bg-[#F8F8F8]" dir="rtl" lang="dv">
       <Helmet>
         <title>ރައްޔިތުން — ރާއްޖޭގެ ހަބަރު</title>
-        <meta name="description" content="ދިވެހިރާއްޖޭގެ ހަބަރު. ސިޔާސަތު، ވިޔަފާރި، ތަޢުލީމް، ރައްޔިތުންގެ ވާހަކަ." />
+        <meta
+          name="description"
+          content="ދިވެހިރާއްޖޭގެ ހަބަރު. ސިޔާސަތު، ވިޔަފާރި، ތަޢުލީމް، ރައްޔިތުންގެ ވާހަކަ."
+        />
         <html lang="dv" dir="rtl" />
       </Helmet>
 
@@ -39,10 +54,15 @@ export default function DhivehiHome() {
       {/* Hero section */}
       <section className="max-w-7xl mx-auto px-4 py-6">
         {featuredLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4" style={{ minHeight: featuredHeight }}>
+          <div
+            className="grid grid-cols-1 md:grid-cols-5 gap-4"
+            style={{ minHeight: featuredHeight }}
+          >
             <Skeleton className="md:col-span-3 h-full" />
             <div className="md:col-span-2 space-y-4">
-              <Skeleton className="h-24" /><Skeleton className="h-24" /><Skeleton className="h-24" />
+              <Skeleton className="h-24" />
+              <Skeleton className="h-24" />
+              <Skeleton className="h-24" />
             </div>
           </div>
         ) : (
@@ -55,7 +75,9 @@ export default function DhivehiHome() {
                 <DhivehiArticleCard article={heroArticle} variant="hero" />
               ) : (
                 <div className="h-full min-h-[300px] bg-[#103820] rounded-sm flex items-center justify-center">
-                  <span className="font-thaana text-white text-3xl font-bold opacity-20">ރ</span>
+                  <span className="font-thaana text-white text-3xl font-bold opacity-20">
+                    ރ
+                  </span>
                 </div>
               )}
             </div>
@@ -85,17 +107,26 @@ export default function DhivehiHome() {
       <section className="bg-[#D8E8D8] py-2.5 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2 mb-2 justify-end">
-            <span className="text-xs font-bold tracking-widest uppercase text-[#103820] font-thaana">ޓްރެންޑިން ހަބަރު</span>
+            <span className="text-xs font-bold tracking-widest uppercase text-[#103820] font-thaana">
+              ޓްރެންޑިން ހަބަރު
+            </span>
             <TrendingUpIcon size={16} className="text-[#103820] rtl-flip" />
           </div>
           {trendingLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20" />)}
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} className="h-20" />
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 overflow-x-auto">
               {(trending ?? []).slice(0, 5).map((article, i) => (
-                <DhivehiArticleCard key={article.id} article={article} variant="trending" index={i} />
+                <DhivehiArticleCard
+                  key={article.id}
+                  article={article}
+                  variant="trending"
+                  index={i}
+                />
               ))}
             </div>
           )}
@@ -105,20 +136,30 @@ export default function DhivehiHome() {
       {/* Latest stories */}
       <section className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex items-center justify-between mb-6">
-          <Link to="/news"
-            className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana">
+          <Link
+            to="/news"
+            className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana"
+          >
             ← ހުރިހ
           </Link>
-          <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">އެންމެ ފަހުގެ ހަބަރު</h2>
+          <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+            އެންމެ ފަހުގެ ހަބަރު
+          </h2>
         </div>
         {latestLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-64" />)}
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-64" />
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {(latest ?? []).slice(0, 6).map((article) => (
-              <DhivehiArticleCard key={article.id} article={article} variant="grid" />
+              <DhivehiArticleCard
+                key={article.id}
+                article={article}
+                variant="grid"
+              />
             ))}
           </div>
         )}
@@ -131,37 +172,64 @@ export default function DhivehiHome() {
 
       {/* Category sections */}
       {DV_CATEGORIES.map((cat) => (
-        <DhivehiCategorySection key={cat.slug} categorySlug={cat.slug} categoryName={cat.name} />
+        <DhivehiCategorySection
+          key={cat.slug}
+          categorySlug={cat.slug}
+          categoryName={cat.name}
+        />
       ))}
 
-      <NewsletterSection portalId="00000000-0000-0000-0000-000000000001" isDhivehi />
+      <NewsletterSection
+        portalId="00000000-0000-0000-0000-000000000001"
+        isDhivehi
+      />
       <DhivehiFooter />
     </div>
   );
 }
 
-function DhivehiCategorySection({ categorySlug, categoryName }: { categorySlug: string; categoryName: string }) {
-  const { data: articles, isLoading } = useArticles({ portalSlug: "dhivehi", categorySlug, limit: 4 });
+function DhivehiCategorySection({
+  categorySlug,
+  categoryName,
+}: {
+  categorySlug: string;
+  categoryName: string;
+}) {
+  const { data: articles, isLoading } = useArticles({
+    portalSlug: "dhivehi",
+    categorySlug,
+    limit: 4,
+  });
 
   if (!isLoading && (!articles || articles.length === 0)) return null;
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 border-t border-[#E5E7E2]">
       <div className="flex items-center justify-between mb-5">
-        <Link to={`/${categorySlug.replace("dv-", "")}`}
-          className="text-sm text-[#103820] font-medium hover:underline font-thaana">
+        <Link
+          to={`/${categorySlug.replace("dv-", "")}`}
+          className="text-sm text-[#103820] font-medium hover:underline font-thaana"
+        >
           ← އިތުރު {categoryName}
         </Link>
-        <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">{categoryName}</h2>
+        <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+          {categoryName}
+        </h2>
       </div>
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-48" />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-48" />
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {(articles ?? []).slice(0, 4).map((article) => (
-            <DhivehiArticleCard key={article.id} article={article} variant="grid" />
+            <DhivehiArticleCard
+              key={article.id}
+              article={article}
+              variant="grid"
+            />
           ))}
         </div>
       )}

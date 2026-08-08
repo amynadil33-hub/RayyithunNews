@@ -23,7 +23,7 @@ export default function EnglishFooter() {
               className="isolate mb-3 inline-flex items-center overflow-hidden"
             >
               <img
-                src="/rayyithun-logo-english-transparent.png"
+                src="/rayyithun-logo-transparent-v2.png"
                 alt="Rayyithun News Network"
                 className="h-16 w-44 object-contain object-left brightness-0 invert"
               />
