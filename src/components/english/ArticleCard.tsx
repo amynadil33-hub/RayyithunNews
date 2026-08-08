@@ -46,11 +46,7 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-<<<<<<< HEAD
-          <h2 className="font-article-title text-white text-xl md:text-2xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
-=======
-          <h2 className="font-serif text-white text-2xl md:text-3xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
->>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
+          <h2 className="font-article-title text-white text-4xl md:text-5xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
             {article.title}
           </h2>
           {article.excerpt && (
@@ -99,11 +95,7 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-<<<<<<< HEAD
-          <h3 className="font-article-title text-sm font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
-=======
-          <h3 className="text-base font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
->>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
+          <h3 className="font-article-title text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
           {date && <p className="text-xs text-[#6B756E] mt-1">{date}</p>}
@@ -126,11 +118,7 @@ export default function ArticleCard({
         {article.category && (
           <span className="category-label">{article.category.name}</span>
         )}
-<<<<<<< HEAD
-        <h3 className="font-article-title text-sm font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
-=======
-        <h3 className="text-base font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
->>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
+        <h3 className="font-article-title text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
       </Link>
@@ -149,11 +137,7 @@ export default function ArticleCard({
               {article.category.name}
             </span>
           )}
-<<<<<<< HEAD
-          <h3 className="font-article-title text-sm font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
-=======
-          <h3 className="text-base font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
->>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
+          <h3 className="font-article-title text-xl font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
           {date && <p className="text-xs text-[#6B756E] mt-1">{date}</p>}
@@ -196,11 +180,7 @@ export default function ArticleCard({
             {article.category.name}
           </span>
         )}
-<<<<<<< HEAD
-        <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors">
-=======
-        <h3 className="font-serif text-lg text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors">
->>>>>>> 7362f183a30461f6d743b24f97cfbf3c071ba6b0
+        <h3 className="font-article-title text-2xl text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors">
           {article.title}
         </h3>
         {article.excerpt && (

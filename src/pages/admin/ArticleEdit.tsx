@@ -23,6 +23,7 @@ import {
   requestArticleChanges,
   scheduleArticle,
   submitArticle,
+  supportsArticleGalleryImages,
   adminGetArticle,
   updateArticle,
 } from "../../services/articles.ts";
@@ -76,9 +77,7 @@ type WorkflowAction =
   | "archive";
 
 type ArticleImageField =
-  | "featured_image_url"
-  | "additional_image_1_url"
-  | "additional_image_2_url";
+  "featured_image_url" | "additional_image_1_url" | "additional_image_2_url";
 type ArticleImageCreditField =
   | "featured_image_credit"
   | "additional_image_1_credit"
@@ -98,12 +97,8 @@ const IMAGE_FIELDS: {
   },
   {
     key: "additional_image_1_url",
-<<<<<<< HEAD
-    label: "Article image (inside story)",
-=======
     creditKey: "additional_image_1_credit",
-    label: "Article image",
->>>>>>> 792713cf57167d19c4b18bdc2fd92c7921b2e7b8
+    label: "Article image (inside story)",
     required: false,
   },
 ];
@@ -177,6 +172,11 @@ export default function AdminArticleEdit() {
     queryKey: ["admin-article", id],
     queryFn: () => adminGetArticle(id!),
     enabled: !isNew,
+  });
+
+  const { data: galleryImagesSupported = false } = useQuery({
+    queryKey: ["article-gallery-image-support"],
+    queryFn: supportsArticleGalleryImages,
   });
 
   useEffect(() => {
@@ -915,16 +915,14 @@ export default function AdminArticleEdit() {
               Article Images
             </h3>
             <p className="text-xs text-[#6B756E]">
-<<<<<<< HEAD
               {galleryImagesSupported
                 ? "Upload a hero image and one article image. The article image appears between the story paragraphs."
                 : "Upload the hero image directly from your device. Run the article image database migration to enable the second image."}
-=======
-              Upload a hero image and another image for the article directly
-              from your device.
->>>>>>> 792713cf57167d19c4b18bdc2fd92c7921b2e7b8
             </p>
-            {IMAGE_FIELDS.map(({ key, creditKey, label, required }) => (
+            {(galleryImagesSupported
+              ? IMAGE_FIELDS
+              : IMAGE_FIELDS.slice(0, 1)
+            ).map(({ key, creditKey, label, required }) => (
               <div key={key} className="space-y-2 pt-1">
                 <label className="block text-xs font-medium text-[#142820]">
                   {label}
@@ -990,7 +988,6 @@ export default function AdminArticleEdit() {
                           />
                         </div>
                       )}
-<<<<<<< HEAD
                       {creditKey && (
                         <>
                           <label
@@ -1018,31 +1015,6 @@ export default function AdminArticleEdit() {
                           </p>
                         </>
                       )}
-=======
-                      <label
-                        htmlFor={`${key}-credit`}
-                        className="block text-[11px] font-medium text-[#142820] mb-1"
-                      >
-                        Photo credit{" "}
-                        <span className="text-[#6B756E]">(optional)</span>
-                      </label>
-                      <input
-                        id={`${key}-credit`}
-                        value={form[creditKey] ?? ""}
-                        onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            [creditKey]: event.target.value,
-                          }))
-                        }
-                        placeholder="Photo: Photographer or source"
-                        className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs focus:outline-none focus:border-[#103820] disabled:bg-[#F8F8F8]"
-                      />
-                      <p className="mt-1 text-[10px] text-[#6B756E]">
-                        When provided, this line appears directly below the
-                        image in the article.
-                      </p>
->>>>>>> 792713cf57167d19c4b18bdc2fd92c7921b2e7b8
                     </div>
                     <div>
                       <div className="mb-1 flex items-center justify-between gap-2">
