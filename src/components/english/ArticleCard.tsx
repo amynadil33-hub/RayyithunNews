@@ -26,7 +26,7 @@ export default function ArticleCard({
     return (
       <Link
         to={href}
-        className="group block relative overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
+        className="group block relative w-full max-w-full min-w-0 overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
       >
         {article.featured_image_url && (
           <img
@@ -74,7 +74,10 @@ export default function ArticleCard({
 
   if (variant === "secondary") {
     return (
-      <Link to={href} className="group flex gap-3 items-start">
+      <Link
+        to={href}
+        className="group flex min-w-0 max-w-full gap-3 items-start"
+      >
         {article.featured_image_url ? (
           <img
             src={article.featured_image_url}
@@ -129,7 +132,7 @@ export default function ArticleCard({
     return (
       <Link
         to={href}
-        className="group flex gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0"
+        className="group flex min-w-0 max-w-full gap-3 items-start py-3 border-b border-[#E5E7E2] last:border-0"
       >
         <div className="flex-1">
           {article.category && (
@@ -158,7 +161,7 @@ export default function ArticleCard({
   return (
     <Link
       to={href}
-      className="group bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
+      className="group min-w-0 max-w-full bg-white border border-[#E5E7E2] rounded-sm overflow-hidden hover:shadow-md transition-shadow"
     >
       {article.featured_image_url ? (
         <img

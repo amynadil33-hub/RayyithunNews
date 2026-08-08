@@ -158,7 +158,7 @@ export default function DhivehiArticle() {
               </span>
             )}
 
-            <h1 className="font-article-title text-6xl md:text-7xl font-bold text-[#142820] leading-tight mb-4 text-right">
+            <h1 className="font-article-title text-5xl sm:text-6xl md:text-7xl font-bold text-[#142820] leading-tight mb-4 text-right">
               {article.title}
             </h1>
 
@@ -208,6 +208,8 @@ export default function DhivehiArticle() {
               content={article.content}
               imageUrl={article.additional_image_1_url}
               imageCredit={article.additional_image_1_credit}
+              secondImageUrl={article.additional_image_2_url}
+              secondImageCredit={article.additional_image_2_credit}
               title={article.title}
               isDhivehi
             />

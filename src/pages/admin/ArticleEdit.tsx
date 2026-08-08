@@ -98,7 +98,13 @@ const IMAGE_FIELDS: {
   {
     key: "additional_image_1_url",
     creditKey: "additional_image_1_credit",
-    label: "Article image (inside story)",
+    label: "First article image (inside story)",
+    required: false,
+  },
+  {
+    key: "additional_image_2_url",
+    creditKey: "additional_image_2_credit",
+    label: "Second article image (inside story)",
     required: false,
   },
 ];
@@ -916,13 +922,10 @@ export default function AdminArticleEdit() {
             </h3>
             <p className="text-xs text-[#6B756E]">
               {galleryImagesSupported
-                ? "Upload a hero image and one article image. The article image appears between the story paragraphs."
-                : "Upload the hero image directly from your device. Run the article image database migration to enable the second image."}
+                ? "Upload a hero image and up to two article images. Article images appear between story sections in one responsive reading flow."
+                : "Upload the hero image directly from your device. Run the article image database migration to enable both article images."}
             </p>
-            {(galleryImagesSupported
-              ? IMAGE_FIELDS
-              : IMAGE_FIELDS.slice(0, 1)
-            ).map(({ key, creditKey, label, required }) => (
+            {IMAGE_FIELDS.map(({ key, creditKey, label, required }) => (
               <div key={key} className="space-y-2 pt-1">
                 <label className="block text-xs font-medium text-[#142820]">
                   {label}
@@ -940,7 +943,9 @@ export default function AdminArticleEdit() {
                     <ImagePlusIcon size={20} className="text-[#103820]" />
                   )}
                   <span className="text-xs font-medium text-[#142820]">
-                    {uploadingImage === key
+                    {!galleryImagesSupported && key !== "featured_image_url"
+                      ? "Database upgrade required"
+                      : uploadingImage === key
                       ? "Uploading…"
                       : form[key]
                         ? "Replace image"
@@ -953,7 +958,10 @@ export default function AdminArticleEdit() {
                     type="file"
                     accept=".png,.jpg,.jpeg,.webp"
                     className="sr-only"
-                    disabled={uploadingImage !== null}
+                    disabled={
+                      uploadingImage !== null ||
+                      (!galleryImagesSupported && key !== "featured_image_url")
+                    }
                     onChange={(event) => {
                       void handleImageUpload(
                         key,

@@ -1,4 +1,15 @@
--- Add the bilingual travel and tourism category to existing installations.
+-- Safe, repeatable upgrade for an existing RAYYITHUN database.
+-- Run this file once in the Supabase SQL Editor (not seed.sql).
+
+-- Enable the two supporting article-image slots and their credits.
+ALTER TABLE public.articles
+  ADD COLUMN IF NOT EXISTS additional_image_1_url TEXT,
+  ADD COLUMN IF NOT EXISTS additional_image_2_url TEXT,
+  ADD COLUMN IF NOT EXISTS featured_image_credit TEXT,
+  ADD COLUMN IF NOT EXISTS additional_image_1_credit TEXT,
+  ADD COLUMN IF NOT EXISTS additional_image_2_credit TEXT;
+
+-- Ensure both portals have the Travel and Tourism category.
 INSERT INTO public.categories (
   portal_id,
   name,
@@ -28,8 +39,7 @@ ON CONFLICT (portal_id, slug) DO UPDATE SET
   sort_order = EXCLUDED.sort_order,
   is_active = true;
 
--- Move the existing tourism stories into the new category. Re-running the
--- seed alone cannot do this because existing article slugs are left unchanged.
+-- Move existing tourism stories from News into Travel and Tourism.
 UPDATE public.articles AS article
 SET category_id = category.id
 FROM public.portals AS portal
@@ -42,3 +52,6 @@ WHERE article.portal_id = portal.id
     'dv-tourist-arrivals-record-2026',
     'tourism'
   );
+
+-- Ask PostgREST to refresh its schema immediately after adding the columns.
+NOTIFY pgrst, 'reload schema';

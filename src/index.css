@@ -224,6 +224,8 @@ html[lang="dv"] header nav a.font-thaana {
 /* Article titles only; body copy and other headings retain their own fonts. */
 .font-article-title {
   font-family: "SanguSuruhee", var(--font-thaana);
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 /* RTL portal styles */
