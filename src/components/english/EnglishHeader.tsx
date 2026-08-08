@@ -51,7 +51,7 @@ export default function EnglishHeader() {
             className="isolate flex items-center overflow-hidden"
           >
             <img
-              src="/rayyithun-logo-english-transparent.png"
+              src="/rayyithun-logo-transparent-v2.png"
               alt="RAYYITHUN"
               className="h-20 w-48 object-contain object-center"
             />

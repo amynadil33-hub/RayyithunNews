@@ -85,7 +85,7 @@ type ArticleImageCreditField =
 
 const IMAGE_FIELDS: {
   key: ArticleImageField;
-  creditKey: ArticleImageCreditField;
+  creditKey?: ArticleImageCreditField;
   label: string;
   required: boolean;
 }[] = [
@@ -97,14 +97,7 @@ const IMAGE_FIELDS: {
   },
   {
     key: "additional_image_1_url",
-    creditKey: "additional_image_1_credit",
-    label: "Additional image 1",
-    required: false,
-  },
-  {
-    key: "additional_image_2_url",
-    creditKey: "additional_image_2_credit",
-    label: "Additional image 2",
+    label: "Article image (inside story)",
     required: false,
   },
 ];
@@ -922,8 +915,8 @@ export default function AdminArticleEdit() {
             </h3>
             <p className="text-xs text-[#6B756E]">
               {galleryImagesSupported
-                ? "Upload a hero image and up to two gallery images directly from your device."
-                : "Upload the hero image directly from your device."}
+                ? "Upload a hero image and one article image. The article image appears between the story paragraphs."
+                : "Upload the hero image directly from your device. Run the article image database migration to enable the second image."}
             </p>
             {(galleryImagesSupported
               ? IMAGE_FIELDS
@@ -994,28 +987,33 @@ export default function AdminArticleEdit() {
                           />
                         </div>
                       )}
-                      <label
-                        htmlFor={`${key}-credit`}
-                        className="block text-[11px] font-medium text-[#142820] mb-1"
-                      >
-                        Photo credit <span className="text-[#6B756E]">(optional)</span>
-                      </label>
-                      <input
-                        id={`${key}-credit`}
-                        value={form[creditKey] ?? ""}
-                        onChange={(event) =>
-                          setForm((current) => ({
-                            ...current,
-                            [creditKey]: event.target.value,
-                          }))
-                        }
-                        placeholder="Photo: Photographer or source"
-                        className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs focus:outline-none focus:border-[#103820] disabled:bg-[#F8F8F8]"
-                      />
-                      <p className="mt-1 text-[10px] text-[#6B756E]">
-                        When provided, this line appears directly below the
-                        image in the article.
-                      </p>
+                      {creditKey && (
+                        <>
+                          <label
+                            htmlFor={`${key}-credit`}
+                            className="block text-[11px] font-medium text-[#142820] mb-1"
+                          >
+                            Photo credit{" "}
+                            <span className="text-[#6B756E]">(optional)</span>
+                          </label>
+                          <input
+                            id={`${key}-credit`}
+                            value={form[creditKey] ?? ""}
+                            onChange={(event) =>
+                              setForm((current) => ({
+                                ...current,
+                                [creditKey]: event.target.value,
+                              }))
+                            }
+                            placeholder="Photo: Photographer or source"
+                            className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs focus:outline-none focus:border-[#103820] disabled:bg-[#F8F8F8]"
+                          />
+                          <p className="mt-1 text-[10px] text-[#6B756E]">
+                            When provided, this line appears directly below the
+                            image in the article.
+                          </p>
+                        </>
+                      )}
                     </div>
                     <div>
                       <div className="mb-1 flex items-center justify-between gap-2">
@@ -1059,7 +1057,7 @@ export default function AdminArticleEdit() {
                           setForm((current) => ({
                             ...current,
                             [key]: "",
-                            [creditKey]: "",
+                            ...(creditKey ? { [creditKey]: "" } : {}),
                             ...(key === "featured_image_url"
                               ? { featured_image_caption: "" }
                               : {}),

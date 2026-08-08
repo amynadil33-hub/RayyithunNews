@@ -85,7 +85,7 @@ export default function AdminLayout() {
         <div className="p-5 border-b border-white/10">
           <Link to="/en" className="block">
             <img
-              src="/rayyithun-logo-dhivehi-transparent.png"
+              src="/rayyithun-logo-transparent-v2.png"
               alt="RAYYITHUN"
               className="h-16 w-full object-contain object-center brightness-0 invert"
             />

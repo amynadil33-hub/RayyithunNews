@@ -59,14 +59,12 @@ function stripArticleRelations(article: Partial<Article>) {
 export async function supportsArticleGalleryImages() {
   const { error } = await supabase
     .from("articles")
-    .select(
-      "additional_image_1_url, additional_image_1_credit, additional_image_2_url, additional_image_2_credit",
-    )
+    .select("additional_image_1_url")
     .limit(1);
 
   if (!error) return true;
   const missingColumn =
-    /additional_image_[12]_(?:url|credit)|schema cache|does not exist/i.test(
+    /additional_image_1_url|schema cache|does not exist/i.test(
       error.message,
     );
   if (missingColumn) return false;

@@ -33,7 +33,7 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <img src="/rayyithun-logo-dhivehi-transparent.png" alt="RAYYITHUN" className="h-28 w-64 object-contain object-center mx-auto" />
+          <img src="/rayyithun-logo-transparent-v2.png" alt="RAYYITHUN" className="h-28 w-64 object-contain object-center mx-auto" />
           <p className="text-[#6B756E] text-sm mt-1">Admin Dashboard</p>
         </div>
 

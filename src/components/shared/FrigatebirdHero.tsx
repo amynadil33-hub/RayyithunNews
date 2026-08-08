@@ -154,11 +154,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
             className="isolate overflow-hidden"
           >
             <img
-              src={
-                isDhivehi
-                  ? "/rayyithun-logo-dhivehi-transparent.png"
-                  : "/rayyithun-logo-english-transparent.png"
-              }
+              src="/rayyithun-logo-transparent-v2.png"
               alt="RAYYITHUN"
               className="h-14 w-36 object-contain object-center brightness-0 invert sm:h-16 sm:w-44"
             />

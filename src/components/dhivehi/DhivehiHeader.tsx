@@ -50,7 +50,7 @@ export default function DhivehiHeader() {
           {/* Logo */}
           <Link to="/" className="isolate flex items-center overflow-hidden">
             <img
-              src="/rayyithun-logo-dhivehi-transparent.png"
+              src="/rayyithun-logo-transparent-v2.png"
               alt="ރައްޔިތުން"
               className="h-20 w-48 object-contain object-center"
             />

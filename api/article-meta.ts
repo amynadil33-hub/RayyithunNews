@@ -40,7 +40,7 @@ function requestOrigin(request: ApiRequest) {
 }
 
 function absoluteUrl(value: string | null, origin: string) {
-  if (!value) return `${origin}/rayyithun-logo-dhivehi-transparent.png`;
+  if (!value) return `${origin}/rayyithun-logo-transparent-v2.png`;
   try {
     return new URL(value, `${origin}/`).toString();
   } catch {
