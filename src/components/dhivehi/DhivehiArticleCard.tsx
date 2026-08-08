@@ -45,7 +45,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h2 className="thaana-headline text-white text-5xl md:text-6xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
+          <h2 className="thaana-headline text-white text-3xl md:text-4xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
             {article.title}
           </h2>
           {article.excerpt && (
@@ -91,7 +91,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="text-xl font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-3">
+          <h3 className="text-base font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
           {date && (
@@ -119,7 +119,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="text-xl font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+        <h3 className="text-base font-semibold text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
       </Link>
@@ -139,7 +139,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="text-xl font-medium text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
+          <h3 className="text-base font-medium text-[#142820] thaana-body group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
           {date && (
@@ -185,7 +185,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="text-[#142820] font-semibold thaana-headline leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
+        <h3 className="text-[#142820] font-semibold thaana-headline leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-lg">
           {article.title}
         </h3>
         {article.excerpt && (
