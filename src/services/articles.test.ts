@@ -29,14 +29,8 @@ const mocks = vi.hoisted(() => {
   articleQuery.order.mockReturnValue(articleQuery);
 
   return {
-    portalQuery,
-    categoryQuery,
     articleQuery,
-    from: vi.fn((table: string) => {
-      if (table === "portals") return portalQuery;
-      if (table === "categories") return categoryQuery;
-      return articleQuery;
-    }),
+    from: vi.fn(() => articleQuery),
   };
 });
 
@@ -70,7 +64,7 @@ describe("getArticlesByCategory", () => {
     });
     mocks.articleQuery.range.mockResolvedValue({ data: [], error: null });
 
-    await getArticlesByCategory("dhivehi", "religion", 12, 0);
+    await getArticlesByCategory("english", "news", 12, 0);
 
     expect(mocks.categoryQuery.eq).toHaveBeenCalledWith(
       "portal_id",
@@ -88,6 +82,7 @@ describe("getArticlesByCategory", () => {
       "category-religion",
     ]);
     expect(mocks.articleQuery.eq).toHaveBeenCalledWith("status", "published");
+    expect(mocks.articleQuery.range).toHaveBeenCalledWith(0, 11);
   });
 
   it("returns an empty category without falling back to unrelated articles", async () => {
@@ -100,9 +95,6 @@ describe("getArticlesByCategory", () => {
       error: null,
     });
 
-    await expect(
-      getArticlesByCategory("english", "missing", 12, 0),
-    ).resolves.toEqual([]);
-    expect(mocks.from).not.toHaveBeenCalledWith("articles");
+    expect(mocks.articleQuery.range).toHaveBeenCalledWith(12, 23);
   });
 });

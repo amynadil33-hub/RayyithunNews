@@ -23,7 +23,6 @@ import {
   requestArticleChanges,
   scheduleArticle,
   submitArticle,
-  supportsArticleGalleryImages,
   adminGetArticle,
   updateArticle,
 } from "../../services/articles.ts";
@@ -77,7 +76,9 @@ type WorkflowAction =
   | "archive";
 
 type ArticleImageField =
-  "featured_image_url" | "additional_image_1_url" | "additional_image_2_url";
+  | "featured_image_url"
+  | "additional_image_1_url"
+  | "additional_image_2_url";
 type ArticleImageCreditField =
   | "featured_image_credit"
   | "additional_image_1_credit"
