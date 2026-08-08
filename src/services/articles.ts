@@ -20,10 +20,6 @@ export interface ArticleFilters {
   search?: string;
 }
 
-// The workflow adds reviewed_by and published_by foreign keys to profiles.
-// Pin this embed to author_id so PostgREST does not reject the query as an
-// ambiguous profiles relationship. This remains a left embed, so legacy
-// articles with author_id = null are still returned to reviewer roles.
 const ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories(*), author:profiles!articles_author_id_fkey(id, full_name, avatar_url)`;
 const REVIEW_QUEUE_STATUSES: ArticleStatus[] = [
   "submitted",
@@ -43,16 +39,11 @@ function stripArticleRelations(article: Partial<Article>) {
     ...values
   } = article;
   const cleanValues: Partial<Article> = { ...values };
-  if (!cleanValues.featured_image_credit)
-    delete cleanValues.featured_image_credit;
-  if (!cleanValues.additional_image_1_url)
-    delete cleanValues.additional_image_1_url;
-  if (!cleanValues.additional_image_1_credit)
-    delete cleanValues.additional_image_1_credit;
-  if (!cleanValues.additional_image_2_url)
-    delete cleanValues.additional_image_2_url;
-  if (!cleanValues.additional_image_2_credit)
-    delete cleanValues.additional_image_2_credit;
+  if (!cleanValues.featured_image_credit) delete cleanValues.featured_image_credit;
+  if (!cleanValues.additional_image_1_url) delete cleanValues.additional_image_1_url;
+  if (!cleanValues.additional_image_1_credit) delete cleanValues.additional_image_1_credit;
+  if (!cleanValues.additional_image_2_url) delete cleanValues.additional_image_2_url;
+  if (!cleanValues.additional_image_2_credit) delete cleanValues.additional_image_2_credit;
   return cleanValues;
 }
 
@@ -63,10 +54,7 @@ export async function supportsArticleGalleryImages() {
     .limit(1);
 
   if (!error) return true;
-  const missingColumn =
-    /additional_image_[12]_url|schema cache|does not exist/i.test(
-      error.message,
-    );
+  const missingColumn = /additional_image_[12]_url|schema cache|does not exist/i.test(error.message);
   if (missingColumn) return false;
   throw error;
 }
@@ -101,13 +89,9 @@ async function logReview(
     action,
     notes: notes?.trim() || null,
   } as never);
-  // Review history is supplementary. A missing history table or a narrower
-  // history policy must not roll back an article state change that succeeded.
-  if (error)
-    console.warn(
-      "Article review history could not be recorded:",
-      error.message,
-    );
+  if (error) {
+    console.warn("Article review history could not be recorded:", error.message);
+  }
 }
 
 export async function getArticles(filters: ArticleFilters = {}) {
@@ -115,94 +99,85 @@ export async function getArticles(filters: ArticleFilters = {}) {
     .from("articles")
     .select(ARTICLE_SELECT)
     .order("published_at", { ascending: false, nullsFirst: false });
+
   if (filters.portalSlug) query = query.eq("portal.slug", filters.portalSlug);
-  if (filters.categorySlug)
-    query = query.eq("category.slug", filters.categorySlug);
+  if (filters.categorySlug) query = query.eq("category.slug", filters.categorySlug);
   if (filters.status) query = query.eq("status", filters.status);
   else if (!filters.includeAllStatuses) query = query.eq("status", "published");
-  if (filters.isFeatured !== undefined)
-    query = query.eq("is_featured", filters.isFeatured);
-  if (filters.isTrending !== undefined)
-    query = query.eq("is_trending", filters.isTrending);
-  if (filters.isBreaking !== undefined)
-    query = query.eq("is_breaking", filters.isBreaking);
+  if (filters.isFeatured !== undefined) query = query.eq("is_featured", filters.isFeatured);
+  if (filters.isTrending !== undefined) query = query.eq("is_trending", filters.isTrending);
+  if (filters.isBreaking !== undefined) query = query.eq("is_breaking", filters.isBreaking);
   if (filters.search?.trim()) {
     const term = filters.search.trim().replace(/[,%()]/g, " ");
     query = query.or(`title.ilike.%${term}%,excerpt.ilike.%${term}%`);
   }
-  if (filters.limit) {
+  if (typeof filters.limit === "number") {
     const from = filters.offset ?? 0;
     query = query.range(from, from + filters.limit - 1);
   }
+
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as unknown as Article[];
 }
 
-export const getPublishedArticles = (portalSlug: string) =>
-  getArticles({ portalSlug });
-export const getFeaturedArticles = (portalSlug: string) =>
-  getArticles({ portalSlug, isFeatured: true });
-export const getTrendingArticles = (portalSlug: string) =>
-  getArticles({ portalSlug, isTrending: true });
-export const getLatestArticles = (portalSlug: string, limit = 10) =>
-  getArticles({ portalSlug, limit });
+export const getPublishedArticles = (portalSlug: string) => getArticles({ portalSlug });
+export const getFeaturedArticles = (portalSlug: string) => getArticles({ portalSlug, isFeatured: true });
+export const getTrendingArticles = (portalSlug: string) => getArticles({ portalSlug, isTrending: true });
+export const getLatestArticles = (portalSlug: string, limit = 10) => getArticles({ portalSlug, limit });
+
 export async function getArticlesByCategory(
   portalSlug: string,
   categorySlug: string,
   limit?: number,
   offset = 0,
 ) {
-  return getArticles({
-    portalSlug,
-    categorySlug,
-    limit,
-    offset,
-  });
-  const { data: portal, error: portalError } = await supabase
+  const { data: portalData, error: portalError } = await supabase
     .from("portals")
     .select("id")
     .eq("slug", portalSlug)
     .eq("is_active", true)
     .maybeSingle();
   if (portalError) throw portalError;
+
+  const portal = portalData as unknown as { id: string } | null;
   if (!portal) return [];
-  const portalId = (portal as { id: string }).id;
 
   const categorySlugs =
     portalSlug === "dhivehi" && !categorySlug.startsWith("dv-")
       ? [categorySlug, `dv-${categorySlug}`]
       : [categorySlug];
 
-  const { data: categories, error: categoryError } = await supabase
+  const { data: categoryData, error: categoryError } = await supabase
     .from("categories")
     .select("id")
-    .eq("portal_id", portalId)
+    .eq("portal_id", portal.id)
     .eq("is_active", true)
     .in("slug", categorySlugs);
   if (categoryError) throw categoryError;
-  const categoryIds = (categories ?? []).map(
-    (category) => (category as { id: string }).id,
+
+  const categoryIds = ((categoryData ?? []) as unknown as { id: string }[]).map(
+    (category) => category.id,
   );
   if (categoryIds.length === 0) return [];
 
   let query = supabase
     .from("articles")
     .select(ARTICLE_SELECT)
-    .eq("portal_id", portalId)
+    .eq("portal_id", portal.id)
     .in("category_id", categoryIds)
     .eq("status", "published")
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
 
-  if (limit) query = query.range(offset, offset + limit - 1);
+  if (typeof limit === "number") query = query.range(offset, offset + limit - 1);
 
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as unknown as Article[];
 }
-export const searchArticles = (portalSlug: string, search: string) =>
-  getArticles({ portalSlug, search });
+
+export const searchArticles = (portalSlug: string, search: string) => getArticles({ portalSlug, search });
 
 export async function getArticleBySlug(portalSlug: string, slug?: string) {
   const actualSlug = slug ?? portalSlug;
@@ -278,10 +253,7 @@ export async function adminCreateArticle(article: Partial<Article>) {
   return data as Article;
 }
 
-export async function adminUpdateArticle(
-  id: string,
-  article: Partial<Article>,
-) {
+export async function adminUpdateArticle(id: string, article: Partial<Article>) {
   const values = stripArticleRelations(article);
   const { data, error } = await supabase
     .from("articles")
@@ -385,12 +357,7 @@ export async function publishArticle(id: string) {
     reviewed_at: reviewedAt,
     scheduled_at: null,
   });
-  await logReview(
-    id,
-    reviewerId,
-    "published",
-    article.approval_notes ?? undefined,
-  );
+  await logReview(id, reviewerId, "published", article.approval_notes ?? undefined);
   return article;
 }
 
@@ -405,12 +372,7 @@ export async function scheduleArticle(id: string, scheduledAt: string) {
 export async function archiveArticle(id: string) {
   const reviewerId = await requireCurrentUserId();
   const article = await updateWorkflowState(id, { status: "archived" });
-  await logReview(
-    id,
-    reviewerId,
-    "archived",
-    article.approval_notes ?? undefined,
-  );
+  await logReview(id, reviewerId, "archived", article.approval_notes ?? undefined);
   return article;
 }
 
