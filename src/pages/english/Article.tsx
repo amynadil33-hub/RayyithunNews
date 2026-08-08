@@ -126,9 +126,7 @@ export default function EnglishArticle() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-10">
-          {/* Main article */}
           <main className="flex-1 min-w-0">
-            {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-xs text-[#6B756E] mb-5">
               <Link to="/en" className="hover:text-[#103820]">
                 Home
@@ -178,7 +176,6 @@ export default function EnglishArticle() {
               <ArticleShareButtons title={article.title} url={canonicalUrl} />
             </div>
 
-            {/* Featured image */}
             {article.featured_image_url && (
               <figure className="mb-8">
                 <img
@@ -207,57 +204,6 @@ export default function EnglishArticle() {
             <ArticleAuthorMeta article={article} publishDate={publishDate} />
             <ArticleLiveTimeline articleId={article.id} />
 
-            {(article.additional_image_1_url ||
-              article.additional_image_2_url) && (
-              <div
-                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"
-                aria-label="Additional article images"
-              >
-                {[
-                  {
-                    url: article.additional_image_1_url,
-                    credit: article.additional_image_1_credit,
-                  },
-                  {
-                    url: article.additional_image_2_url,
-                    credit: article.additional_image_2_credit,
-                  },
-                ]
-                  .filter(
-                    (image): image is { url: string; credit: string | null } =>
-                      Boolean(image.url),
-                  )
-                  .map((image, index) => (
-                    <figure
-                      key={`${image.url}-${index}`}
-                      className="overflow-hidden rounded-sm bg-[#E5E7E2] only:sm:col-span-2"
-                    >
-                      <img
-                        src={getArticleImageUrl(image.url)}
-                        alt={`${article.title} — image ${index + 2}`}
-                        className="w-full object-cover"
-                        style={{
-                          height: getArticleImageHeight(image.url),
-                          maxHeight: "70vh",
-                        }}
-                        loading="lazy"
-                      />
-                      {image.credit && (
-                        <figcaption className="bg-white px-1 pt-2 text-xs leading-relaxed text-[#6B756E]">
-                          {image.credit}
-                        </figcaption>
-                      )}
-                    </figure>
-                  ))}
-              </div>
-            )}
-
-            {/* Article body */}
-            <div
-              className="article-content article-content-english"
-              dangerouslySetInnerHTML={{
-                __html: sanitizeArticleHtml(article.content),
-              }}
             <ArticleBody
               content={article.content}
               imageUrl={article.additional_image_1_url}
@@ -275,12 +221,10 @@ export default function EnglishArticle() {
               />
             </div>
 
-            {/* Inline ad */}
             <div className="my-8">
               <AdBanner placement="article_inline" label="Advertisement" />
             </div>
 
-            {/* Related articles */}
             {related && related.length > 0 && (
               <section className="mt-10 pt-8 border-t border-[#E5E7E2]">
                 <h2 className="font-serif text-xl font-bold text-[#142820] mb-5">
@@ -296,7 +240,6 @@ export default function EnglishArticle() {
             <ArticleComments articleId={article.id} />
           </main>
 
-          {/* Sidebar */}
           <aside className="lg:w-72 flex-shrink-0 space-y-6">
             <AdBanner placement="article_sidebar" label="Advertisement" />
           </aside>
