@@ -68,6 +68,44 @@ type WorkflowAction =
   | "archive";
 
 type PortalSlug = "english" | "dhivehi";
+type ImageUrlField =
+  | "featured_image_url"
+  | "additional_image_1_url"
+  | "additional_image_2_url";
+type ImageCreditField =
+  | "featured_image_credit"
+  | "additional_image_1_credit"
+  | "additional_image_2_credit";
+
+interface ImageSlot {
+  key: ImageUrlField;
+  creditKey: ImageCreditField;
+  label: string;
+  helper: string;
+  caption?: boolean;
+}
+
+const IMAGE_SLOTS: ImageSlot[] = [
+  {
+    key: "featured_image_url",
+    creditKey: "featured_image_credit",
+    label: "Hero image",
+    helper: "Main cover image shown at the top of the article.",
+    caption: true,
+  },
+  {
+    key: "additional_image_1_url",
+    creditKey: "additional_image_1_credit",
+    label: "Article image 1",
+    helper: "Shown inside the story between article paragraphs.",
+  },
+  {
+    key: "additional_image_2_url",
+    creditKey: "additional_image_2_credit",
+    label: "Article image 2",
+    helper: "Shown inside the story after the next content section.",
+  },
+];
 
 const EMPTY_ARTICLE: Partial<Article> = {
   title: "",
@@ -77,6 +115,10 @@ const EMPTY_ARTICLE: Partial<Article> = {
   featured_image_url: "",
   featured_image_caption: "",
   featured_image_credit: "",
+  additional_image_1_url: "",
+  additional_image_1_credit: "",
+  additional_image_2_url: "",
+  additional_image_2_credit: "",
   status: "draft",
   is_breaking: false,
   is_featured: false,
@@ -123,7 +165,7 @@ export default function AdminArticleEdit() {
   const [scheduledAt, setScheduledAt] = useState("");
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [quickTagName, setQuickTagName] = useState("");
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState<ImageUrlField | null>(null);
 
   const { data: existingArticle, isLoading } = useQuery({
     queryKey: ["admin-article", id],
@@ -297,7 +339,7 @@ export default function AdminArticleEdit() {
     setForm((current) => ({ ...current, slug: slugify(current.title ?? "") }));
   }
 
-  async function handleCoverImageUpload(file?: File) {
+  async function handleImageUpload(field: ImageUrlField, file?: File) {
     if (!file) return;
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
       toast.error("Choose a PNG, JPG, JPEG, or WebP image.");
@@ -308,29 +350,38 @@ export default function AdminArticleEdit() {
       return;
     }
 
-    setUploadingImage(true);
+    setUploadingImage(field);
     try {
       const asset = await uploadArticleImage(file);
-      setForm((current) => ({ ...current, featured_image_url: asset.file_url }));
+      setForm((current) => ({ ...current, [field]: asset.file_url }));
       toast.success("Image uploaded");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The image could not be uploaded.");
     } finally {
-      setUploadingImage(false);
+      setUploadingImage(null);
     }
   }
 
-  const isBusy = workflowMutation.isPending || uploadingImage;
+  function clearImage(slot: ImageSlot) {
+    setForm((current) => ({
+      ...current,
+      [slot.key]: "",
+      [slot.creditKey]: "",
+      ...(slot.caption ? { featured_image_caption: "" } : {}),
+    }));
+  }
+
+  const isBusy = workflowMutation.isPending || uploadingImage !== null;
   const actionButtonClass =
-    "inline-flex items-center gap-2 rounded-sm px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+    "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-sm px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
 
   if (!isNew && isLoading) {
-    return <div className="p-6 text-sm text-[#6B756E]">Loading article...</div>;
+    return <div className="p-4 sm:p-6 text-sm text-[#6B756E]">Loading article...</div>;
   }
 
   if (!isNew && !isLoading && !existingArticle) {
     return (
-      <div className="p-6 max-w-5xl mx-auto">
+      <div className="p-4 sm:p-6 max-w-5xl mx-auto">
         <p className="text-sm text-[#6B756E]">
           This article is unavailable or you do not have permission to view it.
         </p>
@@ -339,8 +390,8 @@ export default function AdminArticleEdit() {
   }
 
   return (
-    <div className="min-h-full max-w-5xl mx-auto p-6 pb-20">
-      <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+    <div className="min-h-full max-w-5xl mx-auto p-4 sm:p-6 pb-20">
+      <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-3">
           <Link to="/admin/articles" className="text-[#6B756E] hover:text-[#103820]">
             <ArrowLeftIcon size={18} />
@@ -357,7 +408,7 @@ export default function AdminArticleEdit() {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-end gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:flex sm:flex-wrap sm:justify-end">
           {isAuthor && canEditContent && (
             <>
               <button onClick={() => workflowMutation.mutate("save")} disabled={isBusy} className={`${actionButtonClass} border border-[#103820] text-[#103820] hover:bg-[#F0F4F0]`}>
@@ -415,9 +466,9 @@ export default function AdminArticleEdit() {
         </div>
       )}
 
-      <fieldset disabled={!canEditContent} className="grid grid-cols-1 lg:grid-cols-3 gap-6 disabled:opacity-75">
+      <fieldset disabled={!canEditContent} className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 disabled:opacity-75">
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-4">
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-4">
             <div>
               <label className="block text-xs font-semibold text-[#142820] mb-1.5">Title *</label>
               <input
@@ -527,12 +578,12 @@ export default function AdminArticleEdit() {
                 }}
               />
               <p className="mt-1.5 text-[11px] text-[#6B756E]">
-                Use Add photo inside the editor to insert as many body images as needed.
+                Use Add photo inside the editor to insert as many body images as needed. The two story images on the side will appear between article sections.
               </p>
             </div>
           </div>
 
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-4">
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-4">
             <h3 className="text-sm font-semibold text-[#142820]">SEO & Metadata</h3>
             <input value={form.seo_title ?? ""} onChange={(event) => setForm((current) => ({ ...current, seo_title: event.target.value }))} placeholder="SEO title" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm" />
             <textarea value={form.seo_description ?? ""} onChange={(event) => setForm((current) => ({ ...current, seo_description: event.target.value }))} rows={2} placeholder="SEO description" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm resize-none" />
@@ -541,7 +592,7 @@ export default function AdminArticleEdit() {
         </div>
 
         <div className="space-y-4">
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-4">
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-4">
             <h3 className="text-sm font-semibold text-[#142820]">Publishing</h3>
             <ArticleStatusBadge status={currentStatus} />
             <select value={portalSlug} onChange={(event) => changePortal(event.target.value as PortalSlug)} className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm">
@@ -560,7 +611,7 @@ export default function AdminArticleEdit() {
             )}
           </div>
 
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-3">
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-3">
             <h3 className="text-sm font-semibold text-[#142820]">Article Flags</h3>
             {[
               { key: "is_breaking", label: "Breaking News" },
@@ -575,27 +626,53 @@ export default function AdminArticleEdit() {
             ))}
           </div>
 
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-[#142820]">Cover Image</h3>
-            <label className="flex min-h-20 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-sm border border-dashed border-[#B9C3BC] bg-[#F8FAF8] px-3 py-4 text-center transition-colors hover:border-[#103820] hover:bg-[#F0F4F0]">
-              {uploadingImage ? <LoaderCircleIcon size={20} className="animate-spin text-[#103820]" /> : <ImagePlusIcon size={20} className="text-[#103820]" />}
-              <span className="text-xs font-medium text-[#142820]">{form.featured_image_url ? "Replace image" : "Choose image"}</span>
-              <span className="text-[11px] text-[#6B756E]">JPG, PNG, WebP · max 10 MB</span>
-              <input type="file" accept=".png,.jpg,.jpeg,.webp" className="sr-only" disabled={uploadingImage} onChange={(event) => { void handleCoverImageUpload(event.currentTarget.files?.[0]); event.currentTarget.value = ""; }} />
-            </label>
-            {form.featured_image_url && (
-              <div className="space-y-2">
-                <img src={form.featured_image_url} alt="Cover preview" className="w-full rounded-sm object-contain bg-[#E5E7E2]" />
-                <input value={form.featured_image_caption ?? ""} onChange={(event) => setForm((current) => ({ ...current, featured_image_caption: event.target.value }))} placeholder="Image caption" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs" />
-                <input value={form.featured_image_credit ?? ""} onChange={(event) => setForm((current) => ({ ...current, featured_image_credit: event.target.value }))} placeholder="Photo credit" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs" />
-                <button type="button" onClick={() => setForm((current) => ({ ...current, featured_image_url: "", featured_image_caption: "", featured_image_credit: "" }))} className="inline-flex items-center gap-2 text-xs text-red-700">
-                  <Trash2Icon size={14} /> Remove image
-                </button>
-              </div>
-            )}
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-4">
+            <div>
+              <h3 className="text-sm font-semibold text-[#142820]">Article Images</h3>
+              <p className="mt-1 text-xs text-[#6B756E]">
+                Add the hero image plus two optional story images. The story images are mobile-friendly and appear inside the article body.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+              {IMAGE_SLOTS.map((slot) => {
+                const imageUrl = form[slot.key] as string | null | undefined;
+                const credit = form[slot.creditKey] as string | null | undefined;
+                const isUploadingThis = uploadingImage === slot.key;
+
+                return (
+                  <div key={slot.key} className="rounded-sm border border-[#E5E7E2] bg-[#F8FAF8] p-3 space-y-3">
+                    <div>
+                      <h4 className="text-xs font-semibold text-[#142820]">{slot.label}</h4>
+                      <p className="mt-0.5 text-[11px] text-[#6B756E]">{slot.helper}</p>
+                    </div>
+
+                    <label className="flex min-h-20 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-sm border border-dashed border-[#B9C3BC] bg-white px-3 py-4 text-center transition-colors hover:border-[#103820] hover:bg-[#F0F4F0]">
+                      {isUploadingThis ? <LoaderCircleIcon size={20} className="animate-spin text-[#103820]" /> : <ImagePlusIcon size={20} className="text-[#103820]" />}
+                      <span className="text-xs font-medium text-[#142820]">{imageUrl ? "Replace image" : "Choose image"}</span>
+                      <span className="text-[11px] text-[#6B756E]">JPG, PNG, WebP · max 10 MB</span>
+                      <input type="file" accept=".png,.jpg,.jpeg,.webp" className="sr-only" disabled={uploadingImage !== null} onChange={(event) => { void handleImageUpload(slot.key, event.currentTarget.files?.[0]); event.currentTarget.value = ""; }} />
+                    </label>
+
+                    {imageUrl && (
+                      <div className="space-y-2">
+                        <img src={imageUrl} alt={`${slot.label} preview`} className="max-h-56 w-full rounded-sm bg-[#E5E7E2] object-contain" />
+                        {slot.caption && (
+                          <input value={form.featured_image_caption ?? ""} onChange={(event) => setForm((current) => ({ ...current, featured_image_caption: event.target.value }))} placeholder="Image caption" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs" />
+                        )}
+                        <input value={credit ?? ""} onChange={(event) => setForm((current) => ({ ...current, [slot.creditKey]: event.target.value }))} placeholder="Photo credit" className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2 text-xs" />
+                        <button type="button" onClick={() => clearImage(slot)} className="inline-flex items-center gap-2 text-xs text-red-700">
+                          <Trash2Icon size={14} /> Remove image
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div className="bg-white border border-[#E5E7E2] rounded-sm p-5 space-y-3">
+          <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5 space-y-3">
             <h3 className="text-sm font-semibold text-[#142820]">Tags</h3>
             <div className="flex flex-wrap gap-2">
               {availableTags?.map((tag) => {
@@ -617,7 +694,7 @@ export default function AdminArticleEdit() {
           {!isNew && form.is_breaking && isReviewer && id && <ArticleLiveUpdates articleId={id} />}
 
           {(isReviewer || form.approval_notes) && (
-            <div className="bg-white border border-[#E5E7E2] rounded-sm p-5">
+            <div className="bg-white border border-[#E5E7E2] rounded-sm p-4 sm:p-5">
               <label className="block text-sm font-semibold text-[#142820] mb-2">Editor note</label>
               <textarea value={form.approval_notes ?? ""} onChange={(event) => setForm((current) => ({ ...current, approval_notes: event.target.value }))} rows={5} placeholder={isReviewer ? "Add feedback or approval context..." : "No editor note yet."} className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#103820] resize-y disabled:bg-[#F8F8F8]" />
               {isReviewer && <p className="text-xs text-[#6B756E] mt-2">This note is visible to the article author.</p>}
