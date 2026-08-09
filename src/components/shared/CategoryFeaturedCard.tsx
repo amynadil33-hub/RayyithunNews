@@ -72,10 +72,10 @@ export default function CategoryFeaturedCard({
         )}
 
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#6B756E]">
-          {article.author?.full_name && <span>{article.author.full_name}</span>}
-          {article.author?.full_name && date && (
-            <span aria-hidden="true">·</span>
+          {article.author?.full_name && (
+            <span>{article.author.full_name}</span>
           )}
+          {article.author?.full_name && date && <span aria-hidden="true">·</span>}
           {date && <span>{date}</span>}
           {article.read_time && (
             <>
