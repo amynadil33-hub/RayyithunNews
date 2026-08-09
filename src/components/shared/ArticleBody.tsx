@@ -1,7 +1,4 @@
-import {
-  getArticleImageHeight,
-  getArticleImageUrl,
-} from "../../lib/article-images.ts";
+import { getArticleImageUrl } from "../../lib/article-images.ts";
 import { sanitizeArticleHtml } from "../../lib/sanitizeHtml.ts";
 
 interface ArticleBodyProps {
@@ -71,15 +68,11 @@ export default function ArticleBody({
               />
             )}
             {image && (
-              <figure className="my-6 sm:my-8 overflow-hidden rounded-sm bg-[#E5E7E2]">
+              <figure className="my-6 sm:my-10 overflow-hidden rounded-sm bg-[#E5E7E2]">
                 <img
                   src={getArticleImageUrl(image.url)}
                   alt={`${title} — article image ${index + 1}`}
-                  className="w-full object-cover"
-                  style={{
-                    height: `min(${getArticleImageHeight(image.url)}px, 65vw)`,
-                    maxHeight: "70vh",
-                  }}
+                  className="block h-auto w-full object-contain"
                   loading="lazy"
                 />
                 {image.credit && (

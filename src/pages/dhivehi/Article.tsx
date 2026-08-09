@@ -14,10 +14,7 @@ import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
 import { getAbsoluteSiteUrl, getCanonicalPageUrl } from "../../lib/site-url.ts";
-import {
-  getArticleImageHeight,
-  getArticleImageUrl,
-} from "../../lib/article-images.ts";
+import { getArticleImageUrl } from "../../lib/article-images.ts";
 import ArticleBody from "../../components/shared/ArticleBody.tsx";
 import {
   ArticleAuthorMeta,
@@ -176,11 +173,7 @@ export default function DhivehiArticle() {
                 <img
                   src={getArticleImageUrl(article.featured_image_url)}
                   alt={article.title}
-                  className="w-full rounded-sm object-cover"
-                  style={{
-                    height: `min(${getArticleImageHeight(article.featured_image_url)}px, 70vw)`,
-                    maxHeight: "85vh",
-                  }}
+                  className="block h-auto w-full rounded-sm object-contain"
                 />
                 {(article.featured_image_caption ||
                   article.featured_image_credit) && (

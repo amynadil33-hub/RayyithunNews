@@ -33,7 +33,7 @@ export default function DhivehiArticleCard({
             loading="lazy"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#061C10]/95 via-[#103820]/55 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
           {article.is_breaking && (
             <span className="breaking-badge inline-block mb-2">
@@ -45,7 +45,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h2 className="font-article-title text-white text-5xl md:text-6xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
+          <h2 className="font-article-title text-white text-4xl md:text-5xl font-bold leading-tight text-balance mb-2 group-hover:text-[#95D5B2] transition-colors">
             {article.title}
           </h2>
           {article.excerpt && (
