@@ -1,13 +1,17 @@
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { PlusIcon, XIcon } from "lucide-react";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import {
+  createAdminUser,
   getAdminUsers,
   updateUserAvatar,
   updateUserRole,
 } from "../../services/settings.ts";
 import { uploadWriterAvatar } from "../../services/media.ts";
 import type { Profile, UserRole } from "../../lib/database.types.ts";
+import { useAdminAuth } from "../../hooks/use-admin-auth.tsx";
 
 const ROLES: UserRole[] = ["super_admin", "admin", "editor", "author"];
 
@@ -20,6 +24,14 @@ const ROLE_STYLES: Record<UserRole, string> = {
 
 export default function Users() {
   const qc = useQueryClient();
+  const { profile } = useAdminAuth();
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    role: "author" as UserRole,
+  });
   const { data: users, isLoading } = useQuery({
     queryKey: ["admin-users"],
     queryFn: getAdminUsers,
@@ -54,14 +66,131 @@ export default function Users() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const createUser = useMutation({
+    mutationFn: createAdminUser,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      setCreateForm({
+        fullName: "",
+        email: "",
+        password: "",
+        role: "author",
+      });
+      setShowCreateForm(false);
+      toast.success("User created");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   return (
     <div className="p-6 bg-[#F8F8F8] min-h-screen text-[#142820]">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-[#103820]">Admin Users</h1>
-        <span className="text-sm text-gray-500">
-          {users?.length ?? 0} users
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-500">
+            {users?.length ?? 0} users
+          </span>
+          {profile?.role === "super_admin" && (
+            <button
+              type="button"
+              onClick={() => setShowCreateForm((open) => !open)}
+              className="inline-flex items-center gap-2 rounded-sm bg-[#103820] px-4 py-2 text-sm font-semibold text-white hover:bg-[#183028]"
+            >
+              {showCreateForm ? <XIcon size={15} /> : <PlusIcon size={15} />}
+              {showCreateForm ? "Cancel" : "Create user"}
+            </button>
+          )}
+        </div>
       </div>
+
+      {profile?.role === "super_admin" && showCreateForm && (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            createUser.mutate(createForm);
+          }}
+          className="mb-6 rounded-lg border border-[#D8DED9] bg-white p-5 shadow-sm"
+        >
+          <div className="mb-4">
+            <h2 className="text-lg font-bold text-[#103820]">
+              Create admin user
+            </h2>
+            <p className="mt-1 text-xs text-gray-500">
+              The user can sign in immediately with the temporary password.
+            </p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <label className="text-xs font-semibold text-[#526159]">
+              Full name
+              <input
+                required
+                minLength={2}
+                value={createForm.fullName}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, fullName: event.target.value })
+                }
+                className="mt-1.5 w-full rounded-sm border border-[#D8DED9] px-3 py-2.5 text-sm font-normal text-[#142820] outline-none focus:border-[#103820]"
+                placeholder="Writer's public name"
+              />
+            </label>
+            <label className="text-xs font-semibold text-[#526159]">
+              Email
+              <input
+                required
+                type="email"
+                value={createForm.email}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, email: event.target.value })
+                }
+                className="mt-1.5 w-full rounded-sm border border-[#D8DED9] px-3 py-2.5 text-sm font-normal text-[#142820] outline-none focus:border-[#103820]"
+                placeholder="name@example.com"
+              />
+            </label>
+            <label className="text-xs font-semibold text-[#526159]">
+              Temporary password
+              <input
+                required
+                type="password"
+                minLength={8}
+                value={createForm.password}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, password: event.target.value })
+                }
+                className="mt-1.5 w-full rounded-sm border border-[#D8DED9] px-3 py-2.5 text-sm font-normal text-[#142820] outline-none focus:border-[#103820]"
+                placeholder="At least 8 characters"
+              />
+            </label>
+            <label className="text-xs font-semibold text-[#526159]">
+              Role
+              <select
+                value={createForm.role}
+                onChange={(event) =>
+                  setCreateForm({
+                    ...createForm,
+                    role: event.target.value as UserRole,
+                  })
+                }
+                className="mt-1.5 w-full rounded-sm border border-[#D8DED9] bg-white px-3 py-2.5 text-sm font-normal text-[#142820] outline-none focus:border-[#103820]"
+              >
+                {ROLES.map((role) => (
+                  <option key={role} value={role}>
+                    {role.replace("_", " ")}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="submit"
+              disabled={createUser.isPending}
+              className="rounded-sm bg-[#103820] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#183028] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {createUser.isPending ? "Creating…" : "Create user"}
+            </button>
+          </div>
+        </form>
+      )}
 
       <div className="bg-white rounded-lg border border-[#E5E7E2] overflow-hidden">
         <table className="w-full text-sm">

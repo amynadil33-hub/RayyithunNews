@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import type { Article } from "../../lib/database.types.ts";
+import AuthorIdentity from "../shared/AuthorIdentity.tsx";
+import { getPublicAuthorName } from "../../lib/author-display.ts";
 
 interface ArticleCardProps {
   article: Article;
@@ -21,6 +23,9 @@ export default function ArticleCard({
   const date = article.published_at
     ? format(new Date(article.published_at), "d MMM")
     : "";
+  const authorName = article.show_author
+    ? getPublicAuthorName(article.author)
+    : null;
 
   if (variant === "hero") {
     return (
@@ -55,10 +60,8 @@ export default function ArticleCard({
             </p>
           )}
           <div className="flex items-center gap-2 text-white/50 text-xs">
-            {article.author?.full_name && (
-              <span>{article.author.full_name}</span>
-            )}
-            {article.author?.full_name && date && <span>·</span>}
+            {authorName && <AuthorIdentity author={article.author} />}
+            {authorName && date && <span>·</span>}
             {date && <span>{date}</span>}
           </div>
         </div>
@@ -190,8 +193,8 @@ export default function ArticleCard({
           </p>
         )}
         <div className="flex items-center gap-2 text-xs text-[#6B756E]">
-          {article.author?.full_name && <span>{article.author.full_name}</span>}
-          {article.author?.full_name && date && <span>·</span>}
+          {authorName && <AuthorIdentity author={article.author} />}
+          {authorName && date && <span>·</span>}
           {date && <span>{date}</span>}
           {article.read_time && (
             <>

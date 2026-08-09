@@ -5,6 +5,7 @@ import type { Article } from "../../lib/database.types.ts";
 import { getTagsForArticle } from "../../services/tags.ts";
 import { getLiveUpdates } from "../../services/live-updates.ts";
 import { getApprovedComments, submitComment } from "../../services/comments.ts";
+import { getPublicAuthorName } from "../../lib/author-display.ts";
 
 export function ArticleAuthorMeta({
   article,
@@ -15,7 +16,7 @@ export function ArticleAuthorMeta({
   publishDate: string;
   isDhivehi?: boolean;
 }) {
-  const authorName = article.author?.full_name;
+  const authorName = getPublicAuthorName(article.author);
   const initials = authorName
     ?.split(/\s+/)
     .map((part) => part[0])

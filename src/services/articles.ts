@@ -28,6 +28,39 @@ const REVIEW_QUEUE_STATUSES: ArticleStatus[] = [
   "approved",
 ];
 
+async function hydratePublicAuthors(articles: Article[]) {
+  const authorIds = [
+    ...new Set(
+      articles
+        .filter((article) => article.show_author && article.author_id)
+        .map((article) => article.author_id as string),
+    ),
+  ];
+  if (authorIds.length === 0) return articles;
+
+  const { data, error } = await supabase
+    .from("public_profiles")
+    .select("id, full_name, avatar_url")
+    .in("id", authorIds);
+  if (error) {
+    console.warn("Public author details could not be loaded:", error.message);
+    return articles;
+  }
+
+  const authors = new Map(
+    ((data ?? []) as Pick<Profile, "id" | "full_name" | "avatar_url">[]).map(
+      (author) => [author.id, author as Profile],
+    ),
+  );
+  return articles.map((article) => ({
+    ...article,
+    author:
+      article.show_author && article.author_id
+        ? authors.get(article.author_id)
+        : undefined,
+  }));
+}
+
 function stripArticleRelations(article: Partial<Article>) {
   const {
     id: _id,
@@ -39,11 +72,16 @@ function stripArticleRelations(article: Partial<Article>) {
     ...values
   } = article;
   const cleanValues: Partial<Article> = { ...values };
-  if (!cleanValues.featured_image_credit) delete cleanValues.featured_image_credit;
-  if (!cleanValues.additional_image_1_url) delete cleanValues.additional_image_1_url;
-  if (!cleanValues.additional_image_1_credit) delete cleanValues.additional_image_1_credit;
-  if (!cleanValues.additional_image_2_url) delete cleanValues.additional_image_2_url;
-  if (!cleanValues.additional_image_2_credit) delete cleanValues.additional_image_2_credit;
+  if (!cleanValues.featured_image_credit)
+    delete cleanValues.featured_image_credit;
+  if (!cleanValues.additional_image_1_url)
+    delete cleanValues.additional_image_1_url;
+  if (!cleanValues.additional_image_1_credit)
+    delete cleanValues.additional_image_1_credit;
+  if (!cleanValues.additional_image_2_url)
+    delete cleanValues.additional_image_2_url;
+  if (!cleanValues.additional_image_2_credit)
+    delete cleanValues.additional_image_2_credit;
   return cleanValues;
 }
 
@@ -54,7 +92,10 @@ export async function supportsArticleGalleryImages() {
     .limit(1);
 
   if (!error) return true;
-  const missingColumn = /additional_image_[12]_url|schema cache|does not exist/i.test(error.message);
+  const missingColumn =
+    /additional_image_[12]_url|schema cache|does not exist/i.test(
+      error.message,
+    );
   if (missingColumn) return false;
   throw error;
 }
@@ -90,7 +131,10 @@ async function logReview(
     notes: notes?.trim() || null,
   } as never);
   if (error) {
-    console.warn("Article review history could not be recorded:", error.message);
+    console.warn(
+      "Article review history could not be recorded:",
+      error.message,
+    );
   }
 }
 
@@ -101,12 +145,16 @@ export async function getArticles(filters: ArticleFilters = {}) {
     .order("published_at", { ascending: false, nullsFirst: false });
 
   if (filters.portalSlug) query = query.eq("portal.slug", filters.portalSlug);
-  if (filters.categorySlug) query = query.eq("category.slug", filters.categorySlug);
+  if (filters.categorySlug)
+    query = query.eq("category.slug", filters.categorySlug);
   if (filters.status) query = query.eq("status", filters.status);
   else if (!filters.includeAllStatuses) query = query.eq("status", "published");
-  if (filters.isFeatured !== undefined) query = query.eq("is_featured", filters.isFeatured);
-  if (filters.isTrending !== undefined) query = query.eq("is_trending", filters.isTrending);
-  if (filters.isBreaking !== undefined) query = query.eq("is_breaking", filters.isBreaking);
+  if (filters.isFeatured !== undefined)
+    query = query.eq("is_featured", filters.isFeatured);
+  if (filters.isTrending !== undefined)
+    query = query.eq("is_trending", filters.isTrending);
+  if (filters.isBreaking !== undefined)
+    query = query.eq("is_breaking", filters.isBreaking);
   if (filters.search?.trim()) {
     const term = filters.search.trim().replace(/[,%()]/g, " ");
     query = query.or(`title.ilike.%${term}%,excerpt.ilike.%${term}%`);
@@ -118,13 +166,17 @@ export async function getArticles(filters: ArticleFilters = {}) {
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data ?? []) as unknown as Article[];
+  return hydratePublicAuthors((data ?? []) as unknown as Article[]);
 }
 
-export const getPublishedArticles = (portalSlug: string) => getArticles({ portalSlug });
-export const getFeaturedArticles = (portalSlug: string) => getArticles({ portalSlug, isFeatured: true });
-export const getTrendingArticles = (portalSlug: string) => getArticles({ portalSlug, isTrending: true });
-export const getLatestArticles = (portalSlug: string, limit = 10) => getArticles({ portalSlug, limit });
+export const getPublishedArticles = (portalSlug: string) =>
+  getArticles({ portalSlug });
+export const getFeaturedArticles = (portalSlug: string) =>
+  getArticles({ portalSlug, isFeatured: true });
+export const getTrendingArticles = (portalSlug: string) =>
+  getArticles({ portalSlug, isTrending: true });
+export const getLatestArticles = (portalSlug: string, limit = 10) =>
+  getArticles({ portalSlug, limit });
 
 export async function getArticlesByCategory(
   portalSlug: string,
@@ -170,14 +222,16 @@ export async function getArticlesByCategory(
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });
 
-  if (typeof limit === "number") query = query.range(offset, offset + limit - 1);
+  if (typeof limit === "number")
+    query = query.range(offset, offset + limit - 1);
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data ?? []) as unknown as Article[];
+  return hydratePublicAuthors((data ?? []) as unknown as Article[]);
 }
 
-export const searchArticles = (portalSlug: string, search: string) => getArticles({ portalSlug, search });
+export const searchArticles = (portalSlug: string, search: string) =>
+  getArticles({ portalSlug, search });
 
 export async function getArticleBySlug(portalSlug: string, slug?: string) {
   const actualSlug = slug ?? portalSlug;
@@ -191,15 +245,7 @@ export async function getArticleBySlug(portalSlug: string, slug?: string) {
   if (error) throw error;
   if (!data) return null;
   const article = data as unknown as Article;
-  if (article.show_author && article.author_id && !article.author) {
-    const { data: publicAuthor } = await supabase
-      .from("public_profiles")
-      .select("id, full_name, avatar_url")
-      .eq("id", article.author_id)
-      .maybeSingle();
-    if (publicAuthor) article.author = publicAuthor as Profile;
-  }
-  return article;
+  return (await hydratePublicAuthors([article]))[0];
 }
 
 export async function getRelatedArticles(
@@ -218,7 +264,7 @@ export async function getRelatedArticles(
     .order("published_at", { ascending: false })
     .limit(limit);
   if (error) throw error;
-  return (data ?? []) as unknown as Article[];
+  return hydratePublicAuthors((data ?? []) as unknown as Article[]);
 }
 
 export async function adminGetArticles(portalId?: string) {
@@ -253,7 +299,10 @@ export async function adminCreateArticle(article: Partial<Article>) {
   return data as Article;
 }
 
-export async function adminUpdateArticle(id: string, article: Partial<Article>) {
+export async function adminUpdateArticle(
+  id: string,
+  article: Partial<Article>,
+) {
   const values = stripArticleRelations(article);
   const { data, error } = await supabase
     .from("articles")
@@ -357,7 +406,12 @@ export async function publishArticle(id: string) {
     reviewed_at: reviewedAt,
     scheduled_at: null,
   });
-  await logReview(id, reviewerId, "published", article.approval_notes ?? undefined);
+  await logReview(
+    id,
+    reviewerId,
+    "published",
+    article.approval_notes ?? undefined,
+  );
   return article;
 }
 
@@ -372,7 +426,12 @@ export async function scheduleArticle(id: string, scheduledAt: string) {
 export async function archiveArticle(id: string) {
   const reviewerId = await requireCurrentUserId();
   const article = await updateWorkflowState(id, { status: "archived" });
-  await logReview(id, reviewerId, "archived", article.approval_notes ?? undefined);
+  await logReview(
+    id,
+    reviewerId,
+    "archived",
+    article.approval_notes ?? undefined,
+  );
   return article;
 }
 

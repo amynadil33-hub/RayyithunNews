@@ -1,6 +1,8 @@
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import type { Article } from "../../lib/database.types.ts";
+import AuthorIdentity from "./AuthorIdentity.tsx";
+import { getPublicAuthorName } from "../../lib/author-display.ts";
 
 interface CategoryFeaturedCardProps {
   article: Article;
@@ -17,6 +19,9 @@ export default function CategoryFeaturedCard({
   const date = article.published_at
     ? format(new Date(article.published_at), "d MMM yyyy")
     : "";
+  const authorName = article.show_author
+    ? getPublicAuthorName(article.author)
+    : null;
 
   return (
     <Link
@@ -72,10 +77,8 @@ export default function CategoryFeaturedCard({
         )}
 
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#6B756E]">
-          {article.author?.full_name && (
-            <span>{article.author.full_name}</span>
-          )}
-          {article.author?.full_name && date && <span aria-hidden="true">·</span>}
+          {authorName && <AuthorIdentity author={article.author} />}
+          {authorName && date && <span aria-hidden="true">·</span>}
           {date && <span>{date}</span>}
           {article.read_time && (
             <>

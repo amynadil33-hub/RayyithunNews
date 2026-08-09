@@ -90,6 +90,22 @@ export async function getPortalBySlug(slug: string) {
 }
 
 // Admin Users
+export interface CreateAdminUserInput {
+  fullName: string;
+  email: string;
+  password: string;
+  role: Profile["role"];
+}
+
+export async function createAdminUser(input: CreateAdminUserInput) {
+  const { data, error } = await supabase.functions.invoke("create-admin-user", {
+    body: input,
+  });
+  if (error) throw error;
+  if (data?.error) throw new Error(data.error);
+  return data?.user as Profile;
+}
+
 export async function getAdminUsers() {
   const { data, error } = await supabase
     .from("profiles")

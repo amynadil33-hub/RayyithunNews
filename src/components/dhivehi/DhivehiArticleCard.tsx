@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import type { Article } from "../../lib/database.types.ts";
+import AuthorIdentity from "../shared/AuthorIdentity.tsx";
+import { getPublicAuthorName } from "../../lib/author-display.ts";
 
 interface DhivehiArticleCardProps {
   article: Article;
@@ -17,6 +19,9 @@ export default function DhivehiArticleCard({
   const date = article.published_at
     ? format(new Date(article.published_at), "d MMM")
     : "";
+  const authorName = article.show_author
+    ? getPublicAuthorName(article.author)
+    : null;
 
   if (variant === "hero") {
     return (
@@ -54,9 +59,7 @@ export default function DhivehiArticleCard({
             </p>
           )}
           <div className="flex items-center gap-2 text-white/50 text-xs font-thaana flex-row-reverse">
-            {article.author?.full_name && (
-              <span>{article.author.full_name}</span>
-            )}
+            {authorName && <AuthorIdentity author={article.author} />}
             {date && <span>{date}</span>}
           </div>
         </div>
@@ -194,8 +197,8 @@ export default function DhivehiArticleCard({
         )}
         <div className="flex items-center gap-2 text-xs text-[#6B756E] font-thaana justify-end">
           {date && <span>{date}</span>}
-          {article.author?.full_name && date && <span>·</span>}
-          {article.author?.full_name && <span>{article.author.full_name}</span>}
+          {authorName && date && <span>·</span>}
+          {authorName && <AuthorIdentity author={article.author} />}
         </div>
       </div>
     </Link>
