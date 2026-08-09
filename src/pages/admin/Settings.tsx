@@ -28,7 +28,7 @@ const blank: SettingsForm = {
   twitter: "",
   instagram: "",
   youtube: "",
-  homepage_featured_height: 480,
+  homepage_featured_height: 600,
 };
 
 const SOCIAL_KEYS = ["facebook", "twitter", "instagram", "youtube"] as const;
@@ -138,15 +138,15 @@ export default function Settings() {
               <input
                 id="homepage-featured-height"
                 type="range"
-                min={400}
-                max={600}
+                min={600}
+                max={760}
                 step={10}
                 value={form.homepage_featured_height}
                 onChange={e => setForm(f => ({ ...f, homepage_featured_height: Number(e.target.value) }))}
                 className="w-full accent-[#103820]"
               />
               <p className="mt-1.5 text-xs text-[#6B756E]">
-                450–500px gives the homepage a more editorial, magazine-like feel.
+                600–660px gives the homepage a larger editorial hero image.
               </p>
             </div>
 

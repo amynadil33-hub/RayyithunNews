@@ -26,7 +26,7 @@ export default function ArticleCard({
     return (
       <Link
         to={href}
-        className="group block relative w-full max-w-full min-w-0 overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[320px]"
+        className="group block relative w-full max-w-full min-w-0 overflow-hidden rounded-sm bg-[#103820] aspect-[4/3] md:aspect-auto md:h-full min-h-[400px]"
       >
         {article.featured_image_url && (
           <img
@@ -81,11 +81,11 @@ export default function ArticleCard({
           <img
             src={article.featured_image_url}
             alt={article.title}
-            className="w-24 h-16 object-cover rounded-sm flex-shrink-0"
+            className="w-32 h-24 object-cover rounded-sm flex-shrink-0"
             loading="lazy"
           />
         ) : (
-          <div className="w-24 h-16 bg-[#D8E8D8] flex-shrink-0 rounded-sm flex items-center justify-center">
+          <div className="w-32 h-24 bg-[#D8E8D8] flex-shrink-0 rounded-sm flex items-center justify-center">
             <span className="font-serif text-[#103820] text-xs font-bold">
               R
             </span>
@@ -148,7 +148,7 @@ export default function ArticleCard({
           <img
             src={article.featured_image_url}
             alt={article.title}
-            className="w-16 h-12 object-cover rounded-sm flex-shrink-0"
+            className="w-24 h-20 object-cover rounded-sm flex-shrink-0"
             loading="lazy"
           />
         )}
@@ -165,11 +165,11 @@ export default function ArticleCard({
         <img
           src={article.featured_image_url}
           alt={article.title}
-          className="w-full h-44 object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          className="w-full h-56 object-cover group-hover:scale-[1.02] transition-transform duration-300"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-44 bg-[#D8E8D8] flex items-center justify-center">
+        <div className="w-full h-56 bg-[#D8E8D8] flex items-center justify-center">
           <span className="font-serif text-[#103820] text-2xl font-bold opacity-30">
             R
           </span>

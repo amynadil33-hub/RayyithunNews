@@ -1,6 +1,6 @@
-const DEFAULT_ARTICLE_IMAGE_HEIGHT = 480;
-const MIN_ARTICLE_IMAGE_HEIGHT = 350;
-const MAX_ARTICLE_IMAGE_HEIGHT = 600;
+const DEFAULT_ARTICLE_IMAGE_HEIGHT = 600;
+const MIN_ARTICLE_IMAGE_HEIGHT = 400;
+const MAX_ARTICLE_IMAGE_HEIGHT = 760;
 
 export function clampArticleImageHeight(height: number) {
   return Math.min(MAX_ARTICLE_IMAGE_HEIGHT, Math.max(MIN_ARTICLE_IMAGE_HEIGHT, Math.round(height)));

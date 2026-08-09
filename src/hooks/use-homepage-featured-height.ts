@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import type { PortalSlug } from "../lib/database.types.ts";
 import { getPortalBySlug, getSiteSetting } from "../services/settings.ts";
 
-const DEFAULT_HEIGHT = 480;
-const MIN_HEIGHT = 400;
-const MAX_HEIGHT = 600;
+const DEFAULT_HEIGHT = 600;
+const MIN_HEIGHT = 600;
+const MAX_HEIGHT = 760;
 
 export function clampHomepageFeaturedHeight(value: unknown) {
   const parsed = typeof value === "number" ? value : Number(value);

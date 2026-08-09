@@ -1077,7 +1077,7 @@ export default function AdminArticleEdit() {
                       />
                       <p className="mt-1 text-[10px] text-[#6B756E]">
                         Drag to resize from {MIN_ARTICLE_IMAGE_HEIGHT}px to{" "}
-                        {MAX_ARTICLE_IMAGE_HEIGHT}px. Recommended: 450–500px.
+                        {MAX_ARTICLE_IMAGE_HEIGHT}px. Recommended: 580–640px.
                       </p>
                     </div>
                     <div className="relative overflow-hidden rounded-sm bg-[#E5E7E2]">

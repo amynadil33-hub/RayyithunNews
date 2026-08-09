@@ -183,8 +183,8 @@ export default function EnglishArticle() {
                   alt={article.title}
                   className="w-full rounded-sm object-cover"
                   style={{
-                    height: getArticleImageHeight(article.featured_image_url),
-                    maxHeight: "70vh",
+                    height: `min(${getArticleImageHeight(article.featured_image_url)}px, 70vw)`,
+                    maxHeight: "85vh",
                   }}
                 />
                 {(article.featured_image_caption ||
