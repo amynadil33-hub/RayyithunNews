@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import DhivehiFooter from "../../components/dhivehi/DhivehiFooter.tsx";
 import DhivehiArticleCard from "../../components/dhivehi/DhivehiArticleCard.tsx";
+import CategoryFeaturedCard from "../../components/shared/CategoryFeaturedCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import { useArticlesByCategory } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
@@ -89,7 +90,7 @@ export default function DhivehiCategory() {
           <>
             {articles.length > 0 && page === 0 && (
               <div className="mb-8">
-                <DhivehiArticleCard article={articles[0]} variant="hero" />
+                <CategoryFeaturedCard article={articles[0]} isDhivehi />
               </div>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">

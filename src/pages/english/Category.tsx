@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
+import CategoryFeaturedCard from "../../components/shared/CategoryFeaturedCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import { useArticlesByCategory } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
@@ -80,7 +81,7 @@ export default function EnglishCategory() {
             {/* Featured first article */}
             {articles.length > 0 && page === 0 && (
               <div className="mb-8">
-                <ArticleCard article={articles[0]} variant="hero" />
+                <CategoryFeaturedCard article={articles[0]} />
               </div>
             )}
 
