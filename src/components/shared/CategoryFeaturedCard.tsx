@@ -57,10 +57,10 @@ export default function CategoryFeaturedCard({
         )}
 
         <h2
-          className={`font-article-title max-w-4xl font-bold text-[#142820] transition-colors group-hover:text-[#2D6A4F] line-clamp-3 ${
+          className={`font-article-title font-bold text-[#142820] transition-colors group-hover:text-[#2D6A4F] line-clamp-3 ${
             isDhivehi
-              ? "text-4xl leading-[1.4] sm:text-5xl"
-              : "text-3xl leading-tight sm:text-4xl"
+              ? "ml-auto max-w-3xl text-3xl leading-[1.4] sm:text-4xl"
+              : "max-w-4xl text-3xl leading-tight sm:text-4xl"
           }`}
         >
           {article.title}
@@ -68,8 +68,10 @@ export default function CategoryFeaturedCard({
 
         {article.excerpt && (
           <p
-            className={`mt-3 max-w-3xl text-sm text-[#6B756E] line-clamp-2 sm:text-base ${
-              isDhivehi ? "thaana-body leading-[1.9]" : "leading-relaxed"
+            className={`mt-3 text-sm text-[#6B756E] line-clamp-2 sm:text-base ${
+              isDhivehi
+                ? "thaana-body ml-auto max-w-2xl leading-[1.9]"
+                : "max-w-3xl leading-relaxed"
             }`}
           >
             {article.excerpt}

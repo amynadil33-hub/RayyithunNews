@@ -34,6 +34,7 @@ export default function DhivehiHome() {
     limit: 9,
   });
   const featuredHeight = useHomepageFeaturedHeight("dhivehi");
+  const editorialHeroHeight = Math.max(480, Math.round(featuredHeight * 0.88));
 
   const heroArticle = featured?.[0];
   const secondaryArticles = featured?.slice(1, 4) ?? [];
@@ -56,7 +57,7 @@ export default function DhivehiHome() {
         {featuredLoading ? (
           <div
             className="grid grid-cols-1 md:grid-cols-5 gap-4"
-            style={{ minHeight: featuredHeight }}
+            style={{ minHeight: editorialHeroHeight }}
           >
             <Skeleton className="md:col-span-3 h-full" />
             <div className="md:col-span-2 space-y-4">
@@ -68,7 +69,7 @@ export default function DhivehiHome() {
         ) : (
           <div
             className="grid grid-cols-1 md:grid-cols-5 gap-4"
-            style={{ minHeight: featuredHeight }}
+            style={{ minHeight: editorialHeroHeight }}
           >
             <div className="md:col-span-3">
               {heroArticle ? (

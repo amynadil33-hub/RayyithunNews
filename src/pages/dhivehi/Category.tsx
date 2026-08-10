@@ -89,7 +89,7 @@ export default function DhivehiCategory() {
         ) : articles && articles.length > 0 ? (
           <>
             {articles.length > 0 && page === 0 && (
-              <div className="mb-8">
+              <div className="mx-auto mb-8 max-w-[1080px]">
                 <CategoryFeaturedCard article={articles[0]} isDhivehi />
               </div>
             )}
