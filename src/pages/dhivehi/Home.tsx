@@ -11,10 +11,10 @@ import { useHomepageFeaturedHeight } from "../../hooks/use-homepage-featured-hei
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 
 const DV_CATEGORIES = [
-  { name: "ހަބަރު", slug: "dv-news" },
-  { name: "ތަޢުލީމް", slug: "dv-education" },
-  { name: "ވިޔަފާރި", slug: "dv-business" },
-  { name: "ތެދުމަގު", slug: "dv-religion" },
+  { name: "ހަބަރު", slug: "news" },
+  { name: "ތައުލީމު", slug: "education" },
+  { name: "ވިޔަފާރި", slug: "business" },
+  { name: "ތެދުމަގު", slug: "religion" },
   { name: "ފަތުރުވެރިކަން", slug: "travel-tourism" },
 ];
 

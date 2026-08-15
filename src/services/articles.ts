@@ -20,7 +20,7 @@ export interface ArticleFilters {
   search?: string;
 }
 
-const ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories(*), author:profiles!articles_author_id_fkey(id, full_name, avatar_url)`;
+const ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories(*), author:profiles!articles_author_id_fkey(id, full_name, full_name_dv, email, avatar_url)`;
 const REVIEW_QUEUE_STATUSES: ArticleStatus[] = [
   "submitted",
   "in_review",
@@ -40,7 +40,7 @@ async function hydratePublicAuthors(articles: Article[]) {
 
   const { data, error } = await supabase
     .from("public_profiles")
-    .select("id, full_name, avatar_url")
+    .select("id, full_name, full_name_dv, email, avatar_url")
     .in("id", authorIds);
   if (error) {
     console.warn("Public author details could not be loaded:", error.message);
@@ -48,9 +48,12 @@ async function hydratePublicAuthors(articles: Article[]) {
   }
 
   const authors = new Map(
-    ((data ?? []) as Pick<Profile, "id" | "full_name" | "avatar_url">[]).map(
-      (author) => [author.id, author as Profile],
-    ),
+    (
+      (data ?? []) as Pick<
+        Profile,
+        "id" | "full_name" | "full_name_dv" | "email" | "avatar_url"
+      >[]
+    ).map((author) => [author.id, author as Profile]),
   );
   return articles.map((article) => ({
     ...article,
@@ -195,29 +198,23 @@ export async function getArticlesByCategory(
   const portal = portalData as unknown as { id: string } | null;
   if (!portal) return [];
 
-  const categorySlugs =
-    portalSlug === "dhivehi" && !categorySlug.startsWith("dv-")
-      ? [categorySlug, `dv-${categorySlug}`]
-      : [categorySlug];
-
   const { data: categoryData, error: categoryError } = await supabase
     .from("categories")
     .select("id")
     .eq("portal_id", portal.id)
     .eq("is_active", true)
-    .in("slug", categorySlugs);
+    .eq("slug", categorySlug)
+    .maybeSingle();
   if (categoryError) throw categoryError;
 
-  const categoryIds = ((categoryData ?? []) as unknown as { id: string }[]).map(
-    (category) => category.id,
-  );
-  if (categoryIds.length === 0) return [];
+  const category = categoryData as unknown as { id: string } | null;
+  if (!category) return [];
 
   let query = supabase
     .from("articles")
     .select(ARTICLE_SELECT)
     .eq("portal_id", portal.id)
-    .in("category_id", categoryIds)
+    .eq("category_id", category.id)
     .eq("status", "published")
     .order("published_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false });

@@ -2,7 +2,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const allowedRoles = new Set(["super_admin", "admin", "editor", "author"]);
@@ -44,16 +45,23 @@ Deno.serve(async (request) => {
 
     const body = await request.json();
     const fullName = String(body.fullName ?? "").trim();
-    const email = String(body.email ?? "").trim().toLowerCase();
+    const fullNameDv = String(body.fullNameDv ?? "").trim();
+    const email = String(body.email ?? "")
+      .trim()
+      .toLowerCase();
     const password = String(body.password ?? "");
     const role = String(body.role ?? "author");
 
-    if (fullName.length < 2) return json({ error: "Enter the user's full name." }, 400);
+    if (fullName.length < 2)
+      return json({ error: "Enter the user's full name." }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return json({ error: "Enter a valid email address." }, 400);
     }
     if (password.length < 8) {
-      return json({ error: "The temporary password must be at least 8 characters." }, 400);
+      return json(
+        { error: "The temporary password must be at least 8 characters." },
+        400,
+      );
     }
     if (!allowedRoles.has(role)) return json({ error: "Invalid role." }, 400);
 
@@ -68,14 +76,24 @@ Deno.serve(async (request) => {
         user_metadata: { full_name: fullName },
       });
     if (createError || !created.user) {
-      return json({ error: createError?.message ?? "Unable to create user." }, 400);
+      return json(
+        { error: createError?.message ?? "Unable to create user." },
+        400,
+      );
     }
 
     const { data: profile, error: profileError } = await adminClient
       .from("profiles")
-      .update({ full_name: fullName, role, is_active: true })
+      .update({
+        full_name: fullName,
+        full_name_dv: fullNameDv || null,
+        role,
+        is_active: true,
+      })
       .eq("id", created.user.id)
-      .select("id, full_name, email, role, avatar_url, is_active, created_at, updated_at")
+      .select(
+        "id, full_name, full_name_dv, email, role, avatar_url, is_active, created_at, updated_at",
+      )
       .single();
     if (profileError) {
       await adminClient.auth.admin.deleteUser(created.user.id);
@@ -85,7 +103,10 @@ Deno.serve(async (request) => {
     return json({ user: profile }, 201);
   } catch (error) {
     return json(
-      { error: error instanceof Error ? error.message : "Unexpected server error." },
+      {
+        error:
+          error instanceof Error ? error.message : "Unexpected server error.",
+      },
       500,
     );
   }

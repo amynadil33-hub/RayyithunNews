@@ -92,6 +92,7 @@ export async function getPortalBySlug(slug: string) {
 // Admin Users
 export interface CreateAdminUserInput {
   fullName: string;
+  fullNameDv: string;
   email: string;
   password: string;
   role: Profile["role"];
@@ -119,6 +120,20 @@ export async function updateUserRole(id: string, role: Profile["role"]) {
   const { error } = await supabase
     .from("profiles")
     .update({ role, updated_at: new Date().toISOString() } as never)
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function updateUserDhivehiName(
+  id: string,
+  fullNameDv: string | null,
+) {
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name_dv: fullNameDv?.trim() || null,
+      updated_at: new Date().toISOString(),
+    } as never)
     .eq("id", id);
   if (error) throw error;
 }

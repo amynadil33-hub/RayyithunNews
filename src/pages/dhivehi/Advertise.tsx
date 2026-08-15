@@ -39,23 +39,24 @@ export default function DhivehiAdvertise() {
   return (
     <div className="min-h-screen bg-[#F8F8F8]" dir="rtl" lang="dv">
       <Helmet>
-        <title>އިގުލާން — ރައްޔިތުން</title>
+        <title>އިޢުލާން — ރައްޔިތުން</title>
       </Helmet>
       <DhivehiHeader />
 
       <main className="max-w-4xl mx-auto px-4 py-14">
         <div className="bg-[#103820] text-white rounded-sm p-8 mb-10 text-center">
           <h1 className="dhivehi-title-inverse font-thaana thaana-headline text-4xl font-bold mb-3">
-            ރައްޔިތުންގައި އިގުލާން ކުރައްވާ
+            އިޢުލާން ކުރެއްވުމަށް
           </h1>
           <p className="text-[#95D5B2] font-thaana thaana-body max-w-xl mx-auto">
-            ތިޔަ ވިޔަފާރި ރައްޔިތުންގެ ކިޔުންތެރިންނާ ގުޅުއްވާ.
+            'ރައްޔިތުން' މެދުވެރިކޮށް ތިޔަބޭފުޅުންގެ އިޢުލާންތައް
+            އާންމުކުރައްވާ!
           </p>
         </div>
 
         <div className="bg-white border border-[#E5E7E2] rounded-sm p-6 md:p-8">
           <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820] mb-6 text-right">
-            އިގުލާންދިނުމުގެ ހުށަހެޅުން
+            އިޢުލާން ކުރުމަށް އެދޭ ފޯމު
           </h2>
           {sent ? (
             <div className="text-center py-10">
@@ -83,7 +84,7 @@ export default function DhivehiAdvertise() {
                 </div>
                 <div>
                   <label htmlFor="advertiser-company" className={labelClass}>
-                    ކުންފުނީ / ވިޔަފާރީގެ ނަން
+                    ކުންފުނި ނުވަތަ ވިޔަފާރީގެ ނަން:
                   </label>
                   <input
                     id="advertiser-company"
@@ -128,7 +129,7 @@ export default function DhivehiAdvertise() {
               </div>
               <div>
                 <label htmlFor="advertiser-message" className={labelClass}>
-                  އިގުލާނާ ބެހޭ ތަފްށީލް
+                  އިޢުލާނާ ގުޅޭ ތަފުސީލު:
                 </label>
                 <textarea
                   id="advertiser-message"
@@ -145,7 +146,7 @@ export default function DhivehiAdvertise() {
                 disabled={loading}
                 className="w-full bg-[#103820] text-white py-2.5 rounded-sm text-sm font-semibold hover:bg-[#183028] transition-colors disabled:opacity-60 font-thaana"
               >
-                {loading ? "ފޮނުވަނީ..." : "ހުށަހަޅާ"}
+                {loading ? "ފޮނުވަނީ..." : "ހުށަހަޅުއްވާ"}
               </button>
             </form>
           )}

@@ -1,6 +1,22 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => {
+  const portalQuery = {
+    select: vi.fn(),
+    eq: vi.fn(),
+    maybeSingle: vi.fn(),
+  };
+  portalQuery.select.mockReturnValue(portalQuery);
+  portalQuery.eq.mockReturnValue(portalQuery);
+
+  const categoryQuery = {
+    select: vi.fn(),
+    eq: vi.fn(),
+    maybeSingle: vi.fn(),
+  };
+  categoryQuery.select.mockReturnValue(categoryQuery);
+  categoryQuery.eq.mockReturnValue(categoryQuery);
+
   const articleQuery = {
     select: vi.fn(),
     eq: vi.fn(),
@@ -15,8 +31,14 @@ const mocks = vi.hoisted(() => {
   articleQuery.order.mockReturnValue(articleQuery);
 
   return {
+    portalQuery,
+    categoryQuery,
     articleQuery,
-    from: vi.fn(() => articleQuery),
+    from: vi.fn((table: string) => {
+      if (table === "portals") return portalQuery;
+      if (table === "categories") return categoryQuery;
+      return articleQuery;
+    }),
   };
 });
 
@@ -33,6 +55,18 @@ describe("getArticlesByCategory", () => {
     mocks.articleQuery.eq.mockReturnValue(mocks.articleQuery);
     mocks.articleQuery.in.mockReturnValue(mocks.articleQuery);
     mocks.articleQuery.order.mockReturnValue(mocks.articleQuery);
+    mocks.portalQuery.select.mockReturnValue(mocks.portalQuery);
+    mocks.portalQuery.eq.mockReturnValue(mocks.portalQuery);
+    mocks.portalQuery.maybeSingle.mockResolvedValue({
+      data: { id: "portal-id" },
+      error: null,
+    });
+    mocks.categoryQuery.select.mockReturnValue(mocks.categoryQuery);
+    mocks.categoryQuery.eq.mockReturnValue(mocks.categoryQuery);
+    mocks.categoryQuery.maybeSingle.mockResolvedValue({
+      data: { id: "category-id" },
+      error: null,
+    });
   });
 
   it("constrains published articles to portal and category slug filters", async () => {
@@ -41,8 +75,12 @@ describe("getArticlesByCategory", () => {
     await getArticlesByCategory("english", "news", 12, 0);
 
     expect(mocks.from).toHaveBeenCalledWith("articles");
-    expect(mocks.articleQuery.eq).toHaveBeenCalledWith("portal.slug", "english");
-    expect(mocks.articleQuery.eq).toHaveBeenCalledWith("category.slug", "news");
+    expect(mocks.portalQuery.eq).toHaveBeenCalledWith("slug", "english");
+    expect(mocks.categoryQuery.eq).toHaveBeenCalledWith("slug", "news");
+    expect(mocks.articleQuery.eq).toHaveBeenCalledWith(
+      "category_id",
+      "category-id",
+    );
     expect(mocks.articleQuery.eq).toHaveBeenCalledWith("status", "published");
     expect(mocks.articleQuery.range).toHaveBeenCalledWith(0, 11);
   });
@@ -52,8 +90,8 @@ describe("getArticlesByCategory", () => {
 
     await getArticlesByCategory("dhivehi", "business", 12, 12);
 
-    expect(mocks.articleQuery.eq).toHaveBeenCalledWith("portal.slug", "dhivehi");
-    expect(mocks.articleQuery.eq).toHaveBeenCalledWith("category.slug", "business");
+    expect(mocks.portalQuery.eq).toHaveBeenCalledWith("slug", "dhivehi");
+    expect(mocks.categoryQuery.eq).toHaveBeenCalledWith("slug", "business");
     expect(mocks.articleQuery.range).toHaveBeenCalledWith(12, 23);
   });
 });

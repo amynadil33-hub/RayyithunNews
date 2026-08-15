@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Article } from "../../lib/database.types.ts";
 import AuthorIdentity from "./AuthorIdentity.tsx";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
+import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 
 interface CategoryFeaturedCardProps {
   article: Article;
@@ -17,10 +18,12 @@ export default function CategoryFeaturedCard({
     ? `/article/${article.slug}`
     : `/en/article/${article.slug}`;
   const date = article.published_at
-    ? format(new Date(article.published_at), "d MMM yyyy")
+    ? isDhivehi
+      ? formatDhivehiDate(article.published_at)
+      : format(new Date(article.published_at), "d MMM yyyy")
     : "";
   const authorName = article.show_author
-    ? getPublicAuthorName(article.author)
+    ? getPublicAuthorName(article.author, isDhivehi)
     : null;
 
   return (
@@ -79,13 +82,17 @@ export default function CategoryFeaturedCard({
         )}
 
         <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#6B756E]">
-          {authorName && <AuthorIdentity author={article.author} />}
+          {authorName && (
+            <AuthorIdentity author={article.author} isDhivehi={isDhivehi} />
+          )}
           {authorName && date && <span aria-hidden="true">·</span>}
           {date && <span>{date}</span>}
           {article.read_time && (
             <>
               <span aria-hidden="true">·</span>
-              <span>{article.read_time} min read</span>
+              <span>
+                {article.read_time} {isDhivehi ? "މިނިޓު" : "min read"}
+              </span>
             </>
           )}
         </div>

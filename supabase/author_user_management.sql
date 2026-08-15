@@ -1,6 +1,7 @@
--- Privacy-safe author data for public article pages and cards.
-CREATE OR REPLACE VIEW public.public_profiles AS
-SELECT id, full_name, avatar_url
+-- Public author data used for the requested display-name fallback order.
+DROP VIEW IF EXISTS public.public_profiles;
+CREATE VIEW public.public_profiles AS
+SELECT id, full_name, full_name_dv, email, avatar_url
 FROM public.profiles;
 
 REVOKE ALL ON public.public_profiles FROM PUBLIC;

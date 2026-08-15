@@ -13,6 +13,7 @@ import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
+import ArticleReactions from "../../components/shared/ArticleReactions.tsx";
 import { getAbsoluteSiteUrl, getCanonicalPageUrl } from "../../lib/site-url.ts";
 import { getArticleImageUrl } from "../../lib/article-images.ts";
 import ArticleBody from "../../components/shared/ArticleBody.tsx";
@@ -169,12 +170,8 @@ export default function EnglishArticle() {
               </p>
             )}
 
-            <div className="mb-6">
-              <ArticleShareButtons title={article.title} url={canonicalUrl} />
-            </div>
-
             {article.featured_image_url && (
-              <figure className="mb-8">
+              <figure className="mb-4">
                 <img
                   src={getArticleImageUrl(article.featured_image_url)}
                   alt={article.title}
@@ -194,6 +191,10 @@ export default function EnglishArticle() {
               </figure>
             )}
 
+            <div className="mb-6">
+              <ArticleShareButtons title={article.title} url={canonicalUrl} />
+            </div>
+
             <ArticleAuthorMeta article={article} publishDate={publishDate} />
             <ArticleLiveTimeline articleId={article.id} />
 
@@ -206,14 +207,6 @@ export default function EnglishArticle() {
               title={article.title}
             />
             <ArticleTags articleId={article.id} />
-            <div className="mt-8">
-              <ArticleShareButtons
-                title={article.title}
-                url={canonicalUrl}
-                compact
-              />
-            </div>
-
             <div className="my-8">
               <AdBanner placement="article_inline" label="Advertisement" />
             </div>
@@ -230,6 +223,7 @@ export default function EnglishArticle() {
                 </div>
               </section>
             )}
+            <ArticleReactions articleId={article.id} />
             <ArticleComments articleId={article.id} />
           </main>
 

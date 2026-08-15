@@ -11,8 +11,6 @@ const FOOTER_LINKS = [
 const SOCIAL_LINKS = ["Facebook", "Twitter", "Instagram", "YouTube"] as const;
 
 export default function DhivehiFooter() {
-  const year = new Date().getFullYear();
-
   return (
     <footer className="bg-[#183028] text-white font-thaana" dir="rtl" lang="dv">
       <div className="mx-auto max-w-7xl px-4 py-10 md:py-12">
@@ -29,8 +27,7 @@ export default function DhivehiFooter() {
               />
             </Link>
             <p className="max-w-xl text-sm leading-[2] text-[#95D5B2]">
-              ދިވެހިރާއްޖޭގެ ޑިޖިޓަލް ހަބަރު ޚިދުމަތް. މުސްތަޤިއްލު، ތެދުވެރި
-              އަދި އިތުބާރުހުރި ނޫސްވެރިކަން.
+              ހޭލުންތެރި، ބަސްބުނުމުގެ ބާރުވެރިކަން ލިބިފައިވާ މުޖުތަމަޢުއަކަށް
             </p>
             <div className="mt-5 flex justify-start gap-3">
               {SOCIAL_LINKS.map((label) => (
@@ -51,7 +48,7 @@ export default function DhivehiFooter() {
               to="/en"
               className="inline-flex items-center rounded-sm border border-[#52B788] px-4 py-2 text-sm font-medium text-[#52B788] transition-colors hover:bg-[#52B788] hover:text-[#103820] font-sans"
             >
-              English Portal
+              ENGLISH EDITION
             </Link>
             <nav
               aria-label="ފުޓަރ ލިންކްތައް"
@@ -72,7 +69,7 @@ export default function DhivehiFooter() {
 
         <div className="mt-9 border-t border-white/10 pt-5">
           <p className="text-xs text-white/40">
-            © {year} ރައްޔިތުން. ހުރިހާ ހައްޤެއް މަހްފޫޒު.
+            ރައްޔިތުން ނިއުސް ނެޓްވޯކް 2026
           </p>
         </div>
       </div>

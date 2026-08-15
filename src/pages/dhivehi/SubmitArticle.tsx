@@ -60,7 +60,7 @@ export default function DhivehiSubmitArticle() {
       <main className="max-w-4xl mx-auto px-4 py-10 md:py-14">
         <div className="bg-[#103820] text-white rounded-sm px-6 py-8 md:px-10 mb-8 text-right">
           <h1 className="dhivehi-title-inverse font-thaana thaana-headline text-3xl md:text-4xl font-bold leading-relaxed">
-            'ރައްޔިތުން'ގައި އާރޓިކަލް ޕަބްލިޝް ކުރއްވުމަށް:
+            &quot;ރައްޔިތުން&quot; ގައި ލިޔުންތައް ޝާއިޢުކުރެއްވުމަށް:
           </h1>
         </div>
 

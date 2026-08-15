@@ -1,21 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SearchIcon, MenuIcon, XIcon } from "lucide-react";
-import { format } from "date-fns";
+import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 
 // Dhivehi navigation links (RTL)
 const NAV_LINKS = [
   { label: "ހަބަރު", href: "/news" },
-  { label: "ތަޢުލީމް", href: "/education" },
-  { label: "ވިޔަފާރި", href: "/business" },
-  { label: "ތެދުމަގު", href: "/religion" },
-  { label: "އުފެއްދުންތެރިކަން", href: "/innovation" },
   { label: "ދުނިޔެ", href: "/world" },
-  { label: "ޕޮޑްކާސްޓް", href: "/podcast" },
-  { label: "ރައްޔިތުން", href: "/citizen" },
-  { label: "ލިޔުން ހުށަހަޅާ", href: "/submit-article" },
-  { label: "ބާޒާރު", href: "/market" },
+  { label: "ވިޔަފާރި", href: "/business" },
   { label: "ފަތުރުވެރިކަން", href: "/travel-tourism" },
+  { label: "ތައުލީމު", href: "/education" },
+  { label: "ބާޒާރު", href: "/market" },
+  { label: "ރައްޔިތުން", href: "/citizen" },
+  { label: "ތެދުމަގު", href: "/religion" },
+  { label: "ލުއިހަބަރު", href: "/quick-news" },
+  { label: "ޕޮޑްކާސްޓް", href: "/podcast" },
+];
+
+const UTILITY_LINKS = [
+  { label: "ލިޔުން ހުށައެޅުން", href: "/submit-article" },
+  { label: "އިޢުލާން", href: "/advertise" },
 ];
 
 export default function DhivehiHeader() {
@@ -24,7 +28,7 @@ export default function DhivehiHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const today = format(new Date(), "EEEE d MMMM yyyy");
+  const today = formatDhivehiDate(new Date());
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -40,7 +44,7 @@ export default function DhivehiHeader() {
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E] font-thaana">
-          <span>ރާއްޖޭގެ އަޑު</span>
+          <span>ދިވެހީންގެ އަޑު</span>
           <span>{today}</span>
         </div>
       </div>
@@ -58,6 +62,17 @@ export default function DhivehiHeader() {
           </Link>
 
           <div className="flex items-center gap-4">
+            <div className="hidden items-center gap-3 md:flex">
+              {UTILITY_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="font-thaana text-xs font-medium text-[#526159] hover:text-[#103820]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
             {/* Portal switch */}
             <Link
               to="/en"
@@ -125,14 +140,6 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
-            <li className="mr-auto">
-              <Link
-                to="/advertise"
-                className="block px-4 py-3 text-sm font-bold text-black hover:text-[#103820] transition-colors font-thaana"
-              >
-                އިޢުލާން
-              </Link>
-            </li>
           </ul>
         </div>
       </nav>
@@ -152,13 +159,24 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
+            {UTILITY_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  to={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="block bg-[#F8FAF8] px-4 py-3 text-right text-sm font-medium text-[#103820] font-thaana"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
             <li>
               <Link
                 to="/en"
                 onClick={() => setMenuOpen(false)}
                 className="block px-4 py-3 text-sm text-[#103820] font-medium"
               >
-                English Portal
+                ENGLISH EDITION
               </Link>
             </li>
           </ul>

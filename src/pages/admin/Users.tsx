@@ -7,6 +7,7 @@ import {
   createAdminUser,
   getAdminUsers,
   updateUserAvatar,
+  updateUserDhivehiName,
   updateUserRole,
 } from "../../services/settings.ts";
 import { uploadWriterAvatar } from "../../services/media.ts";
@@ -28,6 +29,7 @@ export default function Users() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createForm, setCreateForm] = useState({
     fullName: "",
+    fullNameDv: "",
     email: "",
     password: "",
     role: "author" as UserRole,
@@ -66,12 +68,23 @@ export default function Users() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const changeDhivehiName = useMutation({
+    mutationFn: ({ id, fullNameDv }: { id: string; fullNameDv: string }) =>
+      updateUserDhivehiName(id, fullNameDv),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin-users"] });
+      toast.success("Dhivehi writer name updated");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   const createUser = useMutation({
     mutationFn: createAdminUser,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-users"] });
       setCreateForm({
         fullName: "",
+        fullNameDv: "",
         email: "",
         password: "",
         role: "author",
@@ -119,7 +132,7 @@ export default function Users() {
               The user can sign in immediately with the temporary password.
             </p>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             <label className="text-xs font-semibold text-[#526159]">
               Full name
               <input
@@ -131,6 +144,21 @@ export default function Users() {
                 }
                 className="mt-1.5 w-full rounded-sm border border-[#D8DED9] px-3 py-2.5 text-sm font-normal text-[#142820] outline-none focus:border-[#103820]"
                 placeholder="Writer's public name"
+              />
+            </label>
+            <label className="text-xs font-semibold text-[#526159]">
+              Dhivehi full name
+              <input
+                value={createForm.fullNameDv}
+                onChange={(event) =>
+                  setCreateForm({
+                    ...createForm,
+                    fullNameDv: event.target.value,
+                  })
+                }
+                className="mt-1.5 w-full rounded-sm border border-[#D8DED9] px-3 py-2.5 text-right text-sm font-normal text-[#142820] outline-none focus:border-[#103820] font-thaana"
+                placeholder="ދިވެހި ނަން"
+                dir="rtl"
               />
             </label>
             <label className="text-xs font-semibold text-[#526159]">
@@ -237,6 +265,23 @@ export default function Users() {
                         )}
                         <div>
                           <span>{u.full_name ?? "—"}</span>
+                          <input
+                            key={u.full_name_dv ?? ""}
+                            defaultValue={u.full_name_dv ?? ""}
+                            placeholder="Dhivehi name"
+                            dir="rtl"
+                            className="mt-1 block w-44 rounded-sm border border-[#D8DED9] px-2 py-1 text-right text-xs font-normal font-thaana"
+                            onBlur={(event) => {
+                              const fullNameDv =
+                                event.currentTarget.value.trim();
+                              if (fullNameDv !== (u.full_name_dv ?? "")) {
+                                changeDhivehiName.mutate({
+                                  id: u.id,
+                                  fullNameDv,
+                                });
+                              }
+                            }}
+                          />
                           <div className="mt-1 flex items-center gap-2 text-[11px] font-normal">
                             <label className="cursor-pointer text-[#103820] hover:underline">
                               {u.avatar_url

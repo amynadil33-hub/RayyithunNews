@@ -19,10 +19,10 @@ import { useEffect, useState } from "react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   news: "ހަބަރު",
-  education: "ތަޢުލީމް",
+  education: "ތައުލީމު",
   business: "ވިޔަފާރި",
   religion: "ތެދުމަގު",
-  innovation: "އުފެއްދުންތެރިކަން",
+  "quick-news": "ލުއިހަބަރު",
   world: "ދުނިޔެ",
   citizen: "ރައްޔިތުން",
   market: "ބާޒާރު",
@@ -36,7 +36,7 @@ const SLUG_MAP: Record<string, string> = {
   education: "education",
   business: "business",
   religion: "religion",
-  innovation: "innovation",
+  "quick-news": "quick-news",
   world: "world",
   podcast: "podcast",
   citizen: "citizen",

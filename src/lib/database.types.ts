@@ -37,6 +37,7 @@ export type CommentStatus = "pending" | "approved" | "rejected" | "spam";
 export interface Profile {
   id: string;
   full_name: string | null;
+  full_name_dv: string | null;
   email: string | null;
   role: UserRole;
   avatar_url: string | null;
@@ -134,6 +135,17 @@ export interface Comment {
   approved_at: string | null;
   created_at: string;
   article?: Pick<Article, "id" | "title" | "slug">;
+}
+
+export type ArticleReactionName =
+  "heart" | "sad" | "angry" | "surprised" | "like" | "happy";
+
+export interface ArticleReaction {
+  article_id: string;
+  reader_key: string;
+  reaction: ArticleReactionName;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ArticleLiveUpdate {
@@ -310,6 +322,11 @@ export interface Database {
         Insert: Omit<Comment, "id" | "created_at">;
         Update: Partial<Comment>;
       };
+      article_reactions: {
+        Row: ArticleReaction;
+        Insert: Omit<ArticleReaction, "created_at" | "updated_at">;
+        Update: Partial<ArticleReaction>;
+      };
       article_live_updates: {
         Row: ArticleLiveUpdate;
         Insert: Omit<ArticleLiveUpdate, "id" | "created_at">;
@@ -361,7 +378,10 @@ export interface Database {
     };
     Views: {
       public_profiles: {
-        Row: Pick<Profile, "id" | "full_name" | "avatar_url">;
+        Row: Pick<
+          Profile,
+          "id" | "full_name" | "full_name_dv" | "email" | "avatar_url"
+        >;
       };
       public_comments: {
         Row: Pick<

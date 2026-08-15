@@ -2,15 +2,20 @@ import type { Profile } from "../../lib/database.types.ts";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
 
 interface AuthorIdentityProps {
-  author?: Pick<Profile, "full_name" | "avatar_url"> | null;
+  author?: Pick<
+    Profile,
+    "full_name" | "full_name_dv" | "email" | "avatar_url"
+  > | null;
   className?: string;
+  isDhivehi?: boolean;
 }
 
 export default function AuthorIdentity({
   author,
   className = "",
+  isDhivehi = false,
 }: AuthorIdentityProps) {
-  const name = getPublicAuthorName(author);
+  const name = getPublicAuthorName(author, isDhivehi);
   if (!name) return null;
 
   return (

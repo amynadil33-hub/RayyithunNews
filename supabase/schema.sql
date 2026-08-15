@@ -12,6 +12,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE IF NOT EXISTS public.profiles (
   id          UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   full_name   TEXT,
+  full_name_dv TEXT,
   email       TEXT,
   role        TEXT NOT NULL DEFAULT 'author' CHECK (role IN ('super_admin','admin','editor','author')),
   avatar_url  TEXT,
@@ -176,11 +177,21 @@ CREATE TABLE IF NOT EXISTS public.article_live_updates (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS public.article_reactions (
+  article_id UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  reader_key UUID NOT NULL,
+  reaction TEXT NOT NULL CHECK (reaction IN ('heart','sad','angry','surprised','like','happy')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY(article_id, reader_key)
+);
+
 CREATE INDEX IF NOT EXISTS idx_comments_article_status ON public.comments(article_id, status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_live_updates_article_created ON public.article_live_updates(article_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_article_reactions_article ON public.article_reactions(article_id);
 
 CREATE OR REPLACE VIEW public.public_profiles AS
-SELECT id, full_name, avatar_url FROM public.profiles;
+SELECT id, full_name, full_name_dv, email, avatar_url FROM public.profiles;
 
 CREATE OR REPLACE VIEW public.public_comments AS
 SELECT id, article_id, name, comment, created_at

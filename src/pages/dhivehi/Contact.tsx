@@ -21,9 +21,9 @@ export default function DhivehiContact() {
     try {
       await submitContactMessage(form);
       setSent(true);
-      toast.success("ޝުކުރިއްޔާ! ތިޔަ ލިޔުުން ލިބިއްޖެ.");
+      toast.success("ޝުކުރިއްޔާ! ތިޔަ ލިޔުން ލިބިއްޖެ.");
     } catch {
-      toast.error("ތ ތ ތ. ތ ތ.");
+      toast.error("ލިޔުން ފޮނުވުމުގައި މައްސަލައެއް ދިމާވެއްޖެ.");
     } finally {
       setLoading(false);
     }
@@ -47,9 +47,8 @@ export default function DhivehiContact() {
           {sent ? (
             <div className="text-center py-10">
               <h3 className="font-thaana thaana-headline text-lg font-semibold text-[#142820] mb-2">
-                ތ ތ ތ ތ ތ
+                ލިޔުން ލިބިއްޖެ
               </h3>
-              <p className="text-sm text-[#6B756E] font-thaana">ތ ތ ތ.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -62,7 +61,6 @@ export default function DhivehiContact() {
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="ނ ތ"
                     className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820] text-right font-thaana"
                   />
                 </div>
@@ -99,7 +97,7 @@ export default function DhivehiContact() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-[#142820] mb-1 text-right font-thaana">
-                  ލިޔުުން *
+                  ލިޔުން *
                 </label>
                 <textarea
                   required
@@ -108,7 +106,6 @@ export default function DhivehiContact() {
                   onChange={(e) =>
                     setForm({ ...form, message: e.target.value })
                   }
-                  placeholder="ތ ތ ތ..."
                   className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820] resize-none text-right font-thaana thaana-body"
                 />
               </div>
@@ -117,7 +114,7 @@ export default function DhivehiContact() {
                 disabled={loading}
                 className="w-full bg-[#103820] text-white py-2.5 rounded-sm text-sm font-semibold hover:bg-[#183028] transition-colors disabled:opacity-60 font-thaana"
               >
-                {loading ? "..." : "ހިއްސާ ކުރައްވ"}
+                {loading ? "..." : "ހިއްސާ ކުރައްވާ"}
               </button>
             </form>
           )}

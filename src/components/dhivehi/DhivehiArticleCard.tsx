@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
 import type { Article } from "../../lib/database.types.ts";
 import AuthorIdentity from "../shared/AuthorIdentity.tsx";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
+import {
+  formatDhivehiDate,
+  formatDhivehiRelativeTime,
+} from "../../lib/dhivehi-date.ts";
 
 interface DhivehiArticleCardProps {
   article: Article;
@@ -17,10 +20,12 @@ export default function DhivehiArticleCard({
 }: DhivehiArticleCardProps) {
   const href = `/article/${article.slug}`;
   const date = article.published_at
-    ? format(new Date(article.published_at), "d MMM")
+    ? variant === "hero"
+      ? formatDhivehiRelativeTime(article.published_at)
+      : formatDhivehiDate(article.published_at)
     : "";
   const authorName = article.show_author
-    ? getPublicAuthorName(article.author)
+    ? getPublicAuthorName(article.author, true)
     : null;
 
   if (variant === "hero") {
@@ -59,7 +64,7 @@ export default function DhivehiArticleCard({
             </p>
           )}
           <div className="ml-auto mr-0 flex max-w-[28rem] items-center gap-2 text-xs text-white/70 font-thaana flex-row-reverse">
-            {authorName && <AuthorIdentity author={article.author} />}
+            {authorName && <AuthorIdentity author={article.author} isDhivehi />}
             {date && <span>{date}</span>}
           </div>
         </div>
@@ -198,7 +203,7 @@ export default function DhivehiArticleCard({
         <div className="flex items-center gap-2 text-xs text-[#6B756E] font-thaana justify-end">
           {date && <span>{date}</span>}
           {authorName && date && <span>·</span>}
-          {authorName && <AuthorIdentity author={article.author} />}
+          {authorName && <AuthorIdentity author={article.author} isDhivehi />}
         </div>
       </div>
     </Link>

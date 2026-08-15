@@ -11,8 +11,9 @@ import DhivehiArticleCard from "../../components/dhivehi/DhivehiArticleCard.tsx"
 import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
-import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
+import ArticleReactions from "../../components/shared/ArticleReactions.tsx";
+import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 import { getAbsoluteSiteUrl, getCanonicalPageUrl } from "../../lib/site-url.ts";
 import { getArticleImageUrl } from "../../lib/article-images.ts";
 import ArticleBody from "../../components/shared/ArticleBody.tsx";
@@ -78,7 +79,7 @@ export default function DhivehiArticle() {
   }
 
   const publishDate = article.published_at
-    ? format(new Date(article.published_at), "d MMMM yyyy")
+    ? formatDhivehiDate(article.published_at)
     : "";
   const canonicalUrl = getCanonicalPageUrl();
   const shareImage = getAbsoluteSiteUrl(
@@ -164,12 +165,8 @@ export default function DhivehiArticle() {
               </p>
             )}
 
-            <div className="mb-6 font-sans" dir="ltr">
-              <ArticleShareButtons title={article.title} url={canonicalUrl} />
-            </div>
-
             {article.featured_image_url && (
-              <figure className="mb-8">
+              <figure className="mb-4">
                 <img
                   src={getArticleImageUrl(article.featured_image_url)}
                   alt={article.title}
@@ -189,6 +186,10 @@ export default function DhivehiArticle() {
               </figure>
             )}
 
+            <div className="mb-6 font-sans" dir="rtl">
+              <ArticleShareButtons title={article.title} url={canonicalUrl} />
+            </div>
+
             <ArticleAuthorMeta
               article={article}
               publishDate={publishDate}
@@ -206,14 +207,6 @@ export default function DhivehiArticle() {
               isDhivehi
             />
             <ArticleTags articleId={article.id} isDhivehi />
-            <div className="mt-8 font-sans" dir="ltr">
-              <ArticleShareButtons
-                title={article.title}
-                url={canonicalUrl}
-                compact
-              />
-            </div>
-
             <div className="my-8">
               <AdBanner placement="article_inline" label="އިޢުލާން" />
             </div>
@@ -234,6 +227,7 @@ export default function DhivehiArticle() {
                 </div>
               </section>
             )}
+            <ArticleReactions articleId={article.id} isDhivehi />
             <ArticleComments articleId={article.id} isDhivehi />
           </main>
 

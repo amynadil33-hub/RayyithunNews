@@ -20,6 +20,7 @@ ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.article_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.article_reactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.article_live_updates ENABLE ROW LEVEL SECURITY;
 
 -- Helper function to get current user role
@@ -275,6 +276,9 @@ CREATE POLICY "Anyone can read article tags" ON public.article_tags FOR SELECT U
 CREATE POLICY "Writers can attach tags" ON public.article_tags FOR INSERT TO authenticated WITH CHECK (EXISTS (SELECT 1 FROM public.articles JOIN public.tags ON tags.id = article_tags.tag_id AND tags.portal_id = articles.portal_id WHERE articles.id = article_tags.article_id AND (articles.author_id = auth.uid() OR public.is_editor_user())));
 CREATE POLICY "Writers can remove tags" ON public.article_tags FOR DELETE TO authenticated USING (EXISTS (SELECT 1 FROM public.articles WHERE articles.id = article_tags.article_id AND (articles.author_id = auth.uid() OR public.is_editor_user())));
 CREATE POLICY "Anyone can submit pending comments" ON public.comments FOR INSERT TO anon, authenticated WITH CHECK (status = 'pending' AND approved_by IS NULL AND approved_at IS NULL);
+CREATE POLICY "Anyone can read article reactions" ON public.article_reactions FOR SELECT TO anon, authenticated USING (true);
+CREATE POLICY "Anyone can add article reactions" ON public.article_reactions FOR INSERT TO anon, authenticated WITH CHECK (true);
+CREATE POLICY "Anyone can update article reactions" ON public.article_reactions FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Editors can read all comments" ON public.comments FOR SELECT TO authenticated USING (public.is_editor_user());
 CREATE POLICY "Editors can moderate comments" ON public.comments FOR UPDATE TO authenticated USING (public.is_editor_user()) WITH CHECK (public.is_editor_user());
 CREATE POLICY "Editors can delete comments" ON public.comments FOR DELETE TO authenticated USING (public.is_editor_user());
@@ -288,3 +292,4 @@ REVOKE ALL ON public.public_profiles FROM PUBLIC;
 GRANT SELECT ON public.public_profiles TO anon, authenticated;
 REVOKE ALL ON public.public_comments FROM PUBLIC;
 GRANT SELECT ON public.public_comments TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE ON public.article_reactions TO anon, authenticated;

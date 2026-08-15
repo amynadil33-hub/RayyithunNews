@@ -6,6 +6,7 @@ import { getTagsForArticle } from "../../services/tags.ts";
 import { getLiveUpdates } from "../../services/live-updates.ts";
 import { getApprovedComments, submitComment } from "../../services/comments.ts";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
+import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 
 export function ArticleAuthorMeta({
   article,
@@ -16,7 +17,7 @@ export function ArticleAuthorMeta({
   publishDate: string;
   isDhivehi?: boolean;
 }) {
-  const authorName = getPublicAuthorName(article.author);
+  const authorName = getPublicAuthorName(article.author, isDhivehi);
   const initials = authorName
     ?.split(/\s+/)
     .map((part) => part[0])
@@ -115,7 +116,9 @@ export function ArticleLiveTimeline({
           <li key={update.id} className="relative">
             <span className="absolute -start-[1.72rem] top-1 h-2.5 w-2.5 rounded-full bg-red-700" />
             <time className="text-[11px] font-medium text-red-700">
-              {new Date(update.created_at).toLocaleString()}
+              {isDhivehi
+                ? formatDhivehiDate(update.created_at)
+                : new Date(update.created_at).toLocaleString()}
             </time>
             {update.update_title && (
               <h3 className="mt-1 font-bold text-[#142820]">
@@ -161,7 +164,7 @@ export function ArticleComments({
       className={`mt-10 border-t border-[#E5E7E2] pt-8 ${isDhivehi ? "font-thaana text-right" : ""}`}
     >
       <h2 className="mb-5 text-xl font-bold text-[#142820]">
-        {isDhivehi ? "ޚިޔާލުތައް" : "Comments"}
+        {isDhivehi ? "ކިޔުންތެރިންގެ ހިޔާލު" : "Comments"}
       </h2>
       {comments?.length ? (
         <div className="mb-8 space-y-4">
@@ -170,7 +173,9 @@ export function ArticleComments({
               <div className="flex items-center justify-between gap-3">
                 <strong className="text-sm">{comment.name}</strong>
                 <time className="text-[11px] text-[#6B756E]">
-                  {new Date(comment.created_at).toLocaleDateString()}
+                  {isDhivehi
+                    ? formatDhivehiDate(comment.created_at)
+                    : new Date(comment.created_at).toLocaleDateString()}
                 </time>
               </div>
               <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">

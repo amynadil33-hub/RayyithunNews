@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { PlayCircleIcon } from "lucide-react";
-import { format } from "date-fns";
+import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import DhivehiFooter from "../../components/dhivehi/DhivehiFooter.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
@@ -92,9 +92,7 @@ export default function DhivehiPodcast() {
                       </span>
                     )}
                     {podcast.published_at && (
-                      <span>
-                        {format(new Date(podcast.published_at), "d MMM yyyy")}
-                      </span>
+                      <span>{formatDhivehiDate(podcast.published_at)}</span>
                     )}
                   </div>
                 </div>
