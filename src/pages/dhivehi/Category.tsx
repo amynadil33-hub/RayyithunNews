@@ -30,17 +30,17 @@ const CATEGORY_LABELS: Record<string, string> = {
   podcast: "ޕޮޑްކާސްޓް",
 };
 
-// Public routes and database categories share stable English-style slugs.
+// Public routes stay clean while legacy Dhivehi category rows use dv-prefixed slugs.
 const SLUG_MAP: Record<string, string> = {
-  news: "news",
-  education: "education",
-  business: "business",
-  religion: "religion",
+  news: "dv-news",
+  education: "dv-education",
+  business: "dv-business",
+  religion: "dv-religion",
   "quick-news": "quick-news",
-  world: "world",
+  world: "dv-world",
   podcast: "podcast",
-  citizen: "citizen",
-  market: "market",
+  citizen: "dv-citizen",
+  market: "dv-market",
   "travel-tourism": "travel-tourism",
 };
 

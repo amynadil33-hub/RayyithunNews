@@ -190,6 +190,25 @@ CREATE INDEX IF NOT EXISTS idx_comments_article_status ON public.comments(articl
 CREATE INDEX IF NOT EXISTS idx_live_updates_article_created ON public.article_live_updates(article_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_article_reactions_article ON public.article_reactions(article_id);
 
+CREATE TABLE IF NOT EXISTS public.island_pulse_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name_en TEXT NOT NULL,
+  atoll_en TEXT,
+  description_en TEXT,
+  name_dv TEXT NOT NULL,
+  atoll_dv TEXT,
+  description_dv TEXT,
+  slug TEXT NOT NULL UNIQUE,
+  image_url TEXT,
+  link_url TEXT,
+  article_id UUID REFERENCES public.articles(id) ON DELETE SET NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_active BOOLEAN NOT NULL DEFAULT true
+);
+
+CREATE INDEX IF NOT EXISTS idx_island_pulse_active_sort
+  ON public.island_pulse_items(is_active, sort_order);
+
 CREATE OR REPLACE VIEW public.public_profiles AS
 SELECT id, full_name, full_name_dv, email, avatar_url FROM public.profiles;
 

@@ -258,6 +258,26 @@ export interface NewsletterSubscriber {
   portal?: Portal;
 }
 
+export interface IslandPulseItem {
+  id: string;
+  name_en: string;
+  atoll_en: string | null;
+  description_en: string | null;
+  name_dv: string;
+  atoll_dv: string | null;
+  description_dv: string | null;
+  slug: string;
+  image_url: string | null;
+  link_url: string | null;
+  article_id: string | null;
+  sort_order: number;
+  is_active: boolean;
+  article?: {
+    slug: string;
+    portal?: Pick<Portal, "slug"> | null;
+  } | null;
+}
+
 export interface StaticPage {
   id: string;
   portal_id: string | null;
@@ -364,6 +384,11 @@ export interface Database {
         Row: NewsletterSubscriber;
         Insert: Omit<NewsletterSubscriber, "id" | "created_at">;
         Update: Partial<NewsletterSubscriber>;
+      };
+      island_pulse_items: {
+        Row: IslandPulseItem;
+        Insert: Omit<IslandPulseItem, "id" | "article">;
+        Update: Partial<Omit<IslandPulseItem, "article">>;
       };
       static_pages: {
         Row: StaticPage;

@@ -43,25 +43,15 @@ export default function DhivehiHeader() {
     <header className="bg-white border-b border-[#E5E7E2]" dir="rtl">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E] font-thaana">
-          <span>ދިވެހީންގެ އަޑު</span>
+        <div className="max-w-7xl mx-auto flex items-center justify-center text-xs text-[#6B756E] font-thaana">
           <span>{today}</span>
         </div>
       </div>
 
       {/* Logo + actions */}
       <div className="px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="isolate flex items-center overflow-hidden">
-            <img
-              src="/rayyithun-logo-transparent-v2.png"
-              alt="ރައްޔިތުން"
-              className="h-20 w-48 object-contain object-center"
-            />
-          </Link>
-
-          <div className="flex items-center gap-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2">
+          <div className="min-w-0">
             <div className="hidden items-center gap-3 md:flex">
               {UTILITY_LINKS.map((link) => (
                 <Link
@@ -73,6 +63,23 @@ export default function DhivehiHeader() {
                 </Link>
               ))}
             </div>
+          </div>
+
+          <Link
+            to="/"
+            className="isolate flex min-w-0 flex-col items-center justify-center overflow-hidden text-center"
+          >
+            <img
+              src="/rayyithun-logo-transparent-v2.png"
+              alt="ރައްޔިތުން"
+              className="h-14 w-40 object-contain object-center sm:h-16 sm:w-48"
+            />
+            <span className="mt-0.5 text-[10px] font-medium text-[#526159] font-thaana sm:text-xs">
+              ދިވެހީންގެ އަޑު
+            </span>
+          </Link>
+
+          <div className="flex items-center justify-end gap-3 sm:gap-4">
             {/* Portal switch */}
             <Link
               to="/en"

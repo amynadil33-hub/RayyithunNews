@@ -21,6 +21,7 @@ ALTER TABLE public.tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.article_tags ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.article_reactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.island_pulse_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.article_live_updates ENABLE ROW LEVEL SECURITY;
 
 -- Helper function to get current user role
@@ -279,6 +280,7 @@ CREATE POLICY "Anyone can submit pending comments" ON public.comments FOR INSERT
 CREATE POLICY "Anyone can read article reactions" ON public.article_reactions FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "Anyone can add article reactions" ON public.article_reactions FOR INSERT TO anon, authenticated WITH CHECK (true);
 CREATE POLICY "Anyone can update article reactions" ON public.article_reactions FOR UPDATE TO anon, authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Anyone can read active island pulse items" ON public.island_pulse_items FOR SELECT TO anon, authenticated USING (is_active = true);
 CREATE POLICY "Editors can read all comments" ON public.comments FOR SELECT TO authenticated USING (public.is_editor_user());
 CREATE POLICY "Editors can moderate comments" ON public.comments FOR UPDATE TO authenticated USING (public.is_editor_user()) WITH CHECK (public.is_editor_user());
 CREATE POLICY "Editors can delete comments" ON public.comments FOR DELETE TO authenticated USING (public.is_editor_user());
@@ -293,3 +295,4 @@ GRANT SELECT ON public.public_profiles TO anon, authenticated;
 REVOKE ALL ON public.public_comments FROM PUBLIC;
 GRANT SELECT ON public.public_comments TO anon, authenticated;
 GRANT SELECT, INSERT, UPDATE ON public.article_reactions TO anon, authenticated;
+GRANT SELECT ON public.island_pulse_items TO anon, authenticated;

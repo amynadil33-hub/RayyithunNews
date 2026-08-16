@@ -7,14 +7,16 @@ import AdBanner from "../../components/shared/AdBanner.tsx";
 import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import { useArticles } from "../../hooks/use-portal-data.ts";
-import { useHomepageFeaturedHeight } from "../../hooks/use-homepage-featured-height.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
+import IslandPulseSection from "../../components/shared/IslandPulseSection.tsx";
+import HomepageEditorialHero from "../../components/shared/HomepageEditorialHero.tsx";
+import BreakingNewsStrip from "../../components/shared/BreakingNewsStrip.tsx";
 
 const DV_CATEGORIES = [
-  { name: "ހަބަރު", slug: "news" },
-  { name: "ތައުލީމު", slug: "education" },
-  { name: "ވިޔަފާރި", slug: "business" },
-  { name: "ތެދުމަގު", slug: "religion" },
+  { name: "ހަބަރު", slug: "dv-news" },
+  { name: "ތައުލީމު", slug: "dv-education" },
+  { name: "ވިޔަފާރި", slug: "dv-business" },
+  { name: "ތެދުމަގު", slug: "dv-religion" },
   { name: "ފަތުރުވެރިކަން", slug: "travel-tourism" },
 ];
 
@@ -29,15 +31,21 @@ export default function DhivehiHome() {
     isTrending: true,
     limit: 5,
   });
+  const { data: breaking, isLoading: breakingLoading } = useArticles({
+    portalSlug: "dhivehi",
+    isBreaking: true,
+    limit: 5,
+  });
   const { data: latest, isLoading: latestLoading } = useArticles({
     portalSlug: "dhivehi",
     limit: 9,
   });
-  const featuredHeight = useHomepageFeaturedHeight("dhivehi");
-  const editorialHeroHeight = Math.max(480, Math.round(featuredHeight * 0.88));
-
-  const heroArticle = featured?.[0];
-  const secondaryArticles = featured?.slice(1, 4) ?? [];
+  const heroArticle = featured?.[0] ?? latest?.[0];
+  const secondaryArticles =
+    featured && featured.length > 1
+      ? featured.slice(1, 4)
+      : (latest?.slice(1, 4) ?? []);
+  const breakingArticles = breaking?.length ? breaking : (latest ?? []);
 
   return (
     <div className="min-h-screen bg-[#F8F8F8]" dir="rtl" lang="dv">
@@ -55,49 +63,28 @@ export default function DhivehiHome() {
       {/* Hero section */}
       <section className="max-w-7xl mx-auto px-4 py-6">
         {featuredLoading ? (
-          <div
-            className="grid grid-cols-1 md:grid-cols-5 gap-4"
-            style={{ minHeight: editorialHeroHeight }}
-          >
-            <Skeleton className="md:col-span-3 h-full" />
-            <div className="md:col-span-2 space-y-4">
-              <Skeleton className="h-24" />
-              <Skeleton className="h-24" />
-              <Skeleton className="h-24" />
+          <div className="space-y-5">
+            <Skeleton className="h-[520px] md:h-[360px]" />
+            <div className="grid gap-3 md:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton key={index} className="h-28" />
+              ))}
             </div>
           </div>
         ) : (
-          <div
-            className="grid grid-cols-1 md:grid-cols-5 gap-4"
-            style={{ minHeight: editorialHeroHeight }}
-          >
-            <div className="md:col-span-3">
-              {heroArticle ? (
-                <DhivehiArticleCard article={heroArticle} variant="hero" />
-              ) : (
-                <div className="h-full min-h-[300px] bg-[#103820] rounded-sm flex items-center justify-center">
-                  <span className="font-thaana text-white text-3xl font-bold opacity-20">
-                    ރ
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="md:col-span-2 flex flex-col gap-4 divide-y divide-[#E5E7E2]">
-              {secondaryArticles.length > 0
-                ? secondaryArticles.map((a) => (
-                    <div key={a.id} className="first:pt-0 pt-4">
-                      <DhivehiArticleCard article={a} variant="secondary" />
-                    </div>
-                  ))
-                : latest?.slice(0, 3).map((a) => (
-                    <div key={a.id} className="first:pt-0 pt-4">
-                      <DhivehiArticleCard article={a} variant="secondary" />
-                    </div>
-                  ))}
-            </div>
-          </div>
+          <HomepageEditorialHero
+            article={heroArticle}
+            topStories={secondaryArticles}
+            language="dhivehi"
+          />
         )}
       </section>
+
+      <BreakingNewsStrip
+        articles={breakingArticles}
+        language="dhivehi"
+        isLoading={breakingLoading || latestLoading}
+      />
 
       {/* First advertisement follows the featured story */}
       <div className="max-w-5xl mx-auto px-4 pb-6">
@@ -134,36 +121,41 @@ export default function DhivehiHome() {
         </div>
       </section>
 
-      {/* Latest stories */}
       <section className="max-w-7xl mx-auto px-4 py-10">
-        <div className="flex items-center justify-between mb-6">
-          <Link
-            to="/news"
-            className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana"
-          >
-            ← ހުރިހ
-          </Link>
-          <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
-            އެންމެ ފަހުގެ ހަބަރު
-          </h2>
+        <div className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:items-start">
+          <IslandPulseSection language="dhivehi" variant="sidebar" />
+
+          <div className="min-w-0">
+            <div className="flex items-center justify-between mb-6">
+              <Link
+                to="/news"
+                className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana"
+              >
+                ← ހުރިހ
+              </Link>
+              <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+                އެންމެ ފަހުގެ ހަބަރު
+              </h2>
+            </div>
+            {latestLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} className="h-64" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {(latest ?? []).slice(0, 6).map((article) => (
+                  <DhivehiArticleCard
+                    key={article.id}
+                    article={article}
+                    variant="grid"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        {latestLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-64" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {(latest ?? []).slice(0, 6).map((article) => (
-              <DhivehiArticleCard
-                key={article.id}
-                article={article}
-                variant="grid"
-              />
-            ))}
-          </div>
-        )}
       </section>
 
       {/* Mid banner ad */}

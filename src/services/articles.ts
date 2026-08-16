@@ -21,6 +21,7 @@ export interface ArticleFilters {
 }
 
 const ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories(*), author:profiles!articles_author_id_fkey(id, full_name, full_name_dv, email, avatar_url)`;
+const CATEGORY_FILTER_ARTICLE_SELECT = `*, portal:portals!inner(*), category:categories!inner(*), author:profiles!articles_author_id_fkey(id, full_name, full_name_dv, email, avatar_url)`;
 const REVIEW_QUEUE_STATUSES: ArticleStatus[] = [
   "submitted",
   "in_review",
@@ -144,7 +145,9 @@ async function logReview(
 export async function getArticles(filters: ArticleFilters = {}) {
   let query = supabase
     .from("articles")
-    .select(ARTICLE_SELECT)
+    .select(
+      filters.categorySlug ? CATEGORY_FILTER_ARTICLE_SELECT : ARTICLE_SELECT,
+    )
     .order("published_at", { ascending: false, nullsFirst: false });
 
   if (filters.portalSlug) query = query.eq("portal.slug", filters.portalSlug);

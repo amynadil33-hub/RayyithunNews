@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SearchIcon, MenuIcon, XIcon } from "lucide-react";
 import { format } from "date-fns";
+import SocialIcon from "../shared/SocialIcon.tsx";
 
 const NAV_LINKS = [
   { label: "News", href: "/en/news" },
@@ -14,6 +15,13 @@ const NAV_LINKS = [
   { label: "Citizen", href: "/en/citizen" },
   { label: "Market", href: "/en/market" },
   { label: "Travel and tourism", href: "/en/travel-tourism" },
+];
+
+const SOCIAL_LINKS = ["Facebook", "Twitter", "Instagram", "YouTube"] as const;
+
+const UTILITY_LINKS = [
+  { label: "News Tip", href: "/en/contact" },
+  { label: "Advertise", href: "/en/advertise" },
 ];
 
 export default function EnglishHeader() {
@@ -39,25 +47,53 @@ export default function EnglishHeader() {
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E]">
           <span>{today}</span>
-          <span className="font-medium tracking-wide">
-            The Voice of the Maldives
-          </span>
+          <div className="flex items-center gap-3" aria-label="Social media">
+            {SOCIAL_LINKS.map((label) => (
+              <a
+                key={label}
+                href="#"
+                aria-label={label}
+                className="text-[#6B756E] transition-colors hover:text-[#103820]"
+              >
+                <SocialIcon name={label} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Logo + actions */}
       <div className="px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/en" className="isolate flex items-center overflow-hidden">
+        <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2">
+          <div className="min-w-0">
+            <div className="hidden items-center gap-4 md:flex">
+              {UTILITY_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-xs font-medium text-[#526159] transition-colors hover:text-[#103820]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <Link
+            to="/en"
+            className="isolate flex min-w-0 flex-col items-center justify-center overflow-hidden text-center"
+          >
             <img
-              src="/rayyithun-logo-transparent-v2.png"
+              src="/rayyithun-logo-english-transparent.png"
               alt="RAYYITHUN"
-              className="h-20 w-48 object-contain object-center"
+              className="h-14 w-44 object-contain object-center sm:h-16 sm:w-52"
             />
+            <span className="mt-0.5 text-[10px] font-medium tracking-[0.08em] text-[#526159] sm:text-xs">
+              The Voice of the Maldives
+            </span>
           </Link>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-end gap-3 sm:gap-4">
             {/* Portal switch */}
             <Link
               to="/"
@@ -122,14 +158,6 @@ export default function EnglishHeader() {
                 </Link>
               </li>
             ))}
-            <li className="ml-auto">
-              <Link
-                to="/en/advertise"
-                className="block px-4 py-3 text-sm font-medium text-[#6B756E] hover:text-[#103820] transition-colors"
-              >
-                Advertise
-              </Link>
-            </li>
           </ul>
         </div>
       </nav>
@@ -149,15 +177,17 @@ export default function EnglishHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/en/advertise"
-                onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-sm text-[#6B756E]"
-              >
-                Advertise
-              </Link>
-            </li>
+            {UTILITY_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  to={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="block bg-[#F8FAF8] px-4 py-3 text-sm font-medium text-[#103820]"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
             <li>
               <Link
                 to="/"
