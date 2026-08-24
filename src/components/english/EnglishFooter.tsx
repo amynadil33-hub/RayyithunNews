@@ -8,7 +8,14 @@ const FOOTER_LINKS = [
   { label: "Terms of Service", href: "/en/page/terms" },
 ];
 
-const SOCIAL_LINKS = ["Facebook", "Twitter", "Instagram", "YouTube"] as const;
+const SOCIAL_LINKS = [
+  "Facebook",
+  "X",
+  "Instagram",
+  "YouTube",
+  "Telegram",
+  "Viber",
+] as const;
 
 export default function EnglishFooter() {
   const year = new Date().getFullYear();
@@ -38,7 +45,7 @@ export default function EnglishFooter() {
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#52B788]/40 text-xs font-bold text-[#95D5B2] transition-colors hover:border-white hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#52B788]/50 text-[#95D5B2] transition-colors hover:border-white hover:bg-white hover:text-[#103820]"
                 >
                   <SocialIcon name={label} />
                 </a>
@@ -49,9 +56,9 @@ export default function EnglishFooter() {
           <div className="flex flex-col items-start gap-5 lg:items-end">
             <Link
               to="/"
-              className="inline-flex items-center rounded-sm border border-[#52B788] px-4 py-2 text-sm font-medium text-[#52B788] transition-colors hover:bg-[#52B788] hover:text-[#103820] font-thaana"
+              className="inline-flex items-center rounded-sm border border-[#52B788] px-4 py-2 text-sm font-medium text-[#52B788] transition-colors hover:bg-[#52B788] hover:text-[#103820]"
             >
-              ދިވެހި ޕޯޓަލް
+              DHIVEHI EDITION
             </Link>
             <nav
               aria-label="Footer"

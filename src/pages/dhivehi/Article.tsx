@@ -145,7 +145,7 @@ export default function DhivehiArticle() {
 
             {article.is_breaking && (
               <span className="breaking-badge inline-block mb-3 font-thaana">
-                ވަގުތު ހަބަރު
+                ކުއްލި ހަބަރު
               </span>
             )}
 

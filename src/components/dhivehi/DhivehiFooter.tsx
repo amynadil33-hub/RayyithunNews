@@ -8,7 +8,14 @@ const FOOTER_LINKS = [
   { label: "ޚިދުމަތުގެ ޝަރުތުތައް", href: "/en/page/terms" },
 ];
 
-const SOCIAL_LINKS = ["Facebook", "Twitter", "Instagram", "YouTube"] as const;
+const SOCIAL_LINKS = [
+  "Facebook",
+  "X",
+  "Instagram",
+  "YouTube",
+  "Telegram",
+  "Viber",
+] as const;
 
 export default function DhivehiFooter() {
   return (
@@ -35,7 +42,7 @@ export default function DhivehiFooter() {
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex h-8 w-8 items-center justify-center rounded-sm border border-[#52B788]/40 text-xs font-bold text-[#95D5B2] transition-colors hover:border-white hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#52B788]/50 text-[#95D5B2] transition-colors hover:border-white hover:bg-white hover:text-[#103820]"
                 >
                   <SocialIcon name={label} />
                 </a>

@@ -56,14 +56,14 @@ export default function EnglishHome() {
   return (
     <div className="min-h-screen bg-[#F8F8F8]">
       <Helmet>
-        <title>RAYYITHUN — The Voice of the Maldives</title>
+        <title>RAYYITHUN — News that informs. Stories that connect.</title>
         <meta
           name="description"
           content="Independent news from the Maldives. Politics, business, education, and community stories."
         />
         <meta
           property="og:title"
-          content="RAYYITHUN — The Voice of the Maldives"
+          content="RAYYITHUN — News that informs. Stories that connect. A community that speaks."
         />
         <meta
           property="og:description"

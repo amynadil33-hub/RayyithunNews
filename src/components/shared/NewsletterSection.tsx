@@ -27,7 +27,7 @@ export default function NewsletterSection({ portalId, isDhivehi = false }: Newsl
     <section className="bg-[#103820] py-14 px-4">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className={`text-2xl md:text-3xl font-bold text-white mb-2 ${isDhivehi ? "font-thaana thaana-headline" : "font-serif"}`}>
-          {isDhivehi ? "ހަބަރު ލިބިލައްވާ" : "Stay Informed"}
+          {isDhivehi ? "ސަބްސްކްރައިބް ކުރެއްވުމަށް" : "Stay Informed"}
         </h2>
         <p className={`text-[#95D5B2] mb-8 text-sm md:text-base ${isDhivehi ? "font-thaana thaana-body" : ""}`}>
           {isDhivehi
@@ -39,7 +39,7 @@ export default function NewsletterSection({ portalId, isDhivehi = false }: Newsl
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder={isDhivehi ? "ތިޔަ އީ-މެއިލް" : "Your email address"}
+            placeholder={isDhivehi ? "email" : "Your email address"}
             required
             className={`flex-1 px-4 py-2.5 rounded-sm text-sm bg-white text-[#142820] placeholder-[#6B756E] focus:outline-none focus:ring-2 focus:ring-[#52B788] ${isDhivehi ? "text-right font-thaana" : ""}`}
           />

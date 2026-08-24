@@ -43,7 +43,7 @@ export default function DhivehiHeader() {
     <header className="bg-white border-b border-[#E5E7E2]" dir="rtl">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-center text-xs text-[#6B756E] font-thaana">
+        <div className="max-w-7xl mx-auto w-full text-right text-xs text-[#6B756E] font-thaana">
           <span>{today}</span>
         </div>
       </div>
@@ -57,7 +57,7 @@ export default function DhivehiHeader() {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="font-thaana text-xs font-medium text-[#526159] hover:text-[#103820]"
+                  className="rounded-sm bg-[#103820] px-3 py-1.5 font-thaana text-xs font-medium text-white transition-colors hover:bg-[#2D6A4F]"
                 >
                   {link.label}
                 </Link>
@@ -136,12 +136,12 @@ export default function DhivehiHeader() {
       {/* Desktop navigation */}
       <nav className="hidden md:block border-t border-[#E5E7E2]">
         <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex items-center justify-start gap-0" dir="rtl">
+          <ul className="flex items-center justify-center gap-0" dir="rtl">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   to={link.href}
-                  className="block px-4 py-3 text-sm font-bold text-black hover:text-[#103820] hover:bg-[#F8F8F8] border-b-2 border-transparent hover:border-[#103820] transition-all font-thaana thaana-body"
+                  className="block px-4 py-3 text-base font-bold text-black hover:text-[#103820] hover:bg-[#F8F8F8] border-b-2 border-transparent hover:border-[#103820] transition-all font-thaana thaana-body"
                 >
                   {link.label}
                 </Link>
@@ -160,7 +160,7 @@ export default function DhivehiHeader() {
                 <Link
                   to={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block px-4 py-3 text-sm font-bold text-black text-right font-thaana"
+                  className="block px-4 py-3 text-base font-bold text-black text-right font-thaana"
                 >
                   {link.label}
                 </Link>
@@ -171,7 +171,7 @@ export default function DhivehiHeader() {
                 <Link
                   to={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block bg-[#F8FAF8] px-4 py-3 text-right text-sm font-medium text-[#103820] font-thaana"
+                  className="m-2 block w-fit rounded-sm bg-[#103820] px-3 py-1.5 text-right text-sm font-medium text-white transition-colors hover:bg-[#2D6A4F] font-thaana"
                 >
                   {link.label}
                 </Link>

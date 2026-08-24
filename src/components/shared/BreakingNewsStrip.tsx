@@ -18,7 +18,7 @@ export default function BreakingNewsStrip({
     <section
       className="border-y border-[#D8DED9] bg-white"
       dir={isDhivehi ? "rtl" : "ltr"}
-      aria-label={isDhivehi ? "ވަގުތު ހަބަރު" : "Breaking news"}
+      aria-label={isDhivehi ? "ކުއްލި ހަބަރު" : "Breaking news"}
     >
       <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-hidden px-4 py-2.5">
         <span
@@ -26,7 +26,7 @@ export default function BreakingNewsStrip({
             isDhivehi ? "font-thaana" : "tracking-[0.12em]"
           }`}
         >
-          {isDhivehi ? "ވަގުތު ހަބަރު" : "BREAKING"}
+          {isDhivehi ? "ކުއްލި ހަބަރު" : "BREAKING"}
         </span>
 
         {isLoading ? (

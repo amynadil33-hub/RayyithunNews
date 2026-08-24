@@ -47,7 +47,7 @@ export default function DhivehiArticleCard({
         <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
           {article.is_breaking && (
             <span className="breaking-badge inline-block mb-2">
-              ވަގުތު ހަބަރު
+              ކުއްލި ހަބަރު
             </span>
           )}
           {article.category && (

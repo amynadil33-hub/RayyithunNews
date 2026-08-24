@@ -122,20 +122,23 @@ export default function DhivehiHome() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 py-10">
-        <div className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:items-start">
+        <div
+          className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:items-start"
+          dir="ltr"
+        >
           <IslandPulseSection language="dhivehi" variant="sidebar" />
 
-          <div className="min-w-0">
+          <div className="min-w-0 text-right" dir="rtl">
             <div className="flex items-center justify-between mb-6">
+              <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+                އެންމެ ފަހުގެ ހަބަރު
+              </h2>
               <Link
                 to="/news"
                 className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana"
               >
                 ← ހުރިހ
               </Link>
-              <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
-                އެންމެ ފަހުގެ ހަބަރު
-              </h2>
             </div>
             {latestLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -199,15 +202,15 @@ function DhivehiCategorySection({
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 border-t border-[#E5E7E2]">
       <div className="flex items-center justify-between mb-5">
+        <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+          {categoryName}
+        </h2>
         <Link
           to={`/${categorySlug.replace("dv-", "")}`}
           className="text-sm text-[#103820] font-medium hover:underline font-thaana"
         >
           ← އިތުރު {categoryName}
         </Link>
-        <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
-          {categoryName}
-        </h2>
       </div>
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">

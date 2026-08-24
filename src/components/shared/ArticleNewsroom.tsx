@@ -194,7 +194,7 @@ export function ArticleComments({
         className="space-y-3 rounded-sm border border-[#E5E7E2] bg-[#F8FAF8] p-5"
       >
         <h3 className="font-semibold">
-          {isDhivehi ? "ޚިޔާލެއް ހުށަހަޅާ" : "Leave a comment"}
+          {isDhivehi ? "ހިޔާލް ހުށަހެޅުމަށް" : "Leave a comment"}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2">
           <input

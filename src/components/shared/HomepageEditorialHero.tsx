@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { ArrowLeftIcon, ArrowRightIcon, ImageIcon } from "lucide-react";
+import { ArrowRightIcon, ImageIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Article } from "../../lib/database.types.ts";
 import { getArticleImageUrl } from "../../lib/article-images.ts";
@@ -118,7 +118,7 @@ export default function HomepageEditorialHero({
             <div className="mb-3 flex flex-wrap items-center gap-2">
               {article.is_breaking && (
                 <span className="rounded-sm bg-[#A61E2A] px-2 py-1 text-[10px] font-bold tracking-wide text-white">
-                  {isDhivehi ? "ވަގުތު ހަބަރު" : "BREAKING"}
+                  {isDhivehi ? "ކުއްލި ހަބަރު" : "BREAKING"}
                 </span>
               )}
               {article.category && (
@@ -150,14 +150,12 @@ export default function HomepageEditorialHero({
 
             <div className="mt-5 flex items-center justify-between gap-4 border-t border-[#E5E7E2] pt-4 text-xs text-[#6B756E]">
               <span>{articleDate(article, language)}</span>
-              <span className="inline-flex items-center gap-1 font-semibold text-[#103820]">
-                {isDhivehi ? "ހަބަރު ކިޔާ" : "Read story"}
-                {isDhivehi ? (
-                  <ArrowLeftIcon size={14} aria-hidden="true" />
-                ) : (
+              {!isDhivehi && (
+                <span className="inline-flex items-center gap-1 font-semibold text-[#103820]">
+                  Read story
                   <ArrowRightIcon size={14} aria-hidden="true" />
-                )}
-              </span>
+                </span>
+              )}
             </div>
           </div>
         </Link>

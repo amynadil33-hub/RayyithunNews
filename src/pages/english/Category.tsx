@@ -19,14 +19,23 @@ import { useEffect, useState } from "react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   news: "News",
+  community: "Community",
+  citizen: "Community",
   education: "Education",
   business: "Business",
-  religion: "Religion",
-  innovation: "Innovation",
+  life: "Life",
+  maldives: "Maldives",
   world: "World",
-  citizen: "Citizen",
+  discover: "Discover",
+  "health-science": "Health & Science",
+  "islam-culture": "Islam & Culture",
+  technology: "Technology",
+  tourism: "Tourism",
+  environment: "Environment",
+  sports: "Sports",
+  entertainment: "Entertainment",
+  opinion: "Opinion",
   market: "Market",
-  "travel-tourism": "Travel and tourism",
   podcast: "Podcast",
 };
 
