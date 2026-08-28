@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabaseClient.ts";
 import type { Comment, CommentStatus } from "../lib/database.types.ts";
+import { sendFormNotification } from "./contact.ts";
 
 export async function submitComment(
   articleId: string,
@@ -13,6 +14,7 @@ export async function submitComment(
     approved_at: null,
   } as never);
   if (error) throw error;
+  await sendFormNotification("comment", { article_id: articleId, ...data });
 }
 
 export async function getApprovedComments(articleId: string) {
