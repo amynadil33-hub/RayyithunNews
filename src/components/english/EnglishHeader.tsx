@@ -71,7 +71,7 @@ export default function EnglishHeader() {
                 key={label}
                 href="#"
                 aria-label={label}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-[#D8DED9] text-[#6B756E] transition-colors hover:border-[#103820] hover:bg-[#103820] hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
               >
                 <SocialIcon name={label} />
               </a>

@@ -49,18 +49,22 @@ export default function ArticleShareButtons({
     {
       label: "Facebook",
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      color: "bg-[#1877F2] hover:bg-[#0C63D4]",
     },
     {
       label: "WhatsApp",
       href: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} ${url}`)}`,
+      color: "bg-[#25D366] hover:bg-[#1EBE5A]",
     },
     {
       label: "X",
       href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+      color: "bg-black hover:bg-[#292929]",
     },
     {
       label: "LinkedIn",
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      color: "bg-[#0A66C2] hover:bg-[#084F96]",
     },
   ];
 
@@ -75,8 +79,9 @@ export default function ArticleShareButtons({
   }
 
   const buttonClass = compact
-    ? "inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-[#2D6A4F] px-2 text-[11px] font-bold text-white shadow-sm transition-colors hover:bg-[#103820]"
-    : "inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-[#2D6A4F] px-3.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-[#103820]";
+    ? "inline-flex h-9 min-w-9 items-center justify-center rounded-full px-2 text-[11px] font-bold text-white shadow-sm transition-colors"
+    : "inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white shadow-sm transition-colors";
+  const utilityButtonClass = `${buttonClass} bg-[#2D6A4F] hover:bg-[#103820]`;
 
   return (
     <div
@@ -92,7 +97,7 @@ export default function ArticleShareButtons({
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={buttonClass}
+          className={`${buttonClass} ${link.color}`}
           aria-label={`Share on ${link.label}`}
         >
           <BrandIcon name={link.label as SharePlatform} />
@@ -103,7 +108,7 @@ export default function ArticleShareButtons({
         <button
           type="button"
           onClick={() => void shareArticle()}
-          className={buttonClass}
+          className={utilityButtonClass}
         >
           <Share2Icon size={13} /> {!compact && "More"}
         </button>
@@ -111,7 +116,7 @@ export default function ArticleShareButtons({
       <button
         type="button"
         onClick={() => void copyLink()}
-        className={buttonClass}
+        className={utilityButtonClass}
         aria-label="Copy article link"
       >
         {copied ? <CheckIcon size={13} /> : <LinkIcon size={13} />}

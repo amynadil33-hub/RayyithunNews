@@ -159,16 +159,27 @@ export async function updateInquiryStatus(
 
 // Newsletter
 export async function subscribeToNewsletter(email: string, portalId?: string) {
-  const { error } = await supabase
-    .from("newsletter_subscribers")
-    .upsert({ email, portal_id: portalId ?? null, is_active: true } as never, {
-      onConflict: "email",
+  const normalizedEmail = email.trim().toLowerCase();
+  const { error } = await supabase.from("newsletter_subscribers").insert({
+    email: normalizedEmail,
+    portal_id: portalId ?? null,
+    is_active: true,
+  } as never);
+
+  // An existing address is already subscribed, so the form remains idempotent.
+  if (error && error.code !== "23505") throw error;
+
+  if (!error) {
+    void sendFormNotification("newsletter", {
+      email: normalizedEmail,
+      portal_id: portalId ?? "",
+    }).catch((notificationError: unknown) => {
+      console.error(
+        "Newsletter notification could not be delivered",
+        notificationError,
+      );
     });
-  if (error) throw error;
-  await sendFormNotification("newsletter", {
-    email,
-    portal_id: portalId ?? "",
-  });
+  }
 }
 
 export async function getNewsletterSubscribers() {

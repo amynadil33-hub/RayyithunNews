@@ -45,7 +45,7 @@ export default function EnglishFooter() {
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#52B788]/50 text-[#95D5B2] transition-colors hover:border-white hover:bg-white hover:text-[#103820]"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/80 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <SocialIcon name={label} />
                 </a>
