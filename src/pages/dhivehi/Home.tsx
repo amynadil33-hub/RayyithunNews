@@ -61,7 +61,7 @@ export default function DhivehiHome() {
       <DhivehiHeader />
 
       {/* Hero section */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
+      <section className="mx-auto max-w-7xl px-3 py-4 sm:px-4 sm:py-6">
         {featuredLoading ? (
           <div className="space-y-5">
             <Skeleton className="h-[520px] md:h-[360px]" />
@@ -107,7 +107,7 @@ export default function DhivehiHome() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 overflow-x-auto">
+            <div className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-5 md:gap-8 md:overflow-visible md:pb-0">
               {(trending ?? []).slice(0, 5).map((article, i) => (
                 <DhivehiArticleCard
                   key={article.id}
@@ -122,14 +122,16 @@ export default function DhivehiHome() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-10">
+      <section className="mx-auto max-w-7xl px-3 py-7 sm:px-4 sm:py-10">
         <div
           className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:items-start"
           dir="ltr"
         >
-          <IslandPulseSection language="dhivehi" variant="sidebar" />
+          <div className="order-2 lg:order-1">
+            <IslandPulseSection language="dhivehi" variant="sidebar" />
+          </div>
 
-          <div className="min-w-0 text-right" dir="rtl">
+          <div className="order-1 min-w-0 text-right lg:order-2" dir="rtl">
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
                 އެންމެ ފަހުގެ ހަބަރު
@@ -202,7 +204,7 @@ function DhivehiCategorySection({
   if (!isLoading && (!articles || articles.length === 0)) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8 border-t border-[#E5E7E2]">
+    <section className="mx-auto max-w-7xl border-t border-[#E5E7E2] px-3 py-6 sm:px-4 sm:py-8">
       <div className="flex items-center justify-between mb-5">
         <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
           {categoryName}

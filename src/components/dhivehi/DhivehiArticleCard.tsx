@@ -130,7 +130,7 @@ export default function DhivehiArticleCard({
     return (
       <Link
         to={href}
-        className="group flex flex-col gap-1 min-w-[200px] md:min-w-0 text-right"
+        className="group flex w-[78vw] shrink-0 snap-start flex-col gap-1 text-right sm:w-[260px] md:w-auto md:min-w-0"
         dir="rtl"
       >
         {typeof index === "number" && (
@@ -197,11 +197,11 @@ export default function DhivehiArticleCard({
         <img
           src={article.featured_image_url}
           alt={article.title}
-          className="w-full h-56 object-cover group-hover:scale-[1.02] transition-transform duration-300"
+          className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] sm:h-56"
           loading="lazy"
         />
       ) : (
-        <div className="w-full h-56 bg-[#D8E8D8] flex items-center justify-center">
+        <div className="flex h-48 w-full items-center justify-center bg-[#D8E8D8] sm:h-56">
           <span className="font-thaana text-[#103820] text-2xl font-bold opacity-30">
             ރ
           </span>

@@ -33,7 +33,7 @@ export default function DhivehiHeader() {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/en/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchOpen(false);
       setSearchQuery("");
     }
@@ -49,7 +49,7 @@ export default function DhivehiHeader() {
       </div>
 
       {/* Logo + actions */}
-      <div className="px-4 py-3">
+      <div className="px-3 py-2.5 sm:px-4 sm:py-3">
         <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2">
           <div className="min-w-0">
             <div className="hidden items-center gap-3 md:flex">
@@ -91,7 +91,7 @@ export default function DhivehiHeader() {
             {/* Search */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="text-[#142820] hover:text-[#103820] transition-colors"
+              className="flex h-11 w-11 items-center justify-center text-[#142820] transition-colors hover:text-[#103820]"
               aria-label="ހޯދާ"
             >
               <SearchIcon size={20} />
@@ -100,7 +100,7 @@ export default function DhivehiHeader() {
             {/* Mobile menu */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden text-[#142820]"
+              className="flex h-11 w-11 items-center justify-center text-[#142820] md:hidden"
               aria-label="މެނޫ"
             >
               {menuOpen ? <XIcon size={22} /> : <MenuIcon size={22} />}
@@ -117,7 +117,7 @@ export default function DhivehiHeader() {
             >
               <button
                 type="submit"
-                className="bg-[#103820] text-white px-4 py-2 text-sm rounded-sm hover:bg-[#183028] transition-colors font-thaana"
+                className="min-h-11 bg-[#103820] text-white px-4 py-2 text-sm rounded-sm hover:bg-[#183028] transition-colors font-thaana"
               >
                 ހޯދާ
               </button>
@@ -126,7 +126,7 @@ export default function DhivehiHeader() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ލިޔުން ހޯދާ..."
-                className="flex-1 border border-[#E5E7E2] rounded-sm px-4 py-2 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820] text-right font-thaana"
+                className="min-h-11 min-w-0 flex-1 border border-[#E5E7E2] rounded-sm px-4 py-2 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820] text-right font-thaana"
               />
             </form>
           </div>
@@ -171,7 +171,7 @@ export default function DhivehiHeader() {
                 <Link
                   to={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="m-2 block w-fit rounded-sm bg-[#103820] px-3 py-1.5 text-right text-sm font-medium text-white transition-colors hover:bg-[#2D6A4F] font-thaana"
+                  className="block min-h-11 px-4 py-3 text-right text-sm font-medium text-[#103820] transition-colors hover:bg-[#F0F4F0] font-thaana"
                 >
                   {link.label}
                 </Link>

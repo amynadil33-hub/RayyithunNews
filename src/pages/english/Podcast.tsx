@@ -19,7 +19,7 @@ export default function EnglishPodcast() {
       </Helmet>
       <EnglishHeader />
 
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-12">
         <div className="border-b-2 border-[#103820] pb-3 mb-8">
           <h1 className="font-serif text-3xl font-bold text-[#142820]">Podcast</h1>
           <p className="text-[#6B756E] mt-1 text-sm">Conversations about the Maldives — society, culture, business, and change.</p>

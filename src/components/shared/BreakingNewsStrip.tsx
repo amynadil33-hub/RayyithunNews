@@ -20,7 +20,7 @@ export default function BreakingNewsStrip({
       dir={isDhivehi ? "rtl" : "ltr"}
       aria-label={isDhivehi ? "ކުއްލި ހަބަރު" : "Breaking news"}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-hidden px-4 py-2.5">
+      <div className="mx-auto flex max-w-7xl items-center gap-2 overflow-hidden px-3 py-2.5 sm:gap-3 sm:px-4">
         <span
           className={`shrink-0 rounded-sm bg-[#A61E2A] px-2.5 py-1 text-[10px] font-bold text-white ${
             isDhivehi ? "font-thaana" : "tracking-[0.12em]"
@@ -58,7 +58,7 @@ export default function BreakingNewsStrip({
 
         <Link
           to={moreHref}
-          className={`shrink-0 border-s border-[#D8DED9] ps-3 text-xs font-semibold text-[#2D6A4F] hover:text-[#103820] ${isDhivehi ? "font-thaana" : ""}`}
+          className={`hidden shrink-0 border-s border-[#D8DED9] ps-3 text-xs font-semibold text-[#2D6A4F] hover:text-[#103820] sm:block ${isDhivehi ? "font-thaana" : ""}`}
         >
           {isDhivehi ? "އިތުރު އަޕްޑޭޓްތައް" : "More updates"}
         </Link>

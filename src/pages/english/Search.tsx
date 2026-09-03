@@ -33,20 +33,20 @@ export default function EnglishSearch() {
       </Helmet>
       <EnglishHeader />
 
-      <div className="max-w-5xl mx-auto px-4 py-10">
+      <div className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-10">
         <h1 className="font-serif text-2xl font-bold text-[#142820] mb-6">Search</h1>
 
-        <form onSubmit={handleSearch} className="flex gap-3 mb-8">
-          <div className="flex-1 flex items-center border border-[#E5E7E2] rounded-sm bg-white px-4">
+        <form onSubmit={handleSearch} className="mb-8 flex gap-2 sm:gap-3">
+          <div className="flex min-w-0 flex-1 items-center rounded-sm border border-[#E5E7E2] bg-white px-3 sm:px-4">
             <SearchIcon size={16} className="text-[#6B756E] mr-2 flex-shrink-0" />
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Search articles..."
-              className="flex-1 py-3 text-sm bg-transparent focus:outline-none text-[#142820]"
+              className="min-h-11 min-w-0 flex-1 bg-transparent py-3 text-sm text-[#142820] focus:outline-none"
             />
           </div>
-          <button type="submit" className="bg-[#103820] text-white px-6 rounded-sm text-sm font-medium hover:bg-[#183028] transition-colors">
+          <button type="submit" className="min-h-11 shrink-0 rounded-sm bg-[#103820] px-4 text-sm font-medium text-white transition-colors hover:bg-[#183028] sm:px-6">
             Search
           </button>
         </form>

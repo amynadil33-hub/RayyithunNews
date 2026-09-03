@@ -52,8 +52,8 @@ export default function ArticleShareButtons({
   }
 
   const socialButtonClass = compact
-    ? "flex h-9 w-9 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
-    : "flex h-10 w-10 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md";
+    ? "flex h-10 w-10 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+    : "flex h-11 w-11 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md";
   const utilityButtonClass = `${socialButtonClass} text-[#2D6A4F]`;
 
   return (
@@ -61,7 +61,7 @@ export default function ArticleShareButtons({
       className="flex flex-wrap items-center gap-2 border-y border-[#E5E7E2] py-3"
       aria-label="Share this article"
     >
-      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#142820]">
+      <span className="inline-flex w-full items-center gap-1.5 text-xs font-semibold text-[#142820] sm:w-auto">
         <Share2Icon size={14} /> Share
       </span>
       {links.map((link) => (

@@ -36,14 +36,14 @@ export default function DhivehiContact() {
       </Helmet>
       <DhivehiHeader />
 
-      <div className="max-w-4xl mx-auto px-4 py-14">
-        <div className="border-b-2 border-[#103820] pb-3 mb-10 text-right">
-          <h1 className="font-thaana thaana-headline text-4xl font-bold text-[#142820]">
+      <div className="mx-auto max-w-4xl px-3 py-8 sm:px-4 sm:py-14">
+        <div className="mb-6 border-b-2 border-[#103820] pb-3 text-right sm:mb-10">
+          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] sm:text-4xl">
             ގުޅުއްވުމަށް
           </h1>
         </div>
 
-        <div className="bg-white border border-[#E5E7E2] rounded-sm p-6 md:p-8">
+        <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:p-8">
           {sent ? (
             <div className="text-center py-10">
               <h3 className="font-thaana thaana-headline text-lg font-semibold text-[#142820] mb-2">

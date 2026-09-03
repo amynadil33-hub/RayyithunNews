@@ -40,9 +40,9 @@ export default function EnglishAdvertise() {
       </Helmet>
       <EnglishHeader />
 
-      <div className="max-w-5xl mx-auto px-4 py-14">
+      <div className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-14">
         {/* Hero */}
-        <div className="bg-[#103820] text-white rounded-sm p-8 md:p-12 mb-12 text-center">
+        <div className="mb-8 rounded-sm bg-[#103820] p-5 text-center text-white sm:p-8 md:mb-12 md:p-12">
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-3">Advertise with RAYYITHUN</h1>
           <p className="text-[#95D5B2] text-lg max-w-xl mx-auto leading-relaxed">
             Reach thousands of engaged Maldivian readers daily. Premium editorial placements across our Dhivehi and English editions.
@@ -65,7 +65,7 @@ export default function EnglishAdvertise() {
         </div>
 
         {/* Inquiry form */}
-        <div className="bg-white border border-[#E5E7E2] rounded-sm p-6 md:p-8">
+        <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:p-8">
           <h2 className="font-serif text-xl font-bold text-[#142820] mb-6">Advertising Inquiry</h2>
 
           {sent ? (

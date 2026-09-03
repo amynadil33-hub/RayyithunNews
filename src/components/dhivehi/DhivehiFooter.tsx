@@ -36,13 +36,13 @@ export default function DhivehiFooter() {
             <p className="max-w-xl text-sm leading-[2] text-[#95D5B2]">
               ހޭލުންތެރި، ބަސްބުނުމުގެ ބާރުވެރިކަން ލިބިފައިވާ މުޖުތަމަޢުއަކަށް
             </p>
-            <div className="mt-5 flex justify-start gap-3">
+            <div className="mt-5 flex flex-wrap justify-start gap-3">
               {SOCIAL_LINKS.map((label) => (
                 <a
                   key={label}
                   href="#"
                   aria-label={label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/80 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/80 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md sm:h-9 sm:w-9"
                 >
                   <SocialIcon name={label} />
                 </a>

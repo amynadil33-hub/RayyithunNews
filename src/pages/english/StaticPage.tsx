@@ -23,7 +23,7 @@ export default function EnglishStaticPage() {
       </Helmet>
       <EnglishHeader />
 
-      <div className="max-w-3xl mx-auto px-4 py-12">
+      <div className="mx-auto max-w-3xl px-3 py-8 sm:px-4 sm:py-12">
         {isLoading ? (
           <div className="space-y-4">
             <Skeleton className="h-10 w-1/2" />

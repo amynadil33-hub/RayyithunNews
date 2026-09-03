@@ -122,7 +122,7 @@ export default function DhivehiArticle() {
 
       <DhivehiHeader />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
         <div className="flex flex-col lg:flex-row gap-10">
           <main className="flex-1 min-w-0">
             <div className="flex items-center gap-2 text-xs text-[#6B756E] mb-5 flex-row-reverse font-thaana">

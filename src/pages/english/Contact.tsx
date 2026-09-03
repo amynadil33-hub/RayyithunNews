@@ -44,14 +44,14 @@ export default function EnglishContact() {
       </Helmet>
       <EnglishHeader />
 
-      <div className="max-w-5xl mx-auto px-4 py-14">
-        <div className="border-b-2 border-[#103820] pb-3 mb-10">
+      <div className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-14">
+        <div className="mb-6 border-b-2 border-[#103820] pb-3 sm:mb-10">
           <h1 className="font-serif text-3xl font-bold text-[#142820]">
             Contact Us
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 gap-7 md:grid-cols-5 md:gap-10">
           {/* Contact info */}
           <div className="md:col-span-2 space-y-6">
             <div>
@@ -105,7 +105,7 @@ export default function EnglishContact() {
           </div>
 
           {/* Form */}
-          <div className="md:col-span-3 bg-white border border-[#E5E7E2] rounded-sm p-6">
+          <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:col-span-3">
             {sent ? (
               <div className="text-center py-10">
                 <div className="w-12 h-12 bg-[#D8E8D8] rounded-full flex items-center justify-center mx-auto mb-4">

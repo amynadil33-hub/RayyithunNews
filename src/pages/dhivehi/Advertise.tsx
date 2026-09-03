@@ -43,9 +43,9 @@ export default function DhivehiAdvertise() {
       </Helmet>
       <DhivehiHeader />
 
-      <main className="max-w-4xl mx-auto px-4 py-14">
-        <div className="bg-[#103820] text-white rounded-sm p-8 mb-10 text-center">
-          <h1 className="dhivehi-title-inverse font-thaana thaana-headline text-4xl font-bold mb-3">
+      <main className="mx-auto max-w-4xl px-3 py-8 sm:px-4 sm:py-14">
+        <div className="mb-7 rounded-sm bg-[#103820] p-5 text-center text-white sm:mb-10 sm:p-8">
+          <h1 className="dhivehi-title-inverse font-thaana thaana-headline mb-3 text-3xl font-bold sm:text-4xl">
             އިޢުލާން ކުރެއްވުމަށް
           </h1>
           <p className="text-[#95D5B2] font-thaana thaana-body max-w-xl mx-auto">
@@ -54,7 +54,7 @@ export default function DhivehiAdvertise() {
           </p>
         </div>
 
-        <div className="bg-white border border-[#E5E7E2] rounded-sm p-6 md:p-8">
+        <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:p-8">
           <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820] mb-6 text-right">
             އިޢުލާން ކުރުމަށް އެދޭ ފޯމު
           </h2>

@@ -29,9 +29,9 @@ export default function DhivehiPodcast() {
       </Helmet>
       <DhivehiHeader />
 
-      <main className="max-w-5xl mx-auto px-4 py-12">
+      <main className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-12">
         <div className="border-b-2 border-[#103820] pb-3 mb-8 text-right">
-          <h1 className="font-thaana thaana-headline text-4xl font-bold text-[#142820]">
+          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] sm:text-4xl">
             ޕޮޑްކާސްޓް
           </h1>
           <p className="font-thaana text-[#6B756E] mt-1 text-sm">

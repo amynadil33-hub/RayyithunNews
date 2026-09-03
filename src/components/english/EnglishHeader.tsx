@@ -63,9 +63,12 @@ export default function EnglishHeader() {
     <header className="bg-white border-b border-[#E5E7E2]" dir="ltr">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between text-xs text-[#6B756E]">
+        <div className="max-w-7xl mx-auto flex items-center justify-center text-xs text-[#6B756E] sm:justify-between">
           <span>{today}</span>
-          <div className="flex items-center gap-2" aria-label="Social media">
+          <div
+            className="hidden items-center gap-2 sm:flex"
+            aria-label="Social media"
+          >
             {SOCIAL_LINKS.map((label) => (
               <a
                 key={label}
@@ -81,7 +84,7 @@ export default function EnglishHeader() {
       </div>
 
       {/* Logo + actions */}
-      <div className="px-4 py-3">
+      <div className="px-3 py-2.5 sm:px-4 sm:py-3">
         <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-2">
           <div className="min-w-0">
             <div className="hidden items-center gap-4 md:flex">
@@ -123,7 +126,7 @@ export default function EnglishHeader() {
             {/* Search */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="text-[#142820] hover:text-[#103820] transition-colors"
+              className="flex h-11 w-11 items-center justify-center text-[#142820] transition-colors hover:text-[#103820]"
               aria-label="Search"
             >
               <SearchIcon size={20} />
@@ -132,7 +135,7 @@ export default function EnglishHeader() {
             {/* Mobile menu */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden text-[#142820]"
+              className="flex h-11 w-11 items-center justify-center text-[#142820] md:hidden"
               aria-label="Menu"
             >
               {menuOpen ? <XIcon size={22} /> : <MenuIcon size={22} />}
@@ -149,11 +152,11 @@ export default function EnglishHeader() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search articles..."
-                className="flex-1 border border-[#E5E7E2] rounded-sm px-4 py-2 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820]"
+                className="min-h-11 min-w-0 flex-1 border border-[#E5E7E2] rounded-sm px-4 py-2 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820]"
               />
               <button
                 type="submit"
-                className="bg-[#103820] text-white px-4 py-2 text-sm rounded-sm hover:bg-[#183028] transition-colors"
+                className="min-h-11 bg-[#103820] text-white px-4 py-2 text-sm rounded-sm hover:bg-[#183028] transition-colors"
               >
                 Search
               </button>

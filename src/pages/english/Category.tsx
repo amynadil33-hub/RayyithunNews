@@ -72,7 +72,7 @@ export default function EnglishCategory() {
         <AdBanner placement="category_top_banner" label="Advertisement" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
         <div className="border-b-2 border-[#103820] pb-3 mb-8">
           <h1 className="font-serif text-3xl font-bold text-[#142820]">
             {categoryName}

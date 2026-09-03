@@ -75,7 +75,7 @@ export default function EnglishHome() {
       <EnglishHeader />
 
       {/* Hero section */}
-      <section className="max-w-7xl mx-auto px-4 py-6">
+      <section className="mx-auto max-w-7xl px-3 py-4 sm:px-4 sm:py-6">
         {featuredLoading ? (
           <div className="space-y-5">
             <Skeleton className="h-[520px] md:h-[360px]" />
@@ -121,7 +121,7 @@ export default function EnglishHome() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 overflow-x-auto">
+            <div className="no-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-5 md:gap-8 md:overflow-visible md:pb-0">
               {(trending ?? []).slice(0, 5).map((article, i) => (
                 <ArticleCard
                   key={article.id}
@@ -136,11 +136,13 @@ export default function EnglishHome() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-10">
+      <section className="mx-auto max-w-7xl px-3 py-7 sm:px-4 sm:py-10">
         <div className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:items-start">
-          <IslandPulseSection language="english" variant="sidebar" />
+          <div className="order-2 lg:order-1">
+            <IslandPulseSection language="english" variant="sidebar" />
+          </div>
 
-          <div className="min-w-0">
+          <div className="order-1 min-w-0 lg:order-2">
             <div className="flex items-center justify-between mb-6">
               <h2 className="font-serif text-xl font-bold text-[#142820] tracking-tight">
                 Latest Stories
@@ -192,7 +194,7 @@ export default function EnglishHome() {
 
       {/* Podcast section */}
       {podcasts && podcasts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-10">
+        <section className="mx-auto max-w-7xl px-3 py-7 sm:px-4 sm:py-10">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-serif text-xl font-bold text-[#142820]">
               Latest Podcasts
@@ -268,7 +270,7 @@ function CategorySection({
   if (!isLoading && (!articles || articles.length === 0)) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8 border-t border-[#E5E7E2]">
+    <section className="mx-auto max-w-7xl border-t border-[#E5E7E2] px-3 py-6 sm:px-4 sm:py-8">
       <div className="flex items-center justify-between mb-5">
         <h2 className="font-serif text-xl font-bold text-[#142820]">
           {categoryName}
