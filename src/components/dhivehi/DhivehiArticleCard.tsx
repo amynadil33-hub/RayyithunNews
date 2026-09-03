@@ -6,7 +6,7 @@ import {
   formatDhivehiDate,
   formatDhivehiRelativeTime,
 } from "../../lib/dhivehi-date.ts";
-import { formatHoursAgo } from "../../lib/article-time.ts";
+import { formatRelativeAge } from "../../lib/article-time.ts";
 
 interface DhivehiArticleCardProps {
   article: Article;
@@ -31,7 +31,7 @@ export default function DhivehiArticleCard({
     ? getPublicAuthorName(article.author, true)
     : null;
   const hoursAgo = article.published_at
-    ? formatHoursAgo(article.published_at, true)
+    ? formatRelativeAge(article.published_at, true)
     : "";
 
   if (variant === "hero") {

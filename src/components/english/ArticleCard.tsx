@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import type { Article } from "../../lib/database.types.ts";
 import AuthorIdentity from "../shared/AuthorIdentity.tsx";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
-import { formatHoursAgo } from "../../lib/article-time.ts";
+import { formatRelativeAge } from "../../lib/article-time.ts";
 
 interface ArticleCardProps {
   article: Article;
@@ -30,7 +30,7 @@ export default function ArticleCard({
     ? getPublicAuthorName(article.author)
     : null;
   const hoursAgo = article.published_at
-    ? formatHoursAgo(article.published_at)
+    ? formatRelativeAge(article.published_at)
     : "";
 
   if (variant === "hero") {

@@ -2,7 +2,7 @@ import { ArrowRightIcon, ImageIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Article } from "../../lib/database.types.ts";
 import { getArticleImageUrl } from "../../lib/article-images.ts";
-import { formatHoursAgo } from "../../lib/article-time.ts";
+import { formatRelativeAge } from "../../lib/article-time.ts";
 
 type HomepageLanguage = "english" | "dhivehi";
 
@@ -14,7 +14,7 @@ function articleHref(article: Article, language: HomepageLanguage) {
 
 function articleDate(article: Article, language: HomepageLanguage) {
   if (!article.published_at) return "";
-  return formatHoursAgo(article.published_at, language === "dhivehi");
+  return formatRelativeAge(article.published_at, language === "dhivehi");
 }
 
 function StoryImage({ article }: { article: Article }) {

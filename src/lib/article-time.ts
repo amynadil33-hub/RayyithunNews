@@ -1,4 +1,4 @@
-export function formatHoursAgo(
+export function formatRelativeAge(
   value: string | number | Date,
   isDhivehi = false,
   now: string | number | Date = new Date(),
@@ -13,6 +13,12 @@ export function formatHoursAgo(
     Math.floor((current.getTime() - published.getTime()) / 3_600_000),
   );
 
-  if (isDhivehi) return `${hours} ގަޑިއިރު ކުރިން`;
-  return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  if (hours < 24) {
+    if (isDhivehi) return `${hours} ގަޑިއިރު ކުރިން`;
+    return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  }
+
+  const days = Math.floor(hours / 24);
+  if (isDhivehi) return `${days} ދުވަސް ކުރިން`;
+  return `${days} ${days === 1 ? "day" : "days"} ago`;
 }
