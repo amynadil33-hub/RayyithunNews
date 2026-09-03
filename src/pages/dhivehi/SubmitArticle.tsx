@@ -115,7 +115,7 @@ export default function DhivehiSubmitArticle() {
                 </div>
                 <div>
                   <label htmlFor="submission-email" className={labelClass}>
-                    އިމެއިލް
+                    އީމެއިލް
                   </label>
                   <input
                     id="submission-email"

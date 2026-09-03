@@ -114,6 +114,7 @@ export default function DhivehiHome() {
                   article={article}
                   variant="trending"
                   index={i}
+                  showHoursOnly
                 />
               ))}
             </div>
@@ -153,6 +154,7 @@ export default function DhivehiHome() {
                     key={article.id}
                     article={article}
                     variant="grid"
+                    showHoursOnly
                   />
                 ))}
               </div>
@@ -225,6 +227,7 @@ function DhivehiCategorySection({
               key={article.id}
               article={article}
               variant="grid"
+              showHoursOnly
             />
           ))}
         </div>

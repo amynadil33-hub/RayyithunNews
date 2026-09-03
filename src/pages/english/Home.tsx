@@ -128,6 +128,7 @@ export default function EnglishHome() {
                   article={article}
                   variant="trending"
                   index={i}
+                  showHoursOnly
                 />
               ))}
             </div>
@@ -164,6 +165,7 @@ export default function EnglishHome() {
                     key={article.id}
                     article={article}
                     variant="grid"
+                    showHoursOnly
                   />
                 ))}
               </div>
@@ -287,7 +289,12 @@ function CategorySection({
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {(articles ?? []).slice(0, 4).map((article) => (
-            <ArticleCard key={article.id} article={article} variant="grid" />
+            <ArticleCard
+              key={article.id}
+              article={article}
+              variant="grid"
+              showHoursOnly
+            />
           ))}
         </div>
       )}

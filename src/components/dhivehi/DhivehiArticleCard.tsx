@@ -6,17 +6,20 @@ import {
   formatDhivehiDate,
   formatDhivehiRelativeTime,
 } from "../../lib/dhivehi-date.ts";
+import { formatHoursAgo } from "../../lib/article-time.ts";
 
 interface DhivehiArticleCardProps {
   article: Article;
   variant?: "hero" | "secondary" | "grid" | "compact" | "trending";
   index?: number;
+  showHoursOnly?: boolean;
 }
 
 export default function DhivehiArticleCard({
   article,
   variant = "grid",
   index,
+  showHoursOnly = false,
 }: DhivehiArticleCardProps) {
   const href = `/article/${article.slug}`;
   const date = article.published_at
@@ -27,6 +30,9 @@ export default function DhivehiArticleCard({
   const authorName = article.show_author
     ? getPublicAuthorName(article.author, true)
     : null;
+  const hoursAgo = article.published_at
+    ? formatHoursAgo(article.published_at, true)
+    : "";
 
   if (variant === "hero") {
     return (
@@ -64,8 +70,16 @@ export default function DhivehiArticleCard({
             </p>
           )}
           <div className="ml-auto mr-0 flex max-w-[28rem] items-center gap-2 text-xs text-white/70 font-thaana flex-row-reverse">
-            {authorName && <AuthorIdentity author={article.author} isDhivehi />}
-            {date && <span>{date}</span>}
+            {showHoursOnly ? (
+              hoursAgo && <span>{hoursAgo}</span>
+            ) : (
+              <>
+                {authorName && (
+                  <AuthorIdentity author={article.author} isDhivehi />
+                )}
+                {date && <span>{date}</span>}
+              </>
+            )}
           </div>
         </div>
       </Link>
@@ -102,8 +116,10 @@ export default function DhivehiArticleCard({
           <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
-          {date && (
-            <p className="text-xs text-[#6B756E] mt-1 font-thaana">{date}</p>
+          {(showHoursOnly ? hoursAgo : date) && (
+            <p className="text-xs text-[#6B756E] mt-1 font-thaana">
+              {showHoursOnly ? hoursAgo : date}
+            </p>
           )}
         </div>
       </Link>
@@ -130,6 +146,9 @@ export default function DhivehiArticleCard({
         <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
+        {showHoursOnly && hoursAgo && (
+          <span className="text-xs text-[#6B756E] font-thaana">{hoursAgo}</span>
+        )}
       </Link>
     );
   }
@@ -150,8 +169,10 @@ export default function DhivehiArticleCard({
           <h3 className="font-article-title text-xl font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
-          {date && (
-            <p className="text-xs text-[#6B756E] mt-1 font-thaana">{date}</p>
+          {(showHoursOnly ? hoursAgo : date) && (
+            <p className="text-xs text-[#6B756E] mt-1 font-thaana">
+              {showHoursOnly ? hoursAgo : date}
+            </p>
           )}
         </div>
         {article.featured_image_url && (
@@ -201,9 +222,17 @@ export default function DhivehiArticleCard({
           </p>
         )}
         <div className="flex items-center gap-2 text-xs text-[#6B756E] font-thaana justify-end">
-          {date && <span>{date}</span>}
-          {authorName && date && <span>·</span>}
-          {authorName && <AuthorIdentity author={article.author} isDhivehi />}
+          {showHoursOnly ? (
+            hoursAgo && <span>{hoursAgo}</span>
+          ) : (
+            <>
+              {date && <span>{date}</span>}
+              {authorName && date && <span>·</span>}
+              {authorName && (
+                <AuthorIdentity author={article.author} isDhivehi />
+              )}
+            </>
+          )}
         </div>
       </div>
     </Link>

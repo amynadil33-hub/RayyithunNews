@@ -66,7 +66,7 @@ export default function DhivehiContact() {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#142820] mb-1 text-right font-thaana">
-                    އީ-މެއިލް *
+                    އީމެއިލް *
                   </label>
                   <input
                     required

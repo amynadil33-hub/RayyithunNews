@@ -3,17 +3,20 @@ import { format } from "date-fns";
 import type { Article } from "../../lib/database.types.ts";
 import AuthorIdentity from "../shared/AuthorIdentity.tsx";
 import { getPublicAuthorName } from "../../lib/author-display.ts";
+import { formatHoursAgo } from "../../lib/article-time.ts";
 
 interface ArticleCardProps {
   article: Article;
   variant?: "hero" | "secondary" | "grid" | "compact" | "trending";
   index?: number;
+  showHoursOnly?: boolean;
 }
 
 export default function ArticleCard({
   article,
   variant = "grid",
   index,
+  showHoursOnly = false,
 }: ArticleCardProps) {
   const href =
     article.portal?.slug === "english"
@@ -26,6 +29,9 @@ export default function ArticleCard({
   const authorName = article.show_author
     ? getPublicAuthorName(article.author)
     : null;
+  const hoursAgo = article.published_at
+    ? formatHoursAgo(article.published_at)
+    : "";
 
   if (variant === "hero") {
     return (
@@ -60,9 +66,15 @@ export default function ArticleCard({
             </p>
           )}
           <div className="flex items-center gap-2 text-white/50 text-xs">
-            {authorName && <AuthorIdentity author={article.author} />}
-            {authorName && date && <span>·</span>}
-            {date && <span>{date}</span>}
+            {showHoursOnly ? (
+              hoursAgo && <span>{hoursAgo}</span>
+            ) : (
+              <>
+                {authorName && <AuthorIdentity author={article.author} />}
+                {authorName && date && <span>·</span>}
+                {date && <span>{date}</span>}
+              </>
+            )}
           </div>
         </div>
         <div className="absolute bottom-4 right-4 opacity-20 pointer-events-none select-none">
@@ -103,7 +115,11 @@ export default function ArticleCard({
           <h3 className="font-serif text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
-          {date && <p className="text-xs text-[#6B756E] mt-1">{date}</p>}
+          {(showHoursOnly ? hoursAgo : date) && (
+            <p className="text-xs text-[#6B756E] mt-1">
+              {showHoursOnly ? hoursAgo : date}
+            </p>
+          )}
         </div>
       </Link>
     );
@@ -126,6 +142,9 @@ export default function ArticleCard({
         <h3 className="font-serif text-xl font-semibold text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
+        {showHoursOnly && hoursAgo && (
+          <span className="text-xs text-[#6B756E]">{hoursAgo}</span>
+        )}
       </Link>
     );
   }
@@ -145,7 +164,11 @@ export default function ArticleCard({
           <h3 className="font-serif text-xl font-medium text-[#142820] leading-snug group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
-          {date && <p className="text-xs text-[#6B756E] mt-1">{date}</p>}
+          {(showHoursOnly ? hoursAgo : date) && (
+            <p className="text-xs text-[#6B756E] mt-1">
+              {showHoursOnly ? hoursAgo : date}
+            </p>
+          )}
         </div>
         {article.featured_image_url && (
           <img
@@ -193,13 +216,19 @@ export default function ArticleCard({
           </p>
         )}
         <div className="flex items-center gap-2 text-xs text-[#6B756E]">
-          {authorName && <AuthorIdentity author={article.author} />}
-          {authorName && date && <span>·</span>}
-          {date && <span>{date}</span>}
-          {article.read_time && (
+          {showHoursOnly ? (
+            hoursAgo && <span>{hoursAgo}</span>
+          ) : (
             <>
-              <span>·</span>
-              <span>{article.read_time} min read</span>
+              {authorName && <AuthorIdentity author={article.author} />}
+              {authorName && date && <span>·</span>}
+              {date && <span>{date}</span>}
+              {article.read_time && (
+                <>
+                  <span>·</span>
+                  <span>{article.read_time} min read</span>
+                </>
+              )}
             </>
           )}
         </div>

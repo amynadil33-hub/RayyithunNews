@@ -601,7 +601,7 @@ export default function AdminArticleEdit() {
             </select>
             <select value={form.category_id ?? ""} onChange={(event) => setForm((current) => ({ ...current, category_id: event.target.value || undefined }))} className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm">
               <option value="">Select category...</option>
-              {(categories ?? []).map((category) => (
+              {(categories ?? []).filter((category) => portalSlug !== "dhivehi" || !["news", "world"].includes(category.slug)).map((category) => (
                 <option key={category.id} value={category.id}>{category.name}</option>
               ))}
             </select>

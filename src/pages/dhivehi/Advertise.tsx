@@ -23,7 +23,7 @@ export default function DhivehiAdvertise() {
     try {
       await submitAdvertiserInquiry(form);
       setSent(true);
-      toast.success("ށުކުރިއްޔާ! ތިޔަ ހުށަހެޅުން ލިބިއްޖެ.");
+      toast.success("ޝުކުރިއްޔާ! ތިޔަ ހުށަހެޅުން ލިބިއްޖެ.");
     } catch {
       toast.error("ހުށަހެޅުން ފޮނުވުމުގައި މައްހަލައެއް ދިމާވެއްޖެ.");
     } finally {
@@ -97,7 +97,7 @@ export default function DhivehiAdvertise() {
                 </div>
                 <div>
                   <label htmlFor="advertiser-email" className={labelClass}>
-                    އީ-މެއިލް *
+                    އީމެއިލް *
                   </label>
                   <input
                     id="advertiser-email"
