@@ -140,7 +140,7 @@ export default function DhivehiHome() {
                 to="/news"
                 className="flex items-center gap-1 text-sm text-[#103820] font-medium border border-[#103820] px-3 py-1 rounded-sm hover:bg-[#103820] hover:text-white transition-colors font-thaana"
               >
-                ← ހުރިހ
+                ← ހުރިހާ
               </Link>
             </div>
             {latestLoading ? (
