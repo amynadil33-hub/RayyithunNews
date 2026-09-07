@@ -32,6 +32,10 @@ export default function ArticleShareButtons({
       href: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} ${url}`)}`,
     },
     {
+      label: "Viber",
+      href: `viber://forward?text=${encodeURIComponent(`${title} ${url}`)}`,
+    },
+    {
       label: "X",
       href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
     },

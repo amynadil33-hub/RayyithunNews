@@ -63,8 +63,14 @@ export default function EnglishHeader() {
     <header className="bg-white border-b border-[#E5E7E2]" dir="ltr">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-center text-xs text-[#6B756E] sm:justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs text-[#6B756E]">
           <span>{today}</span>
+          <Link
+            to="/"
+            className="inline-flex min-h-8 items-center rounded-sm border border-[#103820] px-3 py-1 font-thaana font-medium text-[#103820] transition-colors hover:bg-[#103820] hover:text-white sm:hidden"
+          >
+            ދިވެހި
+          </Link>
           <div
             className="hidden items-center gap-2 sm:flex"
             aria-label="Social media"
@@ -252,15 +258,6 @@ export default function EnglishHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/"
-                onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-sm text-[#103820] font-thaana font-medium"
-              >
-                ދިވެހި ޕޯޓަލް
-              </Link>
-            </li>
           </ul>
         </nav>
       )}

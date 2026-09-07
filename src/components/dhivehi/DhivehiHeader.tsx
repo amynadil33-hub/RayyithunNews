@@ -43,8 +43,14 @@ export default function DhivehiHeader() {
     <header className="bg-white border-b border-[#E5E7E2]" dir="rtl">
       {/* Top bar */}
       <div className="border-b border-[#E5E7E2] px-4 py-1.5">
-        <div className="max-w-7xl mx-auto w-full text-right text-xs text-[#6B756E] font-thaana">
+        <div className="max-w-7xl mx-auto flex w-full items-center justify-between gap-3 text-right text-xs text-[#6B756E] font-thaana">
           <span>{today}</span>
+          <Link
+            to="/en"
+            className="inline-flex min-h-8 items-center rounded-sm border border-[#103820] px-3 py-1 font-sans font-medium text-[#103820] transition-colors hover:bg-[#103820] hover:text-white sm:hidden"
+          >
+            English
+          </Link>
         </div>
       </div>
 
@@ -177,15 +183,6 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/en"
-                onClick={() => setMenuOpen(false)}
-                className="block px-4 py-3 text-sm text-[#103820] font-medium"
-              >
-                ENGLISH EDITION
-              </Link>
-            </li>
           </ul>
         </nav>
       )}
