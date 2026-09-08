@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import { PlayCircleIcon } from "lucide-react";
 import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
-import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { usePodcasts } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
@@ -77,7 +76,6 @@ export default function EnglishPodcast() {
         )}
       </div>
 
-      <NewsletterSection portalId="00000000-0000-0000-0000-000000000002" />
       <EnglishFooter />
     </div>
   );

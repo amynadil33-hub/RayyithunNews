@@ -9,7 +9,6 @@ import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import DhivehiFooter from "../../components/dhivehi/DhivehiFooter.tsx";
 import DhivehiArticleCard from "../../components/dhivehi/DhivehiArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
-import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
 import ArticleReactions from "../../components/shared/ArticleReactions.tsx";
@@ -237,10 +236,6 @@ export default function DhivehiArticle() {
         </div>
       </div>
 
-      <NewsletterSection
-        portalId="00000000-0000-0000-0000-000000000001"
-        isDhivehi
-      />
       <DhivehiFooter />
     </div>
   );

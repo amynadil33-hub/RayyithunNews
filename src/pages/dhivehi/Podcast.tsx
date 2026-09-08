@@ -3,7 +3,6 @@ import { PlayCircleIcon } from "lucide-react";
 import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
 import DhivehiHeader from "../../components/dhivehi/DhivehiHeader.tsx";
 import DhivehiFooter from "../../components/dhivehi/DhivehiFooter.tsx";
-import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { usePodcasts } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import {
@@ -130,10 +129,6 @@ export default function DhivehiPodcast() {
         )}
       </main>
 
-      <NewsletterSection
-        portalId="00000000-0000-0000-0000-000000000001"
-        isDhivehi
-      />
       <DhivehiFooter />
     </div>
   );

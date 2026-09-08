@@ -9,7 +9,6 @@ import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
-import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
 import { format } from "date-fns";
 import ArticleShareButtons from "../../components/shared/ArticleShareButtons.tsx";
@@ -233,7 +232,6 @@ export default function EnglishArticle() {
         </div>
       </div>
 
-      <NewsletterSection portalId="00000000-0000-0000-0000-000000000002" />
       <EnglishFooter />
     </div>
   );

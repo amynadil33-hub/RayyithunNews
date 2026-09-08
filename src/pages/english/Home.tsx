@@ -4,7 +4,6 @@ import { TrendingUpIcon, PlayCircleIcon } from "lucide-react";
 import EnglishFooter from "../../components/english/EnglishFooter.tsx";
 import ArticleCard from "../../components/english/ArticleCard.tsx";
 import AdBanner from "../../components/shared/AdBanner.tsx";
-import NewsletterSection from "../../components/shared/NewsletterSection.tsx";
 import EnglishHeader from "../../components/english/EnglishHeader.tsx";
 import { useArticles, usePodcasts } from "../../hooks/use-portal-data.ts";
 import { Skeleton } from "../../components/ui/skeleton.tsx";
@@ -248,7 +247,6 @@ export default function EnglishHome() {
         </section>
       )}
 
-      <NewsletterSection portalId="00000000-0000-0000-0000-000000000002" />
       <EnglishFooter />
     </div>
   );
