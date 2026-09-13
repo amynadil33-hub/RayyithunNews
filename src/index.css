@@ -5,6 +5,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
+  font-family: "MV AammuFK";
+  src: url("/fonts/MV_AammuFK_Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "MV Faseyha";
   src: url("/fonts/MV_Faseyha.otf") format("opentype");
   font-weight: 400;
@@ -32,11 +40,11 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
   --font-dhivehi:
-    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana",
-    sans-serif;
+    "MV AammuFK", "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
+    "Noto Sans Thaana", sans-serif;
   --font-thaana:
-    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana",
-    sans-serif;
+    "MV AammuFK", "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
+    "Noto Sans Thaana", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -184,9 +192,7 @@ html[lang="dv"] body,
 .font-dhivehi,
 .dhivehi,
 .dv {
-  font-family:
-    "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana",
-    sans-serif;
+  font-family: var(--font-dhivehi);
 }
 
 html[lang="dv"] {
@@ -222,14 +228,14 @@ html[lang="dv"] header nav a.font-thaana {
 }
 
 .thaana-headline {
-  font-family: "MV MAG Round XBold", var(--font-thaana);
+  font-family: var(--font-thaana);
   line-height: 1.6;
   font-weight: 800;
 }
 
 /* Article titles only; body copy and other headings retain their own fonts. */
 .font-article-title {
-  font-family: "MV MAG Round XBold", "SanguSuruhee", var(--font-thaana);
+  font-family: var(--font-thaana);
   font-weight: 800;
   max-width: 100%;
   overflow-wrap: anywhere;

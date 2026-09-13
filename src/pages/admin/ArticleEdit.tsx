@@ -565,7 +565,7 @@ export default function AdminArticleEdit() {
                   },
                   content_style:
                     portalSlug === "dhivehi"
-                      ? `@font-face { font-family: "RayyithunDhivehi"; src: url("/fonts/RayyithunDhivehi.otf") format("opentype"); font-weight: 400; font-style: normal; font-display: swap; } body { font-family: "RayyithunDhivehi", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana", sans-serif; direction: rtl; text-align: right; line-height: 1.9; font-size: 20px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-right: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; }`
+                      ? `@font-face { font-family: "MV AammuFK"; src: url("/fonts/MV_AammuFK_Regular.ttf") format("truetype"); font-weight: 100 900; font-style: normal; font-display: swap; } body { font-family: "MV AammuFK", "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma", "Noto Sans Thaana", sans-serif; direction: rtl; text-align: right; line-height: 1.9; font-size: 20px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-right: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; }`
                       : `body { font-family: Inter, Arial, sans-serif; direction: ltr; text-align: left; line-height: 1.8; font-size: 17px; padding: 12px; } p { margin: 0 0 1.25rem; } blockquote { border-left: 4px solid #103820; background: #D8E8D8; margin: 1.5rem 0; padding: 1rem 1.25rem; } img { max-width: 100%; height: auto; }`,
                   image_caption: true,
                   file_picker_types: "image",
