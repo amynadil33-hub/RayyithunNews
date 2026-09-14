@@ -40,11 +40,11 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
   --font-dhivehi:
-    "MV AammuFK", "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
-    "Noto Sans Thaana", sans-serif;
+    "MV MAG Round XBold", "MV Faseyha", "MV Waheed", "MV Amaan XP",
+    "Faruma", "Noto Sans Thaana", sans-serif;
   --font-thaana:
-    "MV AammuFK", "MV Faseyha", "MV Waheed", "MV Amaan XP", "Faruma",
-    "Noto Sans Thaana", sans-serif;
+    "MV MAG Round XBold", "MV Faseyha", "MV Waheed", "MV Amaan XP",
+    "Faruma", "Noto Sans Thaana", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -199,6 +199,10 @@ html[lang="dv"] {
   font-size: 112.5%;
 }
 
+html[lang="dv"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: "MV AammuFK", var(--font-thaana);
+}
+
 html[lang="dv"]
   :is(h1, h2, h3, h4, h5, h6):not([class*="text-white"]):not(
     .dhivehi-title-inverse
@@ -228,14 +232,14 @@ html[lang="dv"] header nav a.font-thaana {
 }
 
 .thaana-headline {
-  font-family: var(--font-thaana);
+  font-family: "MV AammuFK", var(--font-thaana);
   line-height: 1.6;
   font-weight: 800;
 }
 
 /* Article titles only; body copy and other headings retain their own fonts. */
 .font-article-title {
-  font-family: var(--font-thaana);
+  font-family: "MV AammuFK", var(--font-thaana);
   font-weight: 800;
   max-width: 100%;
   overflow-wrap: anywhere;
