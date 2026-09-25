@@ -61,7 +61,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h2 className="font-article-title ml-auto mr-0 max-w-[32rem] text-[2rem] font-bold leading-[1.35] text-white line-clamp-3 text-balance mb-2 transition-colors group-hover:text-[#95D5B2] md:text-[2.5rem]">
+          <h2 className="font-article-title ml-auto mr-0 max-w-[32rem] text-3xl font-bold leading-[1.35] text-white line-clamp-3 text-balance mb-2 transition-colors group-hover:text-[#95D5B2] md:text-4xl">
             {article.title}
           </h2>
           {article.excerpt && (
@@ -113,7 +113,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-3">
+          <h3 className="font-article-title text-lg font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-3">
             {article.title}
           </h3>
           {(showHoursOnly ? hoursAgo : date) && (
@@ -143,7 +143,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="font-article-title text-xl font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
+        <h3 className="font-article-title text-lg font-semibold text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
           {article.title}
         </h3>
         {showHoursOnly && hoursAgo && (
@@ -166,7 +166,7 @@ export default function DhivehiArticleCard({
               {article.category.name}
             </span>
           )}
-          <h3 className="font-article-title text-xl font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
+          <h3 className="font-article-title text-lg font-medium text-[#142820] group-hover:text-[#103820] transition-colors line-clamp-2">
             {article.title}
           </h3>
           {(showHoursOnly ? hoursAgo : date) && (
@@ -213,7 +213,7 @@ export default function DhivehiArticleCard({
             {article.category.name}
           </span>
         )}
-        <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-2xl">
+        <h3 className="font-article-title text-[#142820] font-semibold leading-snug line-clamp-3 mb-2 group-hover:text-[#103820] transition-colors text-xl">
           {article.title}
         </h3>
         {article.excerpt && (

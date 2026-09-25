@@ -59,7 +59,7 @@ export default function DhivehiSubmitArticle() {
 
       <main className="mx-auto max-w-4xl px-3 py-8 sm:px-4 md:py-14">
         <div className="mb-7 rounded-sm bg-[#103820] px-4 py-6 text-right text-white sm:mb-8 sm:px-6 sm:py-8 md:px-10">
-          <h1 className="dhivehi-title-inverse font-thaana thaana-headline text-3xl md:text-4xl font-bold leading-relaxed">
+          <h1 className="dhivehi-title-inverse font-thaana thaana-headline text-2xl md:text-3xl font-bold leading-relaxed">
             &quot;ރައްޔިތުން&quot; ގައި ލިޔުންތައް ޝާއިޢުކުރެއްވުމަށް:
           </h1>
         </div>
@@ -67,7 +67,7 @@ export default function DhivehiSubmitArticle() {
         <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 shadow-sm sm:p-6 md:p-8">
           {sent ? (
             <div className="text-center py-10">
-              <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820] mb-3">
+              <h2 className="font-thaana thaana-headline text-lg font-bold text-[#142820] mb-3">
                 ޝުކުރިއްޔާ!
               </h2>
               <p className="font-thaana text-[#6B756E]">

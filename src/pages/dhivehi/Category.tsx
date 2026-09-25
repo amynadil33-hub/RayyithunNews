@@ -75,7 +75,7 @@ export default function DhivehiCategory() {
 
       <div className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-8">
         <div className="border-b-2 border-[#103820] pb-3 mb-8 text-right">
-          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] sm:text-4xl">
+          <h1 className="font-thaana thaana-headline text-2xl font-bold text-[#142820] sm:text-3xl">
             {categoryName}
           </h1>
         </div>

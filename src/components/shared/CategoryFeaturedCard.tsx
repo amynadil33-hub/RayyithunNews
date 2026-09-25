@@ -62,7 +62,7 @@ export default function CategoryFeaturedCard({
         <h2
           className={`font-bold text-[#142820] transition-colors group-hover:text-[#2D6A4F] line-clamp-3 ${
             isDhivehi
-              ? "font-article-title ml-auto max-w-3xl text-3xl leading-[1.4] sm:text-4xl"
+              ? "font-article-title ml-auto max-w-3xl text-2xl leading-[1.4] sm:text-3xl"
               : "font-serif max-w-4xl text-3xl leading-tight sm:text-4xl"
           }`}
         >

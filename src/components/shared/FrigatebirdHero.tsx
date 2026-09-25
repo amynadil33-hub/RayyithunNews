@@ -197,7 +197,7 @@ export default function FrigatebirdHero({ language }: FrigatebirdHeroProps) {
               id={`brand-hero-heading-${language}`}
               className={
                 isDhivehi
-                  ? "dhivehi-title-inverse font-thaana thaana-headline text-[2rem] font-bold leading-[1.4] text-balance sm:text-[2.25rem] md:text-[2.5rem]"
+                  ? "dhivehi-title-inverse font-thaana thaana-headline text-3xl font-bold leading-[1.4] text-balance sm:text-[2rem] md:text-[2.25rem]"
                   : "font-serif text-[1.95rem] font-bold leading-[1.02] tracking-[-0.025em] text-balance sm:text-[2.25rem] md:text-[2.4rem]"
               }
             >

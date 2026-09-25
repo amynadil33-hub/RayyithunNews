@@ -67,7 +67,7 @@ function TopStoryCard({
           </span>
         )}
         <span
-          className={`block text-lg font-semibold leading-snug text-[#142820] line-clamp-2 transition-colors group-hover:text-[#103820] ${isDhivehi ? "font-article-title" : "font-serif"}`}
+          className={`block font-semibold leading-snug text-[#142820] line-clamp-2 transition-colors group-hover:text-[#103820] ${isDhivehi ? "font-article-title text-base" : "font-serif text-lg"}`}
         >
           {article.title}
         </span>
@@ -126,10 +126,10 @@ export default function HomepageEditorialHero({
             </div>
 
             <h1
-              className={`text-2xl font-bold text-[#142820] transition-colors group-hover:text-[#2D6A4F] sm:text-3xl ${
+              className={`font-bold text-[#142820] transition-colors group-hover:text-[#2D6A4F] ${
                 isDhivehi
-                  ? "font-article-title leading-[1.5]"
-                  : "font-serif leading-tight tracking-[-0.015em]"
+                  ? "font-article-title text-xl leading-[1.5] sm:text-2xl"
+                  : "font-serif text-2xl leading-tight tracking-[-0.015em] sm:text-3xl"
               }`}
             >
               {article.title}

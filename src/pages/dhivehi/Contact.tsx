@@ -38,7 +38,7 @@ export default function DhivehiContact() {
 
       <div className="mx-auto max-w-4xl px-3 py-8 sm:px-4 sm:py-14">
         <div className="mb-6 border-b-2 border-[#103820] pb-3 text-right sm:mb-10">
-          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] sm:text-4xl">
+          <h1 className="font-thaana thaana-headline text-2xl font-bold text-[#142820] sm:text-3xl">
             ގުޅުއްވުމަށް
           </h1>
         </div>
@@ -46,7 +46,7 @@ export default function DhivehiContact() {
         <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:p-8">
           {sent ? (
             <div className="text-center py-10">
-              <h3 className="font-thaana thaana-headline text-lg font-semibold text-[#142820] mb-2">
+              <h3 className="font-thaana thaana-headline text-base font-semibold text-[#142820] mb-2">
                 ލިޔުން ލިބިއްޖެ
               </h3>
             </div>

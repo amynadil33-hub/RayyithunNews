@@ -65,7 +65,7 @@ export default function DhivehiArticle() {
       <div className="min-h-screen bg-[#F8F8F8]" dir="rtl" lang="dv">
         <DhivehiHeader />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h1 className="font-thaana thaana-headline text-4xl font-bold text-[#142820] mb-4">
+          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] mb-4">
             ލިޔުން ނެތް
           </h1>
           <Link to="/" className="text-[#103820] underline font-thaana">
@@ -154,7 +154,7 @@ export default function DhivehiArticle() {
               </span>
             )}
 
-            <h1 className="font-article-title text-3xl sm:text-4xl md:text-5xl font-bold text-[#142820] leading-tight mb-4 text-right">
+            <h1 className="font-article-title text-2xl sm:text-3xl md:text-4xl font-bold text-[#142820] leading-tight mb-4 text-right">
               {article.title}
             </h1>
 
@@ -212,7 +212,7 @@ export default function DhivehiArticle() {
 
             {related && related.length > 0 && (
               <section className="mt-10 pt-8 border-t border-[#E5E7E2]">
-                <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820] mb-5 text-right">
+                <h2 className="font-thaana thaana-headline text-lg font-bold text-[#142820] mb-5 text-right">
                   ގުޅޭ ލިޔުންތައް
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

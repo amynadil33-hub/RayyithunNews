@@ -30,7 +30,7 @@ export default function DhivehiPodcast() {
 
       <main className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-12">
         <div className="border-b-2 border-[#103820] pb-3 mb-8 text-right">
-          <h1 className="font-thaana thaana-headline text-3xl font-bold text-[#142820] sm:text-4xl">
+          <h1 className="font-thaana thaana-headline text-2xl font-bold text-[#142820] sm:text-3xl">
             ޕޮޑްކާސްޓް
           </h1>
           <p className="font-thaana text-[#6B756E] mt-1 text-sm">
@@ -74,7 +74,7 @@ export default function DhivehiPodcast() {
                   <p className="font-thaana text-xs text-[#6B756E] mb-1">
                     އެޕިސޯޑް {podcasts.length - index}
                   </p>
-                  <h2 className="font-thaana thaana-headline font-semibold text-[#142820] text-lg leading-snug mb-1">
+                  <h2 className="font-thaana thaana-headline font-semibold text-[#142820] text-base leading-snug mb-1">
                     {podcast.title}
                   </h2>
                   {podcast.description && (

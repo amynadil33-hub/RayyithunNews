@@ -132,7 +132,7 @@ export default function DhivehiHome() {
 
           <div className="order-1 min-w-0 text-right lg:order-2" dir="rtl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+              <h2 className="font-thaana thaana-headline text-lg font-bold text-[#142820]">
                 އެންމެ ފަހުގެ ހަބަރު
               </h2>
               <Link
@@ -201,7 +201,7 @@ function DhivehiCategorySection({
   return (
     <section className="mx-auto max-w-7xl border-t border-[#E5E7E2] px-3 py-6 sm:px-4 sm:py-8">
       <div className="flex items-center justify-between mb-5">
-        <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820]">
+        <h2 className="font-thaana thaana-headline text-lg font-bold text-[#142820]">
           {categoryName}
         </h2>
         <Link

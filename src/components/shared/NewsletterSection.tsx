@@ -38,7 +38,7 @@ export default function NewsletterSection({
     <section className="bg-[#103820] px-3 py-10 sm:px-4 sm:py-14">
       <div className="max-w-2xl mx-auto text-center">
         <h2
-          className={`text-2xl md:text-3xl font-bold text-white mb-2 ${isDhivehi ? "font-thaana thaana-headline" : "font-serif"}`}
+          className={`font-bold text-white mb-2 ${isDhivehi ? "font-thaana thaana-headline text-xl md:text-2xl" : "font-serif text-2xl md:text-3xl"}`}
         >
           {isDhivehi ? "ސަބްސްކްރައިބް ކުރެއްވުމަށް" : "Stay Informed"}
         </h2>

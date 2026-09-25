@@ -45,7 +45,7 @@ export default function DhivehiAdvertise() {
 
       <main className="mx-auto max-w-4xl px-3 py-8 sm:px-4 sm:py-14">
         <div className="mb-7 rounded-sm bg-[#103820] p-5 text-center text-white sm:mb-10 sm:p-8">
-          <h1 className="dhivehi-title-inverse font-thaana thaana-headline mb-3 text-3xl font-bold sm:text-4xl">
+          <h1 className="dhivehi-title-inverse font-thaana thaana-headline mb-3 text-2xl font-bold sm:text-3xl">
             އިޢުލާން ކުރެއްވުމަށް
           </h1>
           <p className="text-[#95D5B2] font-thaana thaana-body max-w-xl mx-auto">
@@ -55,12 +55,12 @@ export default function DhivehiAdvertise() {
         </div>
 
         <div className="rounded-sm border border-[#E5E7E2] bg-white p-4 sm:p-6 md:p-8">
-          <h2 className="font-thaana thaana-headline text-xl font-bold text-[#142820] mb-6 text-right">
+          <h2 className="font-thaana thaana-headline text-lg font-bold text-[#142820] mb-6 text-right">
             އިޢުލާން ކުރުމަށް އެދޭ ފޯމު
           </h2>
           {sent ? (
             <div className="text-center py-10">
-              <h3 className="font-thaana thaana-headline text-lg font-semibold text-[#142820] mb-2">
+              <h3 className="font-thaana thaana-headline text-base font-semibold text-[#142820] mb-2">
                 ހުށަހެޅުން ލިބިއްޖެ
               </h3>
               <p className="text-sm text-[#6B756E] font-thaana">

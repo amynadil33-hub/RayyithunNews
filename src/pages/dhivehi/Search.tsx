@@ -32,7 +32,7 @@ export default function DhivehiSearch() {
       <DhivehiHeader />
 
       <main className="mx-auto max-w-5xl px-3 py-8 sm:px-4 sm:py-10">
-        <h1 className="mb-5 font-thaana thaana-headline text-2xl font-bold text-[#142820] sm:mb-6">
+        <h1 className="mb-5 font-thaana thaana-headline text-xl font-bold text-[#142820] sm:mb-6">
           ހޯދާ
         </h1>
         <form

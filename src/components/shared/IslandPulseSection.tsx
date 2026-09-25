@@ -157,7 +157,7 @@ export default function IslandPulseSection({
       <div className={isSidebar ? "border-b border-[#D8E8D8] pb-3" : "mb-5"}>
         <h2
           id={`island-pulse-heading-${language}`}
-          className={`${isDhivehi ? `thaana-headline ${isSidebar ? "text-xl" : "text-2xl"}` : `font-serif ${isSidebar ? "text-lg" : "text-xl"} tracking-wide`} font-bold text-[#142820]`}
+          className={`${isDhivehi ? `thaana-headline ${isSidebar ? "text-lg" : "text-xl"}` : `font-serif ${isSidebar ? "text-lg" : "text-xl"} tracking-wide`} font-bold text-[#142820]`}
         >
           {isDhivehi ? "ރަށް ތަކުގެ ވިންދު" : "ISLAND PULSE"}
         </h2>
