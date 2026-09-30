@@ -30,9 +30,9 @@ export default function EnglishFooter() {
               className="isolate mb-3 inline-flex items-center overflow-hidden"
             >
               <img
-                src="/rayyithun-logo-transparent-v2.png"
+                src="/rayyithun-logo-english-2026.png"
                 alt="Rayyithun News Network"
-                className="h-16 w-44 object-contain object-left brightness-0 invert"
+                className="h-28 w-24 object-contain object-left brightness-0 invert"
               />
             </Link>
             <p className="max-w-xl text-sm leading-relaxed text-[#95D5B2]">

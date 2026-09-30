@@ -76,13 +76,10 @@ export default function DhivehiHeader() {
             className="isolate flex min-w-0 flex-col items-center justify-center overflow-hidden text-center"
           >
             <img
-              src="/rayyithun-logo-transparent-v2.png"
+              src="/rayyithun-logo-dhivehi-2026.png"
               alt="ރައްޔިތުން"
-              className="h-14 w-40 object-contain object-center sm:h-16 sm:w-48"
+              className="h-24 w-20 object-contain object-center sm:h-28 sm:w-24"
             />
-            <span className="mt-0.5 text-[10px] font-medium text-[#526159] font-thaana sm:text-xs">
-              ދިވެހީންގެ އަޑު
-            </span>
           </Link>
 
           <div className="flex items-center justify-end gap-3 sm:gap-4">

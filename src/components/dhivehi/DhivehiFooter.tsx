@@ -28,9 +28,9 @@ export default function DhivehiFooter() {
               className="isolate mb-3 inline-flex items-center overflow-hidden"
             >
               <img
-                src="/rayyithun-logo-transparent-v2.png"
+                src="/rayyithun-logo-dhivehi-2026.png"
                 alt="ރައްޔިތުން"
-                className="h-16 w-44 object-contain object-right brightness-0 invert"
+                className="h-28 w-24 object-contain object-right brightness-0 invert"
               />
             </Link>
             <p className="max-w-xl text-sm leading-[2] text-[#95D5B2]">

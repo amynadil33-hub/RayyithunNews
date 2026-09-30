@@ -85,9 +85,9 @@ export default function AdminLayout() {
         <div className="p-5 border-b border-white/10">
           <Link to="/en" className="block">
             <img
-              src="/rayyithun-logo-transparent-v2.png"
-              alt="RAYYITHUN"
-              className="h-16 w-full object-contain object-center brightness-0 invert"
+              src="/rayyithun-logo-english-2026.png"
+              alt="Rayyithun News Network"
+              className="h-28 w-full object-contain object-center brightness-0 invert"
             />
             <span className="block text-[#95D5B2] text-xs mt-0.5">
               Admin CMS

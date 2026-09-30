@@ -111,13 +111,10 @@ export default function EnglishHeader() {
             className="isolate flex w-full max-w-[min(24rem,calc(100vw-8rem))] min-w-0 flex-col items-center justify-center overflow-hidden text-center"
           >
             <img
-              src="/rayyithun-logo-english-transparent.png"
-              alt="RAYYITHUN"
-              className="h-14 w-44 object-contain object-center sm:h-16 sm:w-52"
+              src="/rayyithun-logo-english-2026.png"
+              alt="Rayyithun News Network"
+              className="h-24 w-20 object-contain object-center sm:h-28 sm:w-24"
             />
-            <span className="mt-0.5 text-[10px] font-medium leading-tight tracking-[0.04em] text-[#526159] sm:text-xs">
-              News that informs. Stories that connect. A community that speaks.
-            </span>
           </Link>
 
           <div className="flex items-center justify-end gap-3 sm:gap-4">
