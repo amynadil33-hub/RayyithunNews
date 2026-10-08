@@ -1,8 +1,9 @@
+const PRODUCTION_SITE_URL = "https://www.rayyithunn.com";
+
 function getSiteBaseUrl() {
   const configuredUrl = import.meta.env.VITE_SITE_URL?.trim();
   if (configuredUrl) return configuredUrl.replace(/\/+$/, "");
-  if (typeof window !== "undefined") return window.location.origin;
-  return "";
+  return PRODUCTION_SITE_URL;
 }
 
 export function getCanonicalPageUrl() {

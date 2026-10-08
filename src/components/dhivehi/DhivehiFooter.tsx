@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import SocialIcon from "../shared/SocialIcon.tsx";
+import { SOCIAL_LINKS } from "../../config/social.ts";
 
 const FOOTER_LINKS = [
   { label: "ގުޅުއްވުމަށް", href: "/contact" },
@@ -7,15 +8,6 @@ const FOOTER_LINKS = [
   { label: "ޕްރައިވެސީ ޕޮލިސީ", href: "/en/page/privacy" },
   { label: "ޚިދުމަތުގެ ޝަރުތުތައް", href: "/en/page/terms" },
 ];
-
-const SOCIAL_LINKS = [
-  "Facebook",
-  "X",
-  "Instagram",
-  "YouTube",
-  "Telegram",
-  "Viber",
-] as const;
 
 export default function DhivehiFooter() {
   return (
@@ -37,10 +29,12 @@ export default function DhivehiFooter() {
               ހޭލުންތެރި، ބަސްބުނުމުގެ ބާރުވެރިކަން ލިބިފައިވާ މުޖުތަމަޢުއަކަށް
             </p>
             <div className="mt-5 flex flex-wrap justify-start gap-3">
-              {SOCIAL_LINKS.map((label) => (
+              {SOCIAL_LINKS.map(({ label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="flex h-11 w-11 items-center justify-center rounded-full border border-white/80 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md sm:h-9 sm:w-9"
                 >

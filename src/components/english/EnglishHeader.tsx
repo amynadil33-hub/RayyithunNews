@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ChevronDownIcon, SearchIcon, MenuIcon, XIcon } from "lucide-react";
 import { format } from "date-fns";
 import SocialIcon from "../shared/SocialIcon.tsx";
+import { SOCIAL_LINKS } from "../../config/social.ts";
 
 const NAV_LINKS = [
   { label: "News", href: "/en/news" },
@@ -27,15 +28,6 @@ const MORE_LINKS = [
   { label: "Podcast", href: "/en/podcast" },
   { label: "Market", href: "/en/market" },
 ];
-
-const SOCIAL_LINKS = [
-  "Facebook",
-  "X",
-  "Instagram",
-  "YouTube",
-  "Telegram",
-  "Viber",
-] as const;
 
 const UTILITY_LINKS = [
   { label: "News Tip", href: "/en/contact" },
@@ -75,10 +67,12 @@ export default function EnglishHeader() {
             className="hidden items-center gap-2 sm:flex"
             aria-label="Social media"
           >
-            {SOCIAL_LINKS.map((label) => (
+            {SOCIAL_LINKS.map(({ label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="flex h-8 w-8 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
               >
@@ -255,6 +249,20 @@ export default function EnglishHeader() {
                 </Link>
               </li>
             ))}
+            <li className="flex items-center justify-center gap-3 bg-[#F8FAF8] px-4 py-3 sm:hidden">
+              {SOCIAL_LINKS.map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm"
+                >
+                  <SocialIcon name={label} />
+                </a>
+              ))}
+            </li>
           </ul>
         </nav>
       )}

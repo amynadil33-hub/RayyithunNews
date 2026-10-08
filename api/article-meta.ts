@@ -18,6 +18,8 @@ interface ArticleMetadata {
   featured_image_url: string | null;
 }
 
+const PRODUCTION_SITE_URL = "https://www.rayyithunn.com";
+
 function firstQueryValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -33,10 +35,13 @@ function escapeHtml(value: string) {
 function requestOrigin(request: ApiRequest) {
   const configuredUrl = process.env.VITE_SITE_URL?.trim();
   if (configuredUrl) return configuredUrl.replace(/\/+$/, "");
+  if (process.env.VERCEL_ENV === "production") return PRODUCTION_SITE_URL;
   const forwardedHost = firstQueryValue(request.headers["x-forwarded-host"]);
   const host = forwardedHost ?? firstQueryValue(request.headers.host);
   const forwardedProto = firstQueryValue(request.headers["x-forwarded-proto"]);
-  return host ? `${forwardedProto ?? "https"}://${host}` : "";
+  return host
+    ? `${forwardedProto ?? "https"}://${host}`
+    : PRODUCTION_SITE_URL;
 }
 
 function absoluteUrl(value: string | null, origin: string) {

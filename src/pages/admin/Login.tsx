@@ -48,7 +48,7 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="admin@rayyithun.mv"
+                placeholder="admin@rayyithunn.com"
                 className="w-full border border-[#E5E7E2] rounded-sm px-3 py-2.5 text-sm bg-[#F8F8F8] focus:outline-none focus:border-[#103820] focus:ring-1 focus:ring-[#103820]"
               />
             </div>

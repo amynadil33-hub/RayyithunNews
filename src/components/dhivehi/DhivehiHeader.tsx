@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SearchIcon, MenuIcon, XIcon } from "lucide-react";
 import { formatDhivehiDate } from "../../lib/dhivehi-date.ts";
+import SocialIcon from "../shared/SocialIcon.tsx";
+import { SOCIAL_LINKS } from "../../config/social.ts";
 
 // Dhivehi navigation links (RTL)
 const NAV_LINKS = [
@@ -51,6 +53,23 @@ export default function DhivehiHeader() {
           >
             English
           </Link>
+          <div
+            className="hidden items-center gap-2 sm:flex"
+            aria-label="ސޯޝަލް މީޑިއާ"
+          >
+            {SOCIAL_LINKS.map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <SocialIcon name={label} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -180,6 +199,20 @@ export default function DhivehiHeader() {
                 </Link>
               </li>
             ))}
+            <li className="flex items-center justify-center gap-3 bg-[#F8FAF8] px-4 py-3 sm:hidden" dir="ltr">
+              {SOCIAL_LINKS.map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E2E5E3] bg-white shadow-sm"
+                >
+                  <SocialIcon name={label} />
+                </a>
+              ))}
+            </li>
           </ul>
         </nav>
       )}

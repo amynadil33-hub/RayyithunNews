@@ -1,6 +1,6 @@
--- Run once after the editorial workflow helpers are installed.
--- Allows a writer to manage their own optional photo and editors/admins to
--- manage writer photos without granting broad profile-update permission.
+-- Install the writer-avatar RPC used by the admin Users page.
+-- This is a migration (rather than a loose SQL helper) so every deployed
+-- Supabase environment exposes the function to PostgREST.
 CREATE OR REPLACE FUNCTION public.set_profile_avatar(
   target_profile_id UUID,
   new_avatar_url TEXT
@@ -18,7 +18,9 @@ BEGIN
   END IF;
 
   UPDATE public.profiles
-  SET avatar_url = NULLIF(trim(new_avatar_url), ''), updated_at = NOW()
+  SET
+    avatar_url = NULLIF(trim(new_avatar_url), ''),
+    updated_at = NOW()
   WHERE id = target_profile_id;
 
   IF NOT FOUND THEN
@@ -30,4 +32,8 @@ $$;
 REVOKE ALL ON FUNCTION public.set_profile_avatar(UUID, TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.set_profile_avatar(UUID, TEXT) TO authenticated;
 
+COMMENT ON FUNCTION public.set_profile_avatar(UUID, TEXT)
+  IS 'Lets writers update their own avatar and editors/admins update writer avatars.';
+
+-- Make the new RPC visible immediately to Supabase's REST API.
 NOTIFY pgrst, 'reload schema';
