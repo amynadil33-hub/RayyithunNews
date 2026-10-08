@@ -34,6 +34,7 @@ import DhivehiSearch from "./pages/dhivehi/Search.tsx";
 
 // Admin
 import AdminLogin from "./pages/admin/Login.tsx";
+import AdminSetPassword from "./pages/admin/SetPassword.tsx";
 import AdminDashboard from "./pages/admin/Dashboard.tsx";
 import AdminArticles from "./pages/admin/Articles.tsx";
 import AdminArticleEdit from "./pages/admin/ArticleEdit.tsx";
@@ -108,6 +109,10 @@ export default function App() {
 
                 {/* Admin */}
                 <Route path="/admin/login" element={<AdminLogin />} />
+                <Route
+                  path="/admin/set-password"
+                  element={<AdminSetPassword />}
+                />
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<Navigate to="dashboard" replace />} />
                   <Route path="dashboard" element={<AdminDashboard />} />
